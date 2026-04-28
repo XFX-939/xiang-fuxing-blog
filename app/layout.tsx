@@ -1,0 +1,53 @@
+import type { Metadata } from "next";
+import "katex/dist/katex.min.css";
+import "@/styles/globals.css";
+import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { siteConfig } from "@/lib/site";
+import { absoluteUrl } from "@/lib/utils";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.siteUrl),
+  title: {
+    default: siteConfig.siteName,
+    template: `%s | ${siteConfig.siteName}`
+  },
+  description: siteConfig.siteDescription,
+  applicationName: siteConfig.siteName,
+  authors: [{ name: siteConfig.author }],
+  creator: siteConfig.author,
+  keywords: siteConfig.keywords,
+  alternates: {
+    canonical: absoluteUrl("/")
+  },
+  openGraph: {
+    type: "website",
+    locale: "zh_CN",
+    url: siteConfig.siteUrl,
+    siteName: siteConfig.siteName,
+    title: siteConfig.siteName,
+    description: siteConfig.siteDescription
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.siteName,
+    description: siteConfig.siteDescription
+  }
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="zh-CN" suppressHydrationWarning>
+      <body className="min-h-screen bg-white font-sans text-ink-900 antialiased dark:bg-ink-950 dark:text-ink-100">
+        <ThemeProvider>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}

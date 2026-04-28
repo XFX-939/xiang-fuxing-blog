@@ -1,0 +1,196 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.24);
+}
+
+@layer base {
+  * {
+    @apply border-ink-200 dark:border-ink-800;
+  }
+}
+
+@layer components {
+  .contact-link {
+    @apply inline-flex items-center gap-2 rounded-md border border-ink-200 bg-ink-50 px-4 py-3 text-sm font-medium text-ink-700 transition hover:border-signal-300 hover:text-signal-700 dark:border-ink-800 dark:bg-ink-900 dark:text-ink-200 dark:hover:border-signal-700 dark:hover:text-signal-300;
+  }
+}
+
+.anchor-heading {
+  color: inherit;
+  text-decoration: none;
+}
+
+.article-content {
+  font-size: 1rem;
+}
+
+.article-content :where(h2, h3) {
+  letter-spacing: 0;
+}
+
+.article-content :where(ul, ol) {
+  padding-left: 1.4rem;
+}
+
+.article-content :where(li) {
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.article-content :where(hr) {
+  border-color: rgb(226 232 240);
+}
+
+.dark .article-content :where(hr) {
+  border-color: rgb(30 41 59);
+}
+
+.article-content :where(code):not(:where(pre code)) {
+  border-radius: 4px;
+  background: rgb(241 245 249);
+  padding: 0.15rem 0.35rem;
+  font-size: 0.88em;
+  color: rgb(15 23 42);
+}
+
+.article-content :where(code):not(:where(pre code))::before,
+.article-content :where(code):not(:where(pre code))::after {
+  content: "";
+}
+
+.dark .article-content :where(code):not(:where(pre code)) {
+  background: rgb(15 23 42);
+  color: rgb(226 232 240);
+}
+
+.article-content [data-rehype-pretty-code-figure] {
+  position: relative;
+  margin: 1.5rem 0;
+}
+
+.article-content [data-rehype-pretty-code-figure] pre {
+  margin: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid rgb(226 232 240);
+  background: rgb(248 250 252);
+  padding: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: rgb(30 41 59);
+}
+
+.article-content [data-rehype-pretty-code-figure]:hover .code-copy-button,
+.article-content [data-rehype-pretty-code-figure]:focus-within .code-copy-button {
+  opacity: 1;
+}
+
+.code-copy-button {
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+  z-index: 1;
+  border-radius: 6px;
+  border: 1px solid rgb(203 213 225);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 0.3rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  color: rgb(51 65 85);
+  opacity: 0;
+  transition: border-color 160ms ease, color 160ms ease, opacity 160ms ease;
+}
+
+.code-copy-button:hover,
+.code-copy-button[data-copied="true"] {
+  border-color: rgb(14 165 233);
+  color: rgb(3 105 161);
+}
+
+@media (hover: none) {
+  .code-copy-button {
+    opacity: 1;
+  }
+}
+
+.dark .article-content [data-rehype-pretty-code-figure] pre {
+  border-color: rgb(30 41 59);
+  background: rgb(2 6 23);
+  color: rgb(226 232 240);
+}
+
+.dark .code-copy-button {
+  border-color: rgb(51 65 85);
+  background: rgba(15, 23, 42, 0.92);
+  color: rgb(203 213 225);
+}
+
+.dark .code-copy-button:hover,
+.dark .code-copy-button[data-copied="true"] {
+  border-color: rgb(34 211 238);
+  color: rgb(103 232 249);
+}
+
+.article-content [data-rehype-pretty-code-figure] code {
+  display: grid;
+  min-width: 100%;
+  font-family: "JetBrains Mono", "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+  white-space: pre;
+  tab-size: 2;
+  color: inherit;
+}
+
+.article-content [data-line] {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  min-height: 1.65rem;
+}
+
+.article-content [data-line] span {
+  color: var(--shiki-light, rgb(30 41 59));
+}
+
+.dark .article-content [data-line] span {
+  color: var(--shiki-dark, rgb(226 232 240));
+}
+
+.article-content .katex-display {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: 8px;
+  border: 1px solid rgb(226 232 240);
+  background: rgb(248 250 252);
+  padding: 0.85rem 1rem;
+}
+
+.article-content .katex-display > .katex {
+  white-space: nowrap;
+  font-size: 1.04em;
+}
+
+.dark .article-content .katex-display {
+  border-color: rgb(30 41 59);
+  background: rgb(2 6 23);
+}
