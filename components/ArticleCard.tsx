@@ -11,7 +11,7 @@ type ArticleCardProps = {
 
 export function ArticleCard({ post, compact = false }: ArticleCardProps) {
   return (
-    <article className="group rounded-md border border-ink-200 bg-white p-5 transition hover:border-signal-300 hover:shadow-soft dark:border-ink-800 dark:bg-ink-950 dark:hover:border-signal-700 dark:hover:shadow-soft-dark">
+    <article className="group rounded-md border border-ink-200 bg-white p-5 transition hover:border-signal-300 hover:shadow-soft sm:p-6 dark:border-ink-800 dark:bg-ink-950 dark:hover:border-signal-700 dark:hover:shadow-soft-dark">
       <div className="mb-3 flex flex-wrap items-center gap-2 text-xs text-ink-500 dark:text-ink-400">
         <Link href={`/categories/${encodeURIComponent(post.category)}`} className="font-medium text-signal-700 dark:text-signal-300">
           {post.category}
@@ -22,7 +22,7 @@ export function ArticleCard({ post, compact = false }: ArticleCardProps) {
         <span>{post.readingTime}</span>
       </div>
       <Link href={post.url} className="flex items-start justify-between gap-4">
-        <h3 className="text-lg font-semibold leading-snug text-ink-950 transition group-hover:text-signal-800 dark:text-white dark:group-hover:text-signal-300">
+        <h3 className="text-lg font-semibold leading-8 text-ink-950 transition group-hover:text-signal-800 dark:text-white dark:group-hover:text-signal-300">
           {post.title}
         </h3>
         <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-ink-400 transition group-hover:text-signal-600" />

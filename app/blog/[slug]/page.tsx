@@ -85,7 +85,11 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                 dark: "github-dark",
                 light: "github-light"
               },
-              keepBackground: false
+              keepBackground: false,
+              defaultLang: {
+                block: "text",
+                inline: "text"
+              }
             }
           ]
         ]
@@ -96,14 +100,14 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
   return (
     <>
       <ReadingProgressBar />
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-6xl px-5 py-9 sm:px-6 sm:py-10">
         <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-ink-600 transition hover:text-signal-700 dark:text-ink-300 dark:hover:text-signal-300">
           <ArrowLeft className="h-4 w-4" />
           返回博客列表
         </Link>
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,720px)_260px] lg:items-start lg:justify-between">
-          <article className="min-w-0">
+          <article className="mx-auto max-w-[42.5rem] min-w-0 lg:mx-0 lg:max-w-none">
             <header className="border-b border-ink-200 pb-8 dark:border-ink-800">
               <div className="flex flex-wrap items-center gap-2 text-sm text-ink-500 dark:text-ink-400">
                 <span className="font-medium text-signal-700 dark:text-signal-300">{post.category}</span>
@@ -115,7 +119,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
               <h1 className="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink-950 sm:text-4xl dark:text-white">
                 {post.title}
               </h1>
-              <p className="mt-4 text-base leading-8 text-ink-600 dark:text-ink-300">{post.description}</p>
+              <p className="mt-4 text-base leading-9 text-ink-600 dark:text-ink-300">{post.description}</p>
               <div className="mt-5 flex flex-wrap gap-2">
                 {post.tags.map((tag) => (
                   <Tag key={tag} href={`/tags/${encodeURIComponent(tag)}`}>

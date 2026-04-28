@@ -46,6 +46,19 @@ const resourceIntegration = [
   { title: "节奏整合", description: "在合适的时间点使用合适的资源" }
 ];
 
+const importantCognitions = [
+  {
+    title: "谋定而后动",
+    description: "先想清楚目标、边界、关键变量、资源条件和主要风险，再进入执行。不是为了拖慢节奏，而是减少无效返工，让行动更有命中率。",
+    icon: Target
+  },
+  {
+    title: "能成事、积极正向、会关注人",
+    description: "判断一个人或团队的长期价值，不能只看技术深度和聪明程度，还要看能不能把事情闭环、能不能提供正向能量、能不能理解和激发身边的人。",
+    icon: CheckCircle2
+  }
+];
+
 export default function MethodologyPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
@@ -102,6 +115,23 @@ export default function MethodologyPage() {
             description="把事做成的能力"
             items={resourceIntegration}
           />
+        </div>
+
+        <div className="mt-5 grid gap-5 md:grid-cols-2">
+          {importantCognitions.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <article key={item.title} className="rounded-md border border-ink-200 bg-ink-50 p-5 dark:border-ink-800 dark:bg-ink-900/60">
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-white text-signal-700 shadow-sm ring-1 ring-ink-200 dark:bg-ink-950 dark:text-signal-300 dark:ring-ink-800">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <p className="text-sm font-medium text-ink-500 dark:text-ink-400">两个重要认知</p>
+                <h3 className="mt-1 text-xl font-semibold text-ink-950 dark:text-white">{item.title}</h3>
+                <p className="mt-4 text-sm leading-7 text-ink-600 dark:text-ink-300">{item.description}</p>
+              </article>
+            );
+          })}
         </div>
       </section>
 

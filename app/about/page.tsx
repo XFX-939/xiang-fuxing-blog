@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { Github, Mail, MessageCircle, NotebookText, Video } from "lucide-react";
 import { SectionTitle } from "@/components/SectionTitle";
@@ -18,7 +19,8 @@ const focusAreas = [
   "数字孪生仿真",
   "研发工具链与 AI Coding",
   "技术团队管理",
-  "个人知识管理"
+  "个人知识管理",
+  "音乐 and 篮球"
 ];
 
 const skills = [
@@ -60,10 +62,30 @@ export default function AboutPage() {
 
       <div className="grid gap-6">
         <section className="rounded-md border border-ink-200 bg-white p-6 dark:border-ink-800 dark:bg-ink-950">
-          <h2 className="text-xl font-semibold text-ink-950 dark:text-white">个人简介</h2>
-          <p className="mt-4 leading-8 text-ink-700 dark:text-ink-200">
-            我是无线通信算法工程师，长期从事系统仿真、5G/6G技术预研、AI辅助研发、研发效能提升和技术团队管理相关工作。
-          </p>
+          <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_240px] md:items-center">
+            <div>
+              <h2 className="text-xl font-semibold text-ink-950 dark:text-white">个人简介</h2>
+              <p className="mt-4 leading-8 text-ink-700 dark:text-ink-200">
+                我是无线通信算法工程师，长期从事系统仿真、5G/6G技术预研、AI辅助研发、研发效能提升和技术团队管理相关工作。
+              </p>
+              <p className="mt-4 text-sm leading-7 text-ink-600 dark:text-ink-300">
+                我希望把复杂工程问题讲清楚，把技术经验沉淀成可复用的方法，也把个人成长和团队管理中的真实判断长期记录下来。
+              </p>
+            </div>
+            <div className="mx-auto w-full max-w-[240px]">
+              <div className="rounded-md border border-ink-200 bg-ink-50 p-2 dark:border-ink-800 dark:bg-ink-900/60">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-ink-100 dark:bg-ink-900">
+                  <Image
+                    src="/images/xiang-fuxing-profile.jpg"
+                    alt="向福星个人照片"
+                    fill
+                    sizes="(min-width: 768px) 240px, 70vw"
+                    className="object-cover object-[50%_32%]"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section className="rounded-md border border-ink-200 bg-white p-6 dark:border-ink-800 dark:bg-ink-950">

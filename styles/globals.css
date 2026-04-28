@@ -41,6 +41,7 @@ body {
 
 .article-content {
   font-size: 1rem;
+  line-height: 1.9;
 }
 
 .article-content :where(h2, h3) {
@@ -52,8 +53,9 @@ body {
 }
 
 .article-content :where(li) {
-  margin-top: 0.4rem;
-  margin-bottom: 0.4rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.9;
 }
 
 .article-content :where(hr) {
@@ -161,6 +163,10 @@ body {
   color: inherit;
 }
 
+.article-content [data-language]::selection {
+  background: rgba(34, 211, 238, 0.24);
+}
+
 .article-content [data-line] {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -193,4 +199,58 @@ body {
 .dark .article-content .katex-display {
   border-color: rgb(30 41 59);
   background: rgb(2 6 23);
+}
+
+@media (max-width: 640px) {
+  .article-content {
+    font-size: 0.98rem;
+    line-height: 2;
+  }
+
+  .article-content :where(p) {
+    line-height: 2.05;
+  }
+
+  .article-content :where(ul, ol) {
+    padding-left: 1.2rem;
+  }
+
+  .article-content :where(li) {
+    margin-top: 0.55rem;
+    margin-bottom: 0.55rem;
+    line-height: 2;
+  }
+
+  .article-content :where(h2) {
+    margin-top: 2.4rem;
+    font-size: 1.45rem;
+    line-height: 1.45;
+  }
+
+  .article-content :where(h3) {
+    margin-top: 2rem;
+    font-size: 1.18rem;
+    line-height: 1.55;
+  }
+
+  .article-content :where(blockquote) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .article-content [data-rehype-pretty-code-figure] {
+    margin: 1.25rem -0.15rem;
+  }
+
+  .article-content [data-rehype-pretty-code-figure] pre {
+    padding: 1rem 0.85rem;
+    font-size: 0.82rem;
+    line-height: 1.85;
+  }
+
+  .article-content .katex-display {
+    margin-left: -0.15rem;
+    margin-right: -0.15rem;
+    padding: 0.75rem 0.85rem;
+  }
 }

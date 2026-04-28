@@ -6,6 +6,7 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { SectionTitle } from "@/components/SectionTitle";
 import { getFeaturedPosts, getLatestPosts } from "@/lib/posts";
 import { projects } from "@/lib/projects";
+import { topicHubs } from "@/lib/topics";
 import { createMetadata } from "@/lib/utils";
 
 export const metadata = createMetadata();
@@ -55,6 +56,38 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
+
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-14">
+        <SectionTitle
+          eyebrow="Topic Hubs"
+          title="四个长期写作主线"
+          description="按主题进入，比按时间浏览更适合建立知识结构。每个聚合页都会持续沉淀同一类问题的文章。"
+        />
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {topicHubs.map((topic) => {
+            const Icon = topic.icon;
+            return (
+              <Link
+                key={topic.slug}
+                href={topic.href}
+                className="group rounded-md border border-ink-200 bg-white p-5 transition hover:border-signal-300 hover:shadow-soft sm:p-6 dark:border-ink-800 dark:bg-ink-950 dark:hover:border-signal-700 dark:hover:shadow-soft-dark"
+              >
+                <div className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-md bg-signal-50 text-signal-700 dark:bg-signal-950 dark:text-signal-300">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h2 className="text-base font-semibold text-ink-950 transition group-hover:text-signal-800 dark:text-white dark:group-hover:text-signal-300">
+                  {topic.title}
+                </h2>
+                <p className="mt-3 text-sm leading-7 text-ink-600 dark:text-ink-300">{topic.description}</p>
+                <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-signal-700 dark:text-signal-300">
+                  进入专题
+                  <ArrowRight className="h-4 w-4" />
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
 
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <SectionTitle

@@ -16,11 +16,11 @@ export function TOC({ items, compact = false }: TOCProps) {
       aria-label="文章目录"
       className={cn(
         "rounded-md border border-ink-200 bg-white p-4 text-sm dark:border-ink-800 dark:bg-ink-950",
-        compact ? "" : "sticky top-24"
+        compact ? "" : "sticky top-32 max-h-[calc(100vh-9rem)] overflow-y-auto"
       )}
     >
       <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-ink-500 dark:text-ink-400">
-        TOC
+        目录
       </p>
       <ol className="grid gap-2">
         {items.map((item) => (
