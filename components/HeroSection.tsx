@@ -31,15 +31,18 @@ export function HeroSection() {
     <section className="relative overflow-hidden border-b border-ink-200 bg-ink-50 dark:border-ink-800 dark:bg-ink-950">
       <div className="absolute inset-0 bg-subtle-grid bg-[size:28px_28px] opacity-70 dark:bg-subtle-grid-dark" />
       <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-signal-100/80 to-transparent dark:from-signal-950/30" />
-      <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
-        <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_280px] xl:items-center 2xl:grid-cols-[minmax(0,1fr)_320px]">
-          <div className="max-w-4xl xl:max-w-none">
+      <div className="relative mx-auto max-w-[92rem] px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+        <div className="grid gap-10 2xl:grid-cols-[minmax(0,1fr)_320px] 2xl:items-center">
+          <div className="max-w-4xl 2xl:max-w-none">
             <p className="mb-5 inline-flex rounded-md border border-signal-200 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-signal-800 dark:border-signal-900 dark:bg-ink-950/70 dark:text-signal-300">
               Personal Knowledge System
             </p>
-            <h1 className="max-w-4xl text-4xl font-semibold leading-tight tracking-normal text-ink-950 sm:text-5xl lg:max-w-none lg:whitespace-nowrap lg:text-[2.6rem] xl:text-[2.75rem] 2xl:text-5xl dark:text-white">
+            <h1 className="max-w-4xl text-4xl font-semibold leading-tight tracking-normal text-ink-950 sm:text-5xl lg:max-w-none lg:text-[clamp(2.4rem,4vw,2.75rem)] xl:whitespace-nowrap 2xl:text-5xl dark:text-white">
               用 AI 重构复杂工程问题的建模、仿真与决策
             </h1>
+            <div className="mt-6 max-w-[280px] sm:max-w-[320px] 2xl:hidden">
+              <ProfilePhotoCard compact />
+            </div>
             <p className="mt-5 max-w-3xl text-base font-semibold leading-7 text-signal-800 dark:text-signal-200">
               Building AI-driven workflows for complex engineering systems.
             </p>
@@ -74,25 +77,8 @@ export function HeroSection() {
             </div>
           </div>
 
-          <div className="hidden xl:block">
-            <div className="rounded-md border border-ink-200 bg-white/86 p-2 shadow-soft backdrop-blur dark:border-ink-800 dark:bg-ink-950/82 dark:shadow-soft-dark">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-ink-100 dark:bg-ink-900">
-                <Image
-                  src="/images/xiang-fuxing-profile.jpg"
-                  alt="向福星个人照片"
-                  fill
-                  priority
-                  sizes="(min-width: 1536px) 320px, 280px"
-                  className="object-cover object-[50%_32%]"
-                />
-              </div>
-              <div className="px-2 py-3">
-                <p className="text-sm font-semibold text-ink-950 dark:text-white">向福星</p>
-                <p className="mt-1 text-xs leading-5 text-ink-500 dark:text-ink-400">
-                  Wireless Simulation · AI for Engineering
-                </p>
-              </div>
-            </div>
+          <div className="hidden 2xl:block">
+            <ProfilePhotoCard />
           </div>
         </div>
 
@@ -115,5 +101,30 @@ export function HeroSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+function ProfilePhotoCard({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className="rounded-md border border-ink-200 bg-white/86 p-2 shadow-soft backdrop-blur dark:border-ink-800 dark:bg-ink-950/82 dark:shadow-soft-dark">
+      <div className={compact ? "grid grid-cols-[88px_minmax(0,1fr)] items-center gap-3 sm:grid-cols-[104px_minmax(0,1fr)]" : ""}>
+        <div className={compact ? "relative aspect-square overflow-hidden rounded-md bg-ink-100 dark:bg-ink-900" : "relative aspect-[4/5] overflow-hidden rounded-md bg-ink-100 dark:bg-ink-900"}>
+          <Image
+            src="/images/xiang-fuxing-profile.jpg"
+            alt="向福星个人照片"
+            fill
+            priority={!compact}
+            sizes={compact ? "(max-width: 640px) 88px, 104px" : "320px"}
+            className="object-cover object-[50%_32%]"
+          />
+        </div>
+        <div className={compact ? "min-w-0 px-1 py-2" : "px-2 py-3"}>
+          <p className="text-sm font-semibold text-ink-950 dark:text-white">向福星</p>
+          <p className="mt-1 text-xs leading-5 text-ink-500 dark:text-ink-400">
+            Wireless Simulation · AI for Engineering
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
