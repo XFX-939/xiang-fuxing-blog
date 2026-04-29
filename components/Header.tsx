@@ -19,9 +19,9 @@ export function Header() {
   }));
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-200/70 bg-white/90 backdrop-blur-xl dark:border-ink-800/80 dark:bg-ink-950/88">
+    <header className="sticky top-0 z-40 w-full max-w-full overflow-x-clip border-b border-ink-200/70 bg-white/90 backdrop-blur-xl dark:border-ink-800/80 dark:bg-ink-950/88">
       <div className="border-b border-ink-200/70 bg-ink-950 text-white dark:border-ink-800 dark:bg-black">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2 text-xs sm:px-6">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-2 text-xs sm:px-6">
           <p className="truncate font-semibold tracking-normal text-signal-100">
             用 AI 重构复杂工程问题的建模、仿真与决策
           </p>
@@ -39,7 +39,7 @@ export function Header() {
         </div>
       </div>
 
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-6">
         <Link href="/" className="group rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-signal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-ink-950">
           <Logo text="向福星" gradientId="logo-signal-header" textClassName="hidden sm:inline" />
         </Link>
@@ -64,7 +64,7 @@ export function Header() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-4 pb-3 sm:px-6 xl:hidden">
+      <div className="mx-auto max-w-6xl px-5 pb-3 sm:px-6 xl:hidden">
         <GlobalSearch posts={posts} />
       </div>
     </header>

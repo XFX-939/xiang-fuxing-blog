@@ -11,13 +11,13 @@ export const metadata = createMetadata({
 
 export default function ProjectsPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <div className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-12">
       <SectionTitle
         eyebrow="Projects"
         title="项目经验"
         description="以下项目均基于公开可表达的工程经验整理，重点呈现问题抽象、方法沉淀与可迁移经验。"
       />
-      <div className="grid gap-5 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-3">
         {projects.map((project) => (
           <ProjectCard key={project.name} project={project} />
         ))}

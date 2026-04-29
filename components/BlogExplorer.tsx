@@ -22,6 +22,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
   const [category, setCategory] = useState(initialCategory);
   const [tag, setTag] = useState("全部");
   const [visible, setVisible] = useState(pageSize);
+  const [showAllTags, setShowAllTags] = useState(false);
 
   const filteredPosts = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -40,6 +41,8 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
   }, [category, posts, query, tag]);
 
   const visiblePosts = filteredPosts.slice(0, visible);
+  const visibleTags = showAllTags ? tags : tags.slice(0, 12);
+  const hiddenTagCount = Math.max(tags.length - visibleTags.length, 0);
 
   function resetAndSetCategory(nextCategory: string) {
     setCategory(nextCategory);
@@ -52,14 +55,25 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
-      <aside className="space-y-6">
-        <div className="rounded-md border border-ink-200 bg-white p-4 dark:border-ink-800 dark:bg-ink-950">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
+      <aside className="space-y-4 lg:space-y-6">
+        <div className="rounded-[18px] border border-ink-200 bg-white p-5 sm:rounded-md lg:p-4 dark:border-ink-800 dark:bg-ink-950">
           <p className="mb-3 text-sm font-semibold text-ink-950 dark:text-white">分类</p>
           <CategoryFilter categories={categories} value={category} onChange={resetAndSetCategory} />
         </div>
-        <div className="rounded-md border border-ink-200 bg-white p-4 dark:border-ink-800 dark:bg-ink-950">
-          <p className="mb-3 text-sm font-semibold text-ink-950 dark:text-white">标签</p>
+        <div className="rounded-[18px] border border-ink-200 bg-white p-5 sm:rounded-md lg:p-4 dark:border-ink-800 dark:bg-ink-950">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <p className="text-sm font-semibold text-ink-950 dark:text-white">标签</p>
+            {hiddenTagCount > 0 || showAllTags ? (
+              <button
+                type="button"
+                onClick={() => setShowAllTags((value) => !value)}
+                className="text-xs font-semibold text-signal-700 hover:text-signal-900 dark:text-signal-300 dark:hover:text-signal-100"
+              >
+                {showAllTags ? "收起标签" : `展开更多 ${hiddenTagCount}`}
+              </button>
+            ) : null}
+          </div>
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
@@ -68,7 +82,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
             >
               全部
             </button>
-            {tags.map((item) => (
+            {visibleTags.map((item) => (
               <button key={item.name} type="button" onClick={() => resetAndSetTag(item.name)}>
                 <Tag className={tag === item.name ? "border-ink-950 bg-ink-950 text-white dark:border-white dark:bg-white dark:text-ink-950" : ""} count={item.count}>
                   {item.name}
@@ -79,7 +93,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
         </div>
       </aside>
 
-      <section>
+      <section className="min-w-0">
         <SearchBox
           value={query}
           onChange={(value) => {
@@ -90,7 +104,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
         <div className="mt-4 text-sm text-ink-500 dark:text-ink-400">
           共找到 {filteredPosts.length} 篇文章
         </div>
-        <div className="mt-6 grid gap-4">
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:gap-5">
           {visiblePosts.map((post) => (
             <ArticleCard key={post.slug} post={post} />
           ))}

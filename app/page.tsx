@@ -18,37 +18,6 @@ const methodologyItems = [
   "把目标、方法、执行、复盘串成稳定节奏，而不是靠临场发挥"
 ];
 
-const readingPaths = [
-  {
-    title: "如果你关注无线系统仿真",
-    description: "从《一文读懂系统仿真》开始，再读资源分配、SVD/EVD、数字孪生相关内容。",
-    links: [
-      { href: "/blog/understanding-system-simulation", label: "一文读懂系统仿真" },
-      { href: "/blog/wireless-channel-resource-allocation-study-card", label: "信道资源分配" },
-      { href: "/blog/svd-evd-eigenvalue-algorithms-wireless", label: "SVD/EVD" },
-      { href: "/projects", label: "数字孪生探索" }
-    ]
-  },
-  {
-    title: "如果你关注 AI Coding",
-    description: "从《AI辅助研发不是替代程序员，而是重构研发作业流》开始，再读 Obsidian、知识管理和 AI 工作流。",
-    links: [
-      { href: "/blog/ai-rd-workflow", label: "AI 辅助研发作业流" },
-      { href: "/blog/obsidian-thinking-action-system", label: "Obsidian 工作流" },
-      { href: "/blog/codeagent-ai-coding-boundaries", label: "CodeAgent 实践" }
-    ]
-  },
-  {
-    title: "如果你关注技术管理",
-    description: "从《技术管理者如何做好目标、方法、执行和复盘》开始，再读个人成长复盘。",
-    links: [
-      { href: "/blog/technical-management-four-steps", label: "目标、方法、执行、复盘" },
-      { href: "/blog/from-executor-to-system-owner", label: "系统型负责人复盘" },
-      { href: "/methodology", label: "我的方法论" }
-    ]
-  }
-];
-
 export default function HomePage() {
   const latestPosts = getLatestPosts(4);
   const featuredPosts = getFeaturedPosts(3);
@@ -57,20 +26,20 @@ export default function HomePage() {
     <>
       <HeroSection />
 
-      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-14">
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14">
         <SectionTitle
           eyebrow="Topic Hubs"
           title="四个长期写作主线"
           description="按主题进入，比按时间浏览更适合建立知识结构。每个聚合页都会持续沉淀同一类问题的文章。"
         />
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           {topicHubs.map((topic) => {
             const Icon = topic.icon;
             return (
               <Link
                 key={topic.slug}
                 href={topic.href}
-                className="group rounded-md border border-ink-200 bg-white p-5 transition hover:border-signal-300 hover:shadow-soft sm:p-6 dark:border-ink-800 dark:bg-ink-950 dark:hover:border-signal-700 dark:hover:shadow-soft-dark"
+                className="group rounded-[18px] border border-ink-200 bg-white p-5 transition hover:border-signal-300 hover:shadow-soft sm:rounded-md sm:p-6 dark:border-ink-800 dark:bg-ink-950 dark:hover:border-signal-700 dark:hover:shadow-soft-dark"
               >
                 <div className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-md bg-signal-50 text-signal-700 dark:bg-signal-950 dark:text-signal-300">
                   <Icon className="h-5 w-5" />
@@ -78,7 +47,7 @@ export default function HomePage() {
                 <h2 className="text-base font-semibold text-ink-950 transition group-hover:text-signal-800 dark:text-white dark:group-hover:text-signal-300">
                   {topic.title}
                 </h2>
-                <p className="mt-3 text-sm leading-7 text-ink-600 dark:text-ink-300">{topic.description}</p>
+                <p className="mt-3 line-clamp-2 text-sm leading-7 text-ink-600 md:line-clamp-none dark:text-ink-300">{topic.description}</p>
                 <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-signal-700 dark:text-signal-300">
                   进入专题
                   <ArrowRight className="h-4 w-4" />
@@ -89,38 +58,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-        <SectionTitle
-          eyebrow="Start Here"
-          title="第一次来，建议这样读"
-          description="不同入口对应不同问题。先沿着一条路径读下去，比直接翻标签更容易建立完整理解。"
-        />
-        <div className="grid gap-5 lg:grid-cols-3">
-          {readingPaths.map((path) => (
-            <article key={path.title} className="rounded-md border border-ink-200 bg-white p-5 dark:border-ink-800 dark:bg-ink-950">
-              <h2 className="text-lg font-semibold text-ink-950 dark:text-white">{path.title}</h2>
-              <p className="mt-3 text-sm leading-7 text-ink-600 dark:text-ink-300">{path.description}</p>
-              <div className="mt-5 grid gap-2">
-                {path.links.map((link, index) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="group flex items-center justify-between rounded-md border border-ink-200 bg-ink-50 px-3 py-2.5 text-sm font-medium text-ink-700 transition hover:border-signal-300 hover:text-signal-700 dark:border-ink-800 dark:bg-ink-900/60 dark:text-ink-200 dark:hover:border-signal-700 dark:hover:text-signal-300"
-                  >
-                    <span className="flex items-center gap-2">
-                      <span className="text-xs font-semibold text-signal-700 dark:text-signal-300">{String(index + 1).padStart(2, "0")}</span>
-                      {link.label}
-                    </span>
-                    <ArrowRight className="h-4 w-4 opacity-0 transition group-hover:opacity-100" />
-                  </Link>
-                ))}
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14">
         <SectionTitle
           eyebrow="Latest"
           title="最新文章"
@@ -132,21 +70,21 @@ export default function HomePage() {
             </Link>
           }
         />
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2">
           {latestPosts.map((post) => (
             <ArticleCard key={post.slug} post={post} />
           ))}
         </div>
       </section>
 
-      <section className="border-y border-ink-200 bg-ink-50/80 dark:border-ink-800 dark:bg-ink-900/40">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <section className="bg-white dark:bg-ink-950">
+        <div className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14">
           <SectionTitle
             eyebrow="Featured"
             title="精选文章"
             description="这些文章更接近个人知识体系的主干：从系统仿真、AI 辅助研发到技术管理方法。"
           />
-          <div className="grid gap-4 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
             {featuredPosts.map((post) => (
               <ArticleCard key={post.slug} post={post} compact />
             ))}
@@ -154,7 +92,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14">
         <SectionTitle
           eyebrow="Projects"
           title="代表性项目"
@@ -166,7 +104,7 @@ export default function HomePage() {
             </Link>
           }
         />
-        <div className="grid gap-5 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-5">
           {projects.map((project) => (
             <ProjectCard key={project.name} project={project} />
           ))}
@@ -174,11 +112,11 @@ export default function HomePage() {
       </section>
 
       <section className="border-t border-ink-200 bg-ink-950 text-white dark:border-ink-800">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-7 px-5 py-10 sm:px-6 sm:py-14 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-signal-300">Methodology</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-normal">个人方法论</h2>
-            <p className="mt-4 text-sm leading-7 text-ink-300">
+            <h2 className="mt-3 text-2xl font-semibold leading-tight tracking-normal sm:text-3xl">个人方法论</h2>
+            <p className="mt-4 text-[15px] leading-7 text-ink-300 sm:text-sm">
               我更相信长期稳定的工作系统：清楚目标，拆出关键杠杆，持续推进，认真复盘。技术深度和管理视野，最终都要落在可执行的方法上。
             </p>
             <Link
@@ -189,7 +127,7 @@ export default function HomePage() {
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="grid gap-3">
+          <div className="hidden gap-3 md:grid">
             {methodologyItems.map((item) => (
               <div key={item} className="flex gap-3 rounded-md border border-white/10 bg-white/[0.04] p-4">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-signal-300" />

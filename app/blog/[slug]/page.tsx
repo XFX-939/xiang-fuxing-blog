@@ -14,7 +14,7 @@ import { AuthorCard } from "@/components/AuthorCard";
 import { CodeBlockCopyButtons } from "@/components/CodeBlockCopyButtons";
 import { mdxComponents } from "@/components/MDXComponents";
 import { ReadingProgressBar } from "@/components/ReadingProgressBar";
-import { Tag } from "@/components/Tag";
+import { TagList } from "@/components/TagList";
 import { TOC } from "@/components/TOC";
 import { getAdjacentPosts, getAllPosts, getPostBySlug, getRecommendedPosts } from "@/lib/posts";
 import { createMetadata, formatDate } from "@/lib/utils";
@@ -106,8 +106,8 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
           返回博客列表
         </Link>
 
-        <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,720px)_260px] lg:items-start lg:justify-between">
-          <article className="mx-auto max-w-[42.5rem] min-w-0 lg:mx-0 lg:max-w-none">
+        <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,720px)_260px] lg:items-start lg:justify-between">
+          <article className="mx-auto w-full max-w-[42.5rem] min-w-0 lg:mx-0 lg:max-w-none">
             <header className="border-b border-ink-200 pb-8 dark:border-ink-800">
               <div className="flex flex-wrap items-center gap-2 text-sm text-ink-500 dark:text-ink-400">
                 <span className="font-medium text-signal-700 dark:text-signal-300">{post.category}</span>
@@ -116,17 +116,11 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                 <span>·</span>
                 <span>{post.readingTime}</span>
               </div>
-              <h1 className="mt-4 text-3xl font-semibold leading-tight tracking-normal text-ink-950 sm:text-4xl dark:text-white">
+              <h1 className="mt-4 text-[32px] font-semibold leading-[1.22] tracking-[-0.02em] text-ink-950 sm:text-4xl sm:tracking-normal dark:text-white">
                 {post.title}
               </h1>
-              <p className="mt-4 text-base leading-9 text-ink-600 dark:text-ink-300">{post.description}</p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {post.tags.map((tag) => (
-                  <Tag key={tag} href={`/tags/${encodeURIComponent(tag)}`}>
-                    {tag}
-                  </Tag>
-                ))}
-              </div>
+              <p className="mt-4 text-[15px] leading-8 text-ink-600 sm:text-base sm:leading-9 dark:text-ink-300">{post.description}</p>
+              <TagList className="mt-5" tags={post.tags} maxVisible={5} getHref={(tag) => `/tags/${encodeURIComponent(tag)}`} />
             </header>
 
             <div className="mt-8 lg:hidden">

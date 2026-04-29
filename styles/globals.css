@@ -18,6 +18,22 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+@media (max-width: 768px) {
+  main :where(h1, h2, h3, p, li, a, span) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 ::selection {
   background: rgba(34, 211, 238, 0.24);
 }
@@ -30,7 +46,7 @@ body {
 
 @layer components {
   .contact-link {
-    @apply inline-flex items-center gap-2 rounded-md border border-ink-200 bg-ink-50 px-4 py-3 text-sm font-medium text-ink-700 transition hover:border-signal-300 hover:text-signal-700 dark:border-ink-800 dark:bg-ink-900 dark:text-ink-200 dark:hover:border-signal-700 dark:hover:text-signal-300;
+    @apply inline-flex min-w-0 items-center gap-2 rounded-md border border-ink-200 bg-ink-50 px-4 py-3 text-sm font-medium text-ink-700 transition hover:border-signal-300 hover:text-signal-700 dark:border-ink-800 dark:bg-ink-900 dark:text-ink-200 dark:hover:border-signal-700 dark:hover:text-signal-300;
   }
 }
 
@@ -196,6 +212,12 @@ body {
   font-size: 1.04em;
 }
 
+.article-content :where(table) {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
 .dark .article-content .katex-display {
   border-color: rgb(30 41 59);
   background: rgb(2 6 23);
@@ -203,12 +225,12 @@ body {
 
 @media (max-width: 640px) {
   .article-content {
-    font-size: 0.98rem;
-    line-height: 2;
+    font-size: 0.95rem;
+    line-height: 1.85;
   }
 
   .article-content :where(p) {
-    line-height: 2.05;
+    line-height: 1.85;
   }
 
   .article-content :where(ul, ol) {
@@ -218,7 +240,7 @@ body {
   .article-content :where(li) {
     margin-top: 0.55rem;
     margin-bottom: 0.55rem;
-    line-height: 2;
+    line-height: 1.85;
   }
 
   .article-content :where(h2) {

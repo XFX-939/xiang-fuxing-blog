@@ -39,11 +39,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
-      <body className="min-h-screen bg-white font-sans text-ink-900 antialiased dark:bg-ink-950 dark:text-ink-100">
+      <body className="min-h-screen overflow-x-hidden bg-white font-sans text-ink-900 antialiased dark:bg-ink-950 dark:text-ink-100">
         <ThemeProvider>
-          <div className="flex min-h-screen flex-col">
+          <div className="flex min-h-screen w-full max-w-full flex-col overflow-x-clip">
             <Header />
-            <main className="flex-1">{children}</main>
+            <main className="w-full max-w-full flex-1 overflow-x-clip">{children}</main>
             <Footer />
           </div>
         </ThemeProvider>

@@ -10,7 +10,7 @@ type CategoryFilterProps = {
 
 export function CategoryFilter({ categories, value, onChange }: CategoryFilterProps) {
   return (
-    <div className="flex flex-wrap gap-2" aria-label="分类筛选">
+    <div className="-mx-1 flex gap-2 overflow-x-auto whitespace-nowrap px-1 pb-1 scrollbar-hide md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0" aria-label="分类筛选">
       <button
         type="button"
         onClick={() => onChange("全部")}
@@ -37,7 +37,7 @@ export function CategoryFilter({ categories, value, onChange }: CategoryFilterPr
 
 function filterClass(active: boolean) {
   return cn(
-    "rounded-md border px-3 py-2 text-sm font-medium transition",
+    "shrink-0 rounded-md border px-3 py-2 text-sm font-medium transition",
     active
       ? "border-ink-950 bg-ink-950 text-white dark:border-white dark:bg-white dark:text-ink-950"
       : "border-ink-200 bg-white text-ink-600 hover:border-signal-300 hover:text-signal-700 dark:border-ink-800 dark:bg-ink-950 dark:text-ink-300 dark:hover:border-signal-700 dark:hover:text-signal-300"

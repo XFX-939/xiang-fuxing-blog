@@ -16,7 +16,7 @@ type GlobalSearchProps = {
 
 const quickTerms = ["仿真", "5G", "AI Coding", "资源分配"];
 
-export function GlobalSearch({ posts, className = "", placeholder = "搜索：仿真、5G、AI Coding、资源分配" }: GlobalSearchProps) {
+export function GlobalSearch({ posts, className = "", placeholder = "搜索仿真、5G、AI Coding..." }: GlobalSearchProps) {
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
 
@@ -54,7 +54,7 @@ export function GlobalSearch({ posts, className = "", placeholder = "搜索：�
           onFocus={() => setFocused(true)}
           onBlur={() => window.setTimeout(() => setFocused(false), 120)}
           placeholder={placeholder}
-          className="h-10 w-full rounded-md border border-ink-200 bg-white/90 pl-9 pr-9 text-sm text-ink-900 outline-none transition placeholder:text-ink-400 focus:border-signal-400 focus:ring-4 focus:ring-signal-100 dark:border-ink-800 dark:bg-ink-950/90 dark:text-white dark:focus:border-signal-600 dark:focus:ring-signal-950"
+          className="h-11 w-full rounded-md border border-ink-200 bg-white/90 pl-9 pr-9 text-sm text-ink-900 outline-none transition placeholder:text-ink-400 focus:border-signal-400 focus:ring-4 focus:ring-signal-100 sm:h-10 dark:border-ink-800 dark:bg-ink-950/90 dark:text-white dark:focus:border-signal-600 dark:focus:ring-signal-950"
         />
         {query ? (
           <button
