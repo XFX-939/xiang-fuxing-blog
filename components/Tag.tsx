@@ -12,13 +12,13 @@ export function Tag({ children, href, count, className }: TagProps) {
   const content = (
     <span
       className={cn(
-        "inline-flex max-w-full items-center gap-1 rounded-md border border-ink-200 bg-white px-2.5 py-1 text-xs font-medium text-ink-600 transition dark:border-ink-800 dark:bg-ink-900 dark:text-ink-300",
-        href && "hover:border-signal-300 hover:text-signal-700 dark:hover:border-signal-700 dark:hover:text-signal-300",
+        "inline-flex max-w-full items-center gap-1 rounded-md border border-border bg-tag-bg px-2.5 py-1 text-xs font-medium text-tag-text transition",
+        href && "hover:border-accent hover:text-accent hover:bg-accent-soft",
         className
       )}
     >
       <span className="min-w-0 truncate">{children}</span>
-      {typeof count === "number" ? <span className="text-ink-400">({count})</span> : null}
+      {typeof count === "number" ? <span className="text-muted">({count})</span> : null}
     </span>
   );
 

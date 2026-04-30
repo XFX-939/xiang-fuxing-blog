@@ -73,20 +73,20 @@ export default function AboutPage() {
       />
 
       <div className="grid grid-cols-1 gap-8">
-        <section className="rounded-[18px] border border-ink-200 bg-white p-5 sm:rounded-md sm:p-6 dark:border-ink-800 dark:bg-ink-950">
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_240px] md:items-center">
             <div>
-              <h2 className="text-xl font-semibold text-ink-950 dark:text-white">个人简介</h2>
-              <p className="mt-4 text-[15px] leading-8 text-ink-700 sm:text-base dark:text-ink-200">
+              <h2 className="text-xl font-semibold text-primary">个人简介</h2>
+              <p className="mt-4 text-[15px] leading-8 text-secondary sm:text-base">
                 我是无线通信算法工程师，长期从事系统仿真、5G/6G技术预研、AI辅助研发、研发效能提升和技术团队管理相关工作。
               </p>
-              <p className="mt-4 text-[15px] leading-7 text-ink-600 sm:text-sm dark:text-ink-300">
+              <p className="mt-4 text-[15px] leading-7 text-secondary sm:text-sm">
                 我希望把复杂工程问题讲清楚，把技术经验沉淀成可复用的方法，也把个人成长和团队管理中的真实判断长期记录下来。
               </p>
             </div>
             <div className="mx-auto w-full max-w-[240px]">
-              <div className="rounded-md border border-ink-200 bg-ink-50 p-2 dark:border-ink-800 dark:bg-ink-900/60">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-ink-100 dark:bg-ink-900">
+              <div className="rounded-md border border-border bg-surface-elevated p-2">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-surface-elevated">
                   <Image
                     src="/images/xiang-fuxing-profile.jpg"
                     alt="向福星个人照片"
@@ -100,50 +100,50 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="rounded-[18px] border border-ink-200 bg-white p-5 sm:rounded-md sm:p-6 dark:border-ink-800 dark:bg-ink-950">
-          <h2 className="text-xl font-semibold text-ink-950 dark:text-white">我的关注方向</h2>
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+          <h2 className="text-xl font-semibold text-primary">我的关注方向</h2>
           <div className="mt-5 grid grid-cols-2 gap-3 max-[379px]:grid-cols-1 sm:grid-cols-2">
             {focusAreas.map((area) => (
-              <div key={area} className="rounded-md border border-ink-200 bg-ink-50 px-4 py-3 text-sm leading-6 text-ink-700 dark:border-ink-800 dark:bg-ink-900/60 dark:text-ink-200">
+              <div key={area} className="rounded-md border border-border bg-surface-elevated px-4 py-3 text-sm leading-6 text-secondary">
                 {area}
               </div>
             ))}
           </div>
         </section>
 
-        <section className="rounded-[18px] border border-ink-200 bg-white p-5 sm:rounded-md sm:p-6 dark:border-ink-800 dark:bg-ink-950">
-          <h2 className="text-xl font-semibold text-ink-950 dark:text-white">我的能力标签</h2>
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+          <h2 className="text-xl font-semibold text-primary">我的能力标签</h2>
           <TagList className="mt-5" tags={skills} maxVisible={skills.length} showMore={false} compact />
         </section>
 
-        <section className="rounded-[18px] border border-ink-200 bg-white p-5 sm:rounded-md sm:p-6 dark:border-ink-800 dark:bg-ink-950">
-          <h2 className="text-xl font-semibold text-ink-950 dark:text-white">我的工作原则</h2>
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+          <h2 className="text-xl font-semibold text-primary">我的工作原则</h2>
           <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-4">
             {principles.map((principle) => (
-              <article key={principle.title} className="rounded-md border border-ink-200 bg-ink-50 p-4 dark:border-ink-800 dark:bg-ink-900/60">
-                <h3 className="font-semibold text-ink-950 dark:text-white">{principle.title}</h3>
-                <p className="mt-3 line-clamp-3 text-sm leading-7 text-ink-600 md:line-clamp-none dark:text-ink-300">{principle.description}</p>
+              <article key={principle.title} className="rounded-md border border-border bg-surface-elevated p-4">
+                <h3 className="font-semibold text-primary">{principle.title}</h3>
+                <p className="mt-3 line-clamp-3 text-sm leading-7 text-secondary md:line-clamp-none">{principle.description}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="rounded-[18px] border border-ink-200 bg-white p-5 sm:rounded-md sm:p-6 dark:border-ink-800 dark:bg-ink-950">
-          <h2 className="text-xl font-semibold text-ink-950 dark:text-white">我能提供什么价值</h2>
-          <p className="mt-4 text-sm leading-7 text-ink-600 dark:text-ink-300">我希望和哪些人交流</p>
-          <p className="mt-2 leading-8 text-ink-700 dark:text-ink-200">如果你也关注以下问题，欢迎交流：</p>
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+          <h2 className="text-xl font-semibold text-primary">我能提供什么价值</h2>
+          <p className="mt-4 text-sm leading-7 text-secondary">我希望和哪些人交流</p>
+          <p className="mt-2 leading-8 text-secondary">如果你也关注以下问题，欢迎交流：</p>
           <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {valueTopics.map((topic, index) => (
-              <div key={topic} className="flex gap-3 rounded-md border border-ink-200 bg-ink-50 p-4 dark:border-ink-800 dark:bg-ink-900/60">
-                <span className="mt-0.5 text-xs font-semibold text-signal-700 dark:text-signal-300">{String(index + 1).padStart(2, "0")}</span>
-                <span className="text-sm leading-7 text-ink-700 dark:text-ink-200">{topic}</span>
+              <div key={topic} className="flex gap-3 rounded-md border border-border bg-surface-elevated p-4">
+                <span className="mt-0.5 text-xs font-semibold text-accent">{String(index + 1).padStart(2, "0")}</span>
+                <span className="text-sm leading-7 text-secondary">{topic}</span>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="rounded-[18px] border border-ink-200 bg-white p-5 sm:rounded-md sm:p-6 dark:border-ink-800 dark:bg-ink-950">
-          <h2 className="text-xl font-semibold text-ink-950 dark:text-white">联系我</h2>
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+          <h2 className="text-xl font-semibold text-primary">联系我</h2>
           <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <ContactLink href={`mailto:${siteConfig.email}`} icon={<Mail className="h-4 w-4" />} label="Email" value={siteConfig.email} />
             <ContactLink href={siteConfig.github} icon={<Github className="h-4 w-4" />} label="GitHub" value={siteConfig.githubName} external />
@@ -154,7 +154,7 @@ export default function AboutPage() {
               <MessageCircle className="h-4 w-4 shrink-0" />
               <span>
                 <span className="block">微信</span>
-                <span className="block text-xs text-ink-500 dark:text-ink-400">{siteConfig.wechat}</span>
+                <span className="block text-xs text-muted">{siteConfig.wechat}</span>
               </span>
             </span>
           </div>
@@ -182,7 +182,7 @@ function ContactLink({
       <span className="shrink-0">{icon}</span>
       <span>
         <span className="block">{label}</span>
-        <span className="block break-all text-xs text-ink-500 dark:text-ink-400">{value}</span>
+        <span className="block break-all text-xs text-muted">{value}</span>
       </span>
     </a>
   );

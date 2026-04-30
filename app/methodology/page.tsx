@@ -73,37 +73,37 @@ export default function MethodologyPage() {
         {fourSteps.map((step, index) => {
           const Icon = step.icon;
           return (
-            <article key={step.title} className="relative rounded-[18px] border border-ink-200 bg-white p-5 sm:rounded-md dark:border-ink-800 dark:bg-ink-950">
-              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-signal-50 text-signal-700 dark:bg-signal-950 dark:text-signal-300">
+            <article key={step.title} className="relative rounded-[18px] border border-border bg-surface p-5 sm:rounded-md">
+              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-accent-soft text-accent">
                 <Icon className="h-5 w-5" />
               </div>
-              <p className="text-xs font-semibold text-ink-400">0{index + 1}</p>
-              <h2 className="mt-2 text-lg font-semibold text-ink-950 dark:text-white">{step.title}</h2>
-              <p className="mt-3 text-sm leading-7 text-ink-600 dark:text-ink-300">{step.description}</p>
+              <p className="text-xs font-semibold text-muted">0{index + 1}</p>
+              <h2 className="mt-2 text-lg font-semibold text-primary">{step.title}</h2>
+              <p className="mt-3 text-sm leading-7 text-secondary">{step.description}</p>
             </article>
           );
         })}
       </section>
 
-      <section className="mt-8 rounded-[18px] border border-ink-200 bg-white p-5 sm:rounded-md sm:p-6 dark:border-ink-800 dark:bg-ink-950">
-        <div className="flex flex-col gap-4 border-b border-ink-200 pb-5 dark:border-ink-800 md:flex-row md:items-end md:justify-between">
+      <section className="mt-8 rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+        <div className="flex flex-col gap-4 border-b border-border pb-5 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-signal-700 dark:text-signal-300">Cognitive Frame</p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-normal text-ink-950 dark:text-white">认知框架</h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">Cognitive Frame</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-normal text-primary">认知框架</h2>
           </div>
-          <p className="max-w-2xl text-sm leading-7 text-ink-600 dark:text-ink-300">
+          <p className="max-w-2xl text-sm leading-7 text-secondary">
             做事方法决定执行质量，认知框架决定选择质量。面对复杂问题时，我更关注三件事：选择什么、怎么看清、如何做成。
           </p>
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-4 md:hidden">
-          <CollapsibleSection title="两个坚持，两个保持" description="做选择的原则" className="bg-ink-50 dark:bg-ink-900/60">
+          <CollapsibleSection title="两个坚持，两个保持" description="做选择的原则" className="bg-surface-elevated">
             <MobileList items={choicePrinciples} />
           </CollapsibleSection>
-          <CollapsibleSection title="系统性思维" description="看问题的方式：看全局、抓关键、做取舍" className="bg-ink-50 dark:bg-ink-900/60">
+          <CollapsibleSection title="系统性思维" description="看问题的方式：看全局、抓关键、做取舍" className="bg-surface-elevated">
             <MobileStructuredList items={systemsThinking} />
           </CollapsibleSection>
-          <CollapsibleSection title="资源整合能力" description="把事做成的能力" className="bg-ink-50 dark:bg-ink-900/60">
+          <CollapsibleSection title="资源整合能力" description="把事做成的能力" className="bg-surface-elevated">
             <MobileStructuredList items={resourceIntegration} />
           </CollapsibleSection>
         </div>
@@ -135,13 +135,13 @@ export default function MethodologyPage() {
             const Icon = item.icon;
 
             return (
-              <article key={item.title} className="rounded-[18px] border border-ink-200 bg-ink-50 p-5 sm:rounded-md dark:border-ink-800 dark:bg-ink-900/60">
-                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-white text-signal-700 shadow-sm ring-1 ring-ink-200 dark:bg-ink-950 dark:text-signal-300 dark:ring-ink-800">
+              <article key={item.title} className="rounded-[18px] border border-border bg-surface-elevated p-5 sm:rounded-md">
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-surface text-accent shadow-sm ring-1 ring-border">
                   <Icon className="h-5 w-5" />
                 </div>
-                <p className="text-sm font-medium text-ink-500 dark:text-ink-400">两个重要认知</p>
-                <h3 className="mt-1 text-xl font-semibold text-ink-950 dark:text-white">{item.title}</h3>
-                <p className="mt-4 text-sm leading-7 text-ink-600 dark:text-ink-300">{item.description}</p>
+                <p className="text-sm font-medium text-muted">两个重要认知</p>
+                <h3 className="mt-1 text-xl font-semibold text-primary">{item.title}</h3>
+                <p className="mt-4 text-sm leading-7 text-secondary">{item.description}</p>
               </article>
             );
           })}
@@ -165,17 +165,17 @@ export default function MethodologyPage() {
         <MethodCard title="管理实践方法" items={management} />
       </section>
 
-      <section className="mt-8 hidden rounded-md border border-ink-200 bg-ink-950 p-6 text-white md:block dark:border-ink-800">
+      <section className="mt-8 hidden rounded-md border border-border bg-surface-elevated p-6 text-primary md:block">
         <div className="flex items-start gap-4">
-          <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-white/10 text-signal-300">
+          <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-accent-soft text-accent">
             <BrainCircuit className="h-5 w-5" />
           </div>
           <div>
             <h2 className="text-xl font-semibold">AI辅助研发方法</h2>
             <div className="mt-5 grid gap-3 md:grid-cols-2">
               {aiMethods.map((item) => (
-                <div key={item} className="flex items-start gap-3 rounded-md border border-white/10 bg-white/[0.04] p-4 text-sm leading-7 text-ink-200">
-                  <CheckBullet className="mt-1 text-signal-300" />
+                <div key={item} className="flex items-start gap-3 rounded-md border border-border bg-surface p-4 text-sm leading-7 text-secondary">
+                  <CheckBullet className="mt-1 text-accent" />
                   <span>{item}</span>
                 </div>
               ))}
@@ -201,27 +201,27 @@ function CognitionCard({
   footnote?: string;
 }) {
   return (
-    <article className="rounded-md border border-ink-200 bg-ink-50 p-5 dark:border-ink-800 dark:bg-ink-900/60">
-      <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-white text-signal-700 shadow-sm ring-1 ring-ink-200 dark:bg-ink-950 dark:text-signal-300 dark:ring-ink-800">
+    <article className="rounded-md border border-border bg-surface-elevated p-5">
+      <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-surface text-accent shadow-sm ring-1 ring-border">
         <Icon className="h-5 w-5" />
       </div>
-      <p className="text-sm font-medium text-ink-500 dark:text-ink-400">{description}</p>
-      <h3 className="mt-1 text-xl font-semibold text-ink-950 dark:text-white">{title}</h3>
+      <p className="text-sm font-medium text-muted">{description}</p>
+      <h3 className="mt-1 text-xl font-semibold text-primary">{title}</h3>
       <div className="mt-5 grid gap-3">
         {items.map((item, index) => (
-          <div key={item.title} className="rounded-md border border-ink-200 bg-white p-4 dark:border-ink-800 dark:bg-ink-950">
+          <div key={item.title} className="rounded-md border border-border bg-surface p-4">
             <div className="flex items-start gap-3">
               <CheckBullet className="mt-0.5" />
               <div>
-                <p className="text-sm font-semibold text-ink-900 dark:text-white">{item.title}</p>
-                {item.description ? <p className="mt-1 text-sm leading-6 text-ink-600 dark:text-ink-300">{item.description}</p> : null}
+                <p className="text-sm font-semibold text-primary">{item.title}</p>
+                {item.description ? <p className="mt-1 text-sm leading-6 text-secondary">{item.description}</p> : null}
               </div>
             </div>
           </div>
         ))}
       </div>
       {footnote ? (
-        <div className="mt-4 rounded-md border border-signal-200 bg-signal-50 px-4 py-3 text-sm font-medium text-signal-800 dark:border-signal-900/70 dark:bg-signal-950/40 dark:text-signal-200">
+        <div className="mt-4 rounded-md border border-border bg-accent-soft px-4 py-3 text-sm font-medium text-accent dark:border-border dark:bg-accent-soft dark:text-accent">
           {footnote}
         </div>
       ) : null}
@@ -231,11 +231,11 @@ function CognitionCard({
 
 function MethodCard({ title, items }: { title: string; items: string[] }) {
   return (
-    <article className="rounded-md border border-ink-200 bg-white p-6 dark:border-ink-800 dark:bg-ink-950">
-      <h2 className="text-xl font-semibold text-ink-950 dark:text-white">{title}</h2>
+    <article className="rounded-md border border-border bg-surface p-6">
+      <h2 className="text-xl font-semibold text-primary">{title}</h2>
       <div className="mt-5 grid gap-3">
         {items.map((item, index) => (
-          <div key={item} className="flex gap-3 rounded-md border border-ink-200 bg-ink-50 p-4 text-sm text-ink-700 dark:border-ink-800 dark:bg-ink-900/60 dark:text-ink-200">
+          <div key={item} className="flex gap-3 rounded-md border border-border bg-surface-elevated p-4 text-sm text-secondary">
             <CheckBullet />
             <span>{item}</span>
           </div>
@@ -249,7 +249,7 @@ function MobileList({ items }: { items: string[] }) {
   return (
     <div className="grid gap-2">
       {items.map((item, index) => (
-        <div key={item} className="flex gap-3 rounded-md border border-ink-200 bg-white p-3 text-sm leading-6 text-ink-700 dark:border-ink-800 dark:bg-ink-950 dark:text-ink-200">
+        <div key={item} className="flex gap-3 rounded-md border border-border bg-surface p-3 text-sm leading-6 text-secondary">
           <CheckBullet className="mt-0.5" />
           <span>{item}</span>
         </div>
@@ -262,12 +262,12 @@ function MobileStructuredList({ items }: { items: Array<{ title: string; descrip
   return (
     <div className="grid gap-2">
       {items.map((item, index) => (
-        <div key={item.title} className="rounded-md border border-ink-200 bg-white p-3 dark:border-ink-800 dark:bg-ink-950">
+        <div key={item.title} className="rounded-md border border-border bg-surface p-3">
           <div className="flex gap-3">
             <CheckBullet className="mt-0.5" />
             <div>
-              <p className="text-sm font-semibold leading-6 text-ink-900 dark:text-white">{item.title}</p>
-              {item.description ? <p className="mt-1 text-sm leading-6 text-ink-600 dark:text-ink-300">{item.description}</p> : null}
+              <p className="text-sm font-semibold leading-6 text-primary">{item.title}</p>
+              {item.description ? <p className="mt-1 text-sm leading-6 text-secondary">{item.description}</p> : null}
             </div>
           </div>
         </div>
@@ -277,5 +277,5 @@ function MobileStructuredList({ items }: { items: Array<{ title: string; descrip
 }
 
 function CheckBullet({ className = "" }: { className?: string }) {
-  return <CheckCircle2 className={`h-4 w-4 shrink-0 text-signal-700 dark:text-signal-300 ${className}`} />;
+  return <CheckCircle2 className={`h-4 w-4 shrink-0 text-accent ${className}`} />;
 }

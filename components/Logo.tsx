@@ -71,7 +71,7 @@ export function Logo({
         </svg>
       </span>
       {showText ? (
-        <span className={cn("font-semibold tracking-normal text-ink-950 dark:text-white", textClassName)}>
+        <span className={cn("font-semibold tracking-normal text-primary", textClassName)}>
           {text}
         </span>
       ) : null}

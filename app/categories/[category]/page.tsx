@@ -43,7 +43,7 @@ export default function CategoryDetailPage({ params }: CategoryPageProps) {
         title={`分类：${category}`}
         description={`共 ${posts.length} 篇文章，默认按发布时间倒序排列。`}
         action={
-          <Link href="/categories" className="text-sm font-semibold text-signal-700 hover:text-signal-900 dark:text-signal-300 dark:hover:text-signal-100">
+          <Link href="/categories" className="text-sm font-semibold text-accent hover:text-primary">
             返回分类索引
           </Link>
         }

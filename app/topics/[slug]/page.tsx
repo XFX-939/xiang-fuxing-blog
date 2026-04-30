@@ -49,27 +49,27 @@ export default function TopicPage({ params }: TopicPageProps) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
-      <Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold text-ink-600 transition hover:text-signal-700 dark:text-ink-300 dark:hover:text-signal-300">
+      <Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold text-secondary transition hover:text-accent">
         <ArrowLeft className="h-4 w-4" />
         返回首页
       </Link>
 
-      <section className="mt-8 overflow-hidden rounded-md border border-ink-200 bg-ink-50 dark:border-ink-800 dark:bg-ink-950">
+      <section className="mt-8 overflow-hidden rounded-md border border-border bg-surface-elevated">
         <div className="relative px-5 py-8 sm:px-8 sm:py-10">
           <div className="absolute inset-0 bg-subtle-grid bg-[size:28px_28px] opacity-60 dark:bg-subtle-grid-dark" />
           <div className="relative max-w-3xl">
-            <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-md border border-signal-200 bg-white text-signal-700 dark:border-signal-900 dark:bg-ink-900 dark:text-signal-300">
+            <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-md border border-border bg-surface text-accent">
               <Icon className="h-5 w-5" />
             </div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-signal-700 dark:text-signal-300">Topic Hub</p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-normal text-ink-950 sm:text-4xl dark:text-white">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Topic Hub</p>
+            <h1 className="mt-3 text-3xl font-semibold tracking-normal text-primary sm:text-4xl">
               {topic.title}
             </h1>
-            <p className="mt-4 text-base leading-8 text-ink-600 dark:text-ink-300">{topic.description}</p>
-            <p className="mt-4 text-sm font-semibold leading-7 text-ink-800 dark:text-ink-100">{topic.slogan}</p>
+            <p className="mt-4 text-base leading-8 text-secondary">{topic.description}</p>
+            <p className="mt-4 text-sm font-semibold leading-7 text-primary">{topic.slogan}</p>
             <div className="mt-5 flex flex-wrap gap-2">
               {topic.keywords.map((keyword) => (
-                <span key={keyword} className="rounded-md border border-ink-200 bg-white px-2.5 py-1 text-xs font-medium text-ink-600 dark:border-ink-800 dark:bg-ink-900 dark:text-ink-300">
+                <span key={keyword} className="rounded-md border border-border bg-tag-bg px-2.5 py-1 text-xs font-medium text-tag-text">
                   {keyword}
                 </span>
               ))}
@@ -93,14 +93,14 @@ export default function TopicPage({ params }: TopicPageProps) {
         </section>
 
         <aside className="space-y-4">
-          <div className="rounded-md border border-ink-200 bg-white p-5 dark:border-ink-800 dark:bg-ink-950">
-            <p className="text-sm font-semibold text-ink-950 dark:text-white">相关主题</p>
+          <div className="rounded-md border border-border bg-surface p-5">
+            <p className="text-sm font-semibold text-primary">相关主题</p>
             <div className="mt-4 grid gap-2">
               {relatedTopics.map((item) => (
                 <Link
                   key={item.slug}
                   href={item.href}
-                  className="flex items-center justify-between rounded-md border border-ink-200 bg-ink-50 px-3 py-2 text-sm font-medium text-ink-700 transition hover:border-signal-300 hover:text-signal-700 dark:border-ink-800 dark:bg-ink-900 dark:text-ink-200 dark:hover:border-signal-700 dark:hover:text-signal-300"
+                  className="flex items-center justify-between rounded-md border border-border bg-surface-elevated px-3 py-2 text-sm font-medium text-secondary transition hover:border-accent hover:text-accent"
                 >
                   {item.title}
                   <ArrowRight className="h-4 w-4" />
@@ -108,11 +108,11 @@ export default function TopicPage({ params }: TopicPageProps) {
               ))}
             </div>
           </div>
-          <div className="rounded-md border border-ink-200 bg-white p-5 dark:border-ink-800 dark:bg-ink-950">
-            <p className="text-sm font-semibold text-ink-950 dark:text-white">继续筛选</p>
+          <div className="rounded-md border border-border bg-surface p-5">
+            <p className="text-sm font-semibold text-primary">继续筛选</p>
             <Link
               href={`/blog?category=${encodeURIComponent(topic.category)}`}
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-ink-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-signal-800 dark:bg-white dark:text-ink-950 dark:hover:bg-signal-100"
+              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
             >
               去博客页搜索该分类
               <ArrowRight className="h-4 w-4" />

@@ -26,7 +26,7 @@ export function CategoryFilter({ categories, value, onChange }: CategoryFilterPr
           className={filterClass(value === category.name)}
         >
           {category.name}
-          <span className={cn("ml-1", value === category.name ? "text-white/80" : "text-ink-400")}>
+          <span className={cn("ml-1", value === category.name ? "text-white/80 dark:text-bg" : "text-muted")}>
             {category.count}
           </span>
         </button>
@@ -39,7 +39,7 @@ function filterClass(active: boolean) {
   return cn(
     "shrink-0 rounded-md border px-3 py-2 text-sm font-medium transition",
     active
-      ? "border-ink-950 bg-ink-950 text-white dark:border-white dark:bg-white dark:text-ink-950"
-      : "border-ink-200 bg-white text-ink-600 hover:border-signal-300 hover:text-signal-700 dark:border-ink-800 dark:bg-ink-950 dark:text-ink-300 dark:hover:border-signal-700 dark:hover:text-signal-300"
+      ? "border-accent bg-accent text-white dark:text-bg"
+      : "border-border bg-surface text-secondary hover:border-accent hover:text-accent"
   );
 }

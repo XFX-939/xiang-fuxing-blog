@@ -19,10 +19,10 @@ export function Header() {
   }));
 
   return (
-    <header className="sticky top-0 z-40 w-full max-w-full overflow-x-clip border-b border-ink-200/70 bg-white/90 backdrop-blur-xl dark:border-ink-800/80 dark:bg-ink-950/88">
-      <div className="border-b border-ink-200/70 bg-ink-950 text-white dark:border-ink-800 dark:bg-black">
+    <header className="sticky top-0 z-40 w-full max-w-full overflow-x-clip border-b border-border bg-surface backdrop-blur-xl">
+      <div className="border-b border-border bg-ink-950 text-white dark:bg-[#050a14]">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-2 text-xs sm:px-6">
-          <p className="truncate font-semibold tracking-normal text-signal-100">
+          <p className="truncate font-semibold tracking-normal text-cyan-100">
             用 AI 重构复杂工程问题的建模、仿真与决策
           </p>
           <div className="hidden shrink-0 items-center gap-2 lg:flex">
@@ -30,7 +30,7 @@ export function Header() {
               <Link
                 key={topic.slug}
                 href={topic.href}
-                className="rounded-md px-2 py-1 text-[11px] font-medium text-ink-300 transition hover:bg-white/10 hover:text-white"
+                className="rounded-md px-2 py-1 text-[11px] font-medium text-slate-300 transition hover:bg-white/10 hover:text-white"
               >
                 {topic.title}
               </Link>
@@ -40,7 +40,7 @@ export function Header() {
       </div>
 
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-6">
-        <Link href="/" className="group rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-signal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-ink-950">
+        <Link href="/" className="group rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
           <Logo text="向福星" gradientId="logo-signal-header" textClassName="hidden sm:inline" />
         </Link>
 
@@ -49,7 +49,7 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-md px-3 py-2 text-sm font-medium text-ink-600 transition hover:bg-ink-100 hover:text-ink-950 dark:text-ink-300 dark:hover:bg-ink-900 dark:hover:text-white"
+              className="rounded-md px-3 py-2 text-sm font-medium text-secondary transition hover:bg-accent-soft hover:text-primary"
             >
               {item.label}
             </Link>

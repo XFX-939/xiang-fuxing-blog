@@ -19,7 +19,7 @@ export default function TagsPage() {
         title="标签索引"
         description="标签用于连接跨主题的文章线索，例如 AI RAN、数字孪生、系统仿真、技术管理。"
       />
-      <div className="flex flex-wrap gap-3 rounded-md border border-ink-200 bg-white p-6 dark:border-ink-800 dark:bg-ink-950">
+      <div className="flex flex-wrap gap-3 rounded-md border border-border bg-surface p-6">
         {tags.map((tag) => (
           <Tag key={tag.name} href={`/tags/${encodeURIComponent(tag.name)}`} count={tag.count}>
             {tag.name}

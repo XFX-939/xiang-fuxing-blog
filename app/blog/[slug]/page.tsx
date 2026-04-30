@@ -101,25 +101,25 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
     <>
       <ReadingProgressBar />
       <div className="mx-auto max-w-6xl px-5 py-9 sm:px-6 sm:py-10">
-        <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-ink-600 transition hover:text-signal-700 dark:text-ink-300 dark:hover:text-signal-300">
+        <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-secondary transition hover:text-accent">
           <ArrowLeft className="h-4 w-4" />
           返回博客列表
         </Link>
 
         <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,720px)_260px] lg:items-start lg:justify-between">
           <article className="mx-auto w-full max-w-[42.5rem] min-w-0 lg:mx-0 lg:max-w-none">
-            <header className="border-b border-ink-200 pb-8 dark:border-ink-800">
-              <div className="flex flex-wrap items-center gap-2 text-sm text-ink-500 dark:text-ink-400">
-                <span className="font-medium text-signal-700 dark:text-signal-300">{post.category}</span>
+            <header className="border-b border-border pb-8">
+              <div className="flex flex-wrap items-center gap-2 text-sm text-muted">
+                <span className="font-medium text-accent">{post.category}</span>
                 <span>·</span>
                 <time dateTime={post.date}>{formatDate(post.date)}</time>
                 <span>·</span>
                 <span>{post.readingTime}</span>
               </div>
-              <h1 className="mt-4 text-[32px] font-semibold leading-[1.22] tracking-[-0.02em] text-ink-950 sm:text-4xl sm:tracking-normal dark:text-white">
+              <h1 className="mt-4 text-[32px] font-semibold leading-[1.22] tracking-[-0.02em] text-primary sm:text-4xl sm:tracking-normal">
                 {post.title}
               </h1>
-              <p className="mt-4 text-[15px] leading-8 text-ink-600 sm:text-base sm:leading-9 dark:text-ink-300">{post.description}</p>
+              <p className="mt-4 text-[15px] leading-8 text-secondary sm:text-base sm:leading-9">{post.description}</p>
               <TagList className="mt-5" tags={post.tags} maxVisible={5} getHref={(tag) => `/tags/${encodeURIComponent(tag)}`} />
             </header>
 
@@ -142,15 +142,15 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
 
             <nav className="mt-8 grid gap-4 sm:grid-cols-2" aria-label="上一篇和下一篇文章">
               {older ? (
-                <Link href={older.url} className="rounded-md border border-ink-200 bg-white p-4 transition hover:border-signal-300 dark:border-ink-800 dark:bg-ink-950 dark:hover:border-signal-700">
-                  <span className="text-xs text-ink-500 dark:text-ink-400">上一篇</span>
-                  <span className="mt-2 block text-sm font-semibold leading-6 text-ink-900 dark:text-white">{older.title}</span>
+                <Link href={older.url} className="rounded-md border border-border bg-surface p-4 transition hover:border-accent">
+                  <span className="text-xs text-muted">上一篇</span>
+                  <span className="mt-2 block text-sm font-semibold leading-6 text-primary">{older.title}</span>
                 </Link>
               ) : <div />}
               {newer ? (
-                <Link href={newer.url} className="rounded-md border border-ink-200 bg-white p-4 text-right transition hover:border-signal-300 dark:border-ink-800 dark:bg-ink-950 dark:hover:border-signal-700">
-                  <span className="text-xs text-ink-500 dark:text-ink-400">下一篇</span>
-                  <span className="mt-2 flex items-center justify-end gap-2 text-sm font-semibold leading-6 text-ink-900 dark:text-white">
+                <Link href={newer.url} className="rounded-md border border-border bg-surface p-4 text-right transition hover:border-accent">
+                  <span className="text-xs text-muted">下一篇</span>
+                  <span className="mt-2 flex items-center justify-end gap-2 text-sm font-semibold leading-6 text-primary">
                     {newer.title}
                     <ArrowRight className="h-4 w-4" />
                   </span>

@@ -47,14 +47,14 @@ export function GlobalSearch({ posts, className = "", placeholder = "搜索仿�
     <div className={`relative ${className}`}>
       <label className="relative block">
         <span className="sr-only">全站搜索</span>
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400" />
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => window.setTimeout(() => setFocused(false), 120)}
           placeholder={placeholder}
-          className="h-11 w-full rounded-md border border-ink-200 bg-white/90 pl-9 pr-9 text-sm text-ink-900 outline-none transition placeholder:text-ink-400 focus:border-signal-400 focus:ring-4 focus:ring-signal-100 sm:h-10 dark:border-ink-800 dark:bg-ink-950/90 dark:text-white dark:focus:border-signal-600 dark:focus:ring-signal-950"
+          className="h-11 w-full rounded-md border border-border bg-surface-elevated pl-9 pr-9 text-sm text-primary outline-none transition placeholder:text-muted focus:border-accent focus:ring-4 focus:ring-accent-soft sm:h-10"
         />
         {query ? (
           <button
@@ -63,7 +63,7 @@ export function GlobalSearch({ posts, className = "", placeholder = "搜索仿�
             title="清空搜索"
             onMouseDown={(event) => event.preventDefault()}
             onClick={() => setQuery("")}
-            className="absolute right-2 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-md text-ink-400 transition hover:bg-ink-100 hover:text-ink-700 dark:hover:bg-ink-900 dark:hover:text-ink-200"
+            className="absolute right-2 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-md text-muted transition hover:bg-accent-soft hover:text-primary"
           >
             <X className="h-4 w-4" />
           </button>
@@ -71,10 +71,10 @@ export function GlobalSearch({ posts, className = "", placeholder = "搜索仿�
       </label>
 
       {showPanel ? (
-        <div className="absolute left-0 right-0 top-12 z-50 overflow-hidden rounded-md border border-ink-200 bg-white shadow-soft dark:border-ink-800 dark:bg-ink-950 dark:shadow-soft-dark">
+        <div className="absolute left-0 right-0 top-12 z-50 overflow-hidden rounded-md border border-border bg-surface shadow-soft dark:shadow-soft-dark">
           {normalizedQuery.length === 0 ? (
             <div className="p-3">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-ink-400">Quick Search</p>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted">Quick Search</p>
               <div className="flex flex-wrap gap-2">
                 {quickTerms.map((term) => (
                   <button
@@ -82,7 +82,7 @@ export function GlobalSearch({ posts, className = "", placeholder = "搜索仿�
                     type="button"
                     onMouseDown={(event) => event.preventDefault()}
                     onClick={() => setQuery(term)}
-                    className="rounded-md border border-ink-200 bg-ink-50 px-2.5 py-1 text-xs font-medium text-ink-600 transition hover:border-signal-300 hover:text-signal-700 dark:border-ink-800 dark:bg-ink-900 dark:text-ink-300 dark:hover:border-signal-700 dark:hover:text-signal-300"
+                    className="rounded-md border border-border bg-tag-bg px-2.5 py-1 text-xs font-medium text-tag-text transition hover:border-accent hover:text-accent"
                   >
                     {term}
                   </button>
@@ -95,27 +95,27 @@ export function GlobalSearch({ posts, className = "", placeholder = "搜索仿�
                 <Link
                   key={post.url}
                   href={post.url}
-                  className="group block rounded-md px-3 py-3 transition hover:bg-ink-50 dark:hover:bg-ink-900"
+                  className="group block rounded-md px-3 py-3 transition hover:bg-surface-elevated"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-xs text-ink-500 dark:text-ink-400">
+                      <p className="text-xs text-muted">
                         {post.category} · {formatDate(post.date)}
                       </p>
-                      <p className="mt-1 text-sm font-semibold leading-6 text-ink-950 group-hover:text-signal-700 dark:text-white dark:group-hover:text-signal-300">
+                      <p className="mt-1 text-sm font-semibold leading-6 text-primary group-hover:text-accent">
                         {post.title}
                       </p>
-                      <p className="mt-1 line-clamp-2 text-xs leading-5 text-ink-500 dark:text-ink-400">
+                      <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted">
                         {post.description}
                       </p>
                     </div>
-                    <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-ink-400 transition group-hover:text-signal-600" />
+                    <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted transition group-hover:text-accent" />
                   </div>
                 </Link>
               ))}
             </div>
           ) : (
-            <div className="p-4 text-sm text-ink-500 dark:text-ink-400">没有找到匹配文章。</div>
+            <div className="p-4 text-sm text-muted">没有找到匹配文章。</div>
           )}
         </div>
       ) : null}

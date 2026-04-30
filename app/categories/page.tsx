@@ -29,24 +29,24 @@ export default function CategoriesPage() {
             <Link
               key={category.name}
               href={`/categories/${encodeURIComponent(category.name)}`}
-              className="group rounded-md border border-ink-200 bg-white p-5 transition hover:border-signal-300 hover:shadow-soft dark:border-ink-800 dark:bg-ink-950 dark:hover:border-signal-700 dark:hover:shadow-soft-dark"
+              className="group rounded-md border border-border bg-surface p-5 transition hover:border-accent hover:shadow-soft dark:hover:shadow-soft-dark"
             >
               <div className="flex items-start justify-between gap-4">
-                <div className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-signal-50 text-signal-700 dark:bg-signal-950 dark:text-signal-300">
+                <div className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-accent-soft text-accent">
                   <FolderOpen className="h-5 w-5" />
                 </div>
-                <ArrowRight className="mt-2 h-4 w-4 text-ink-400 transition group-hover:text-signal-600" />
+                <ArrowRight className="mt-2 h-4 w-4 text-muted transition group-hover:text-accent" />
               </div>
-              <h2 className="mt-5 text-xl font-semibold text-ink-950 transition group-hover:text-signal-800 dark:text-white dark:group-hover:text-signal-300">
+              <h2 className="mt-5 text-xl font-semibold text-primary transition group-hover:text-accent">
                 {category.name}
               </h2>
-              <p className="mt-2 text-sm text-ink-500 dark:text-ink-400">
+              <p className="mt-2 text-sm text-muted">
                 {category.count} 篇文章
               </p>
               {latestPost ? (
-                <div className="mt-4 rounded-md border border-ink-200 bg-ink-50 p-4 dark:border-ink-800 dark:bg-ink-900/60">
-                  <p className="text-xs text-ink-500 dark:text-ink-400">最新文章 · {formatDate(latestPost.date)}</p>
-                  <p className="mt-2 text-sm font-medium leading-6 text-ink-800 dark:text-ink-100">
+                <div className="mt-4 rounded-md border border-border bg-surface-elevated p-4">
+                  <p className="text-xs text-muted">最新文章 · {formatDate(latestPost.date)}</p>
+                  <p className="mt-2 text-sm font-medium leading-6 text-primary">
                     {latestPost.title}
                   </p>
                 </div>

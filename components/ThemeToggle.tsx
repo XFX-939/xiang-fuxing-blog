@@ -5,24 +5,36 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme, theme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const isDark = mounted && resolvedTheme === "dark";
+  const currentTheme = mounted ? theme ?? "system" : "system";
+  const resolved = mounted ? resolvedTheme ?? "light" : "light";
+  const Icon = resolved === "dark" ? Sun : Moon;
+  const label =
+    currentTheme === "system"
+      ? `系统主题，当前显示${resolved === "dark" ? "深色" : "浅色"}`
+      : resolved === "dark"
+        ? "深色模式"
+        : "浅色模式";
+
+  function toggleTheme() {
+    setTheme(resolved === "dark" ? "light" : "dark");
+  }
 
   return (
     <button
       type="button"
-      aria-label="切换深浅色模式"
-      title="切换深浅色模式"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-ink-200 bg-white text-ink-700 transition hover:border-signal-300 hover:text-signal-700 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-200 dark:hover:border-signal-600 dark:hover:text-signal-300"
+      aria-label={mounted ? `切换主题，当前为${label}` : "切换主题"}
+      title={mounted ? `切换主题，当前为${label}` : "切换主题"}
+      onClick={toggleTheme}
+      className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-secondary transition hover:border-accent hover:text-accent"
     >
-      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {mounted ? <Icon className="h-4 w-4" /> : <span className="h-4 w-4" aria-hidden="true" />}
     </button>
   );
 }

@@ -15,11 +15,11 @@ export function TOC({ items, compact = false }: TOCProps) {
     <nav
       aria-label="文章目录"
       className={cn(
-        "rounded-md border border-ink-200 bg-white p-4 text-sm dark:border-ink-800 dark:bg-ink-950",
+        "rounded-md border border-border bg-surface p-4 text-sm",
         compact ? "" : "sticky top-32 max-h-[calc(100vh-9rem)] overflow-y-auto"
       )}
     >
-      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-ink-500 dark:text-ink-400">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
         目录
       </p>
       <ol className="grid gap-2">
@@ -27,7 +27,7 @@ export function TOC({ items, compact = false }: TOCProps) {
           <li key={item.id} className={item.depth === 3 ? "pl-4" : ""}>
             <a
               href={`#${item.id}`}
-              className="block leading-6 text-ink-600 transition hover:text-signal-700 dark:text-ink-300 dark:hover:text-signal-300"
+              className="block leading-6 text-secondary transition hover:text-accent"
             >
               {item.text}
             </a>

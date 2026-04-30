@@ -57,18 +57,18 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
       <aside className="space-y-4 lg:space-y-6">
-        <div className="rounded-[18px] border border-ink-200 bg-white p-5 sm:rounded-md lg:p-4 dark:border-ink-800 dark:bg-ink-950">
-          <p className="mb-3 text-sm font-semibold text-ink-950 dark:text-white">分类</p>
+        <div className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md lg:p-4">
+          <p className="mb-3 text-sm font-semibold text-primary">分类</p>
           <CategoryFilter categories={categories} value={category} onChange={resetAndSetCategory} />
         </div>
-        <div className="rounded-[18px] border border-ink-200 bg-white p-5 sm:rounded-md lg:p-4 dark:border-ink-800 dark:bg-ink-950">
+        <div className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md lg:p-4">
           <div className="mb-3 flex items-center justify-between gap-3">
-            <p className="text-sm font-semibold text-ink-950 dark:text-white">标签</p>
+            <p className="text-sm font-semibold text-primary">标签</p>
             {hiddenTagCount > 0 || showAllTags ? (
               <button
                 type="button"
                 onClick={() => setShowAllTags((value) => !value)}
-                className="text-xs font-semibold text-signal-700 hover:text-signal-900 dark:text-signal-300 dark:hover:text-signal-100"
+                className="text-xs font-semibold text-accent hover:opacity-80"
               >
                 {showAllTags ? "收起标签" : `展开更多 ${hiddenTagCount}`}
               </button>
@@ -78,13 +78,13 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
             <button
               type="button"
               onClick={() => resetAndSetTag("全部")}
-              className="rounded-md border border-ink-200 bg-white px-2.5 py-1 text-xs font-medium text-ink-600 transition hover:border-signal-300 hover:text-signal-700 dark:border-ink-800 dark:bg-ink-900 dark:text-ink-300 dark:hover:border-signal-700 dark:hover:text-signal-300"
+              className="rounded-md border border-border bg-tag-bg px-2.5 py-1 text-xs font-medium text-tag-text transition hover:border-accent hover:text-accent"
             >
               全部
             </button>
             {visibleTags.map((item) => (
               <button key={item.name} type="button" onClick={() => resetAndSetTag(item.name)}>
-                <Tag className={tag === item.name ? "border-ink-950 bg-ink-950 text-white dark:border-white dark:bg-white dark:text-ink-950" : ""} count={item.count}>
+                <Tag className={tag === item.name ? "border-accent bg-accent text-white dark:text-bg" : ""} count={item.count}>
                   {item.name}
                 </Tag>
               </button>
@@ -101,7 +101,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
             setVisible(pageSize);
           }}
         />
-        <div className="mt-4 text-sm text-ink-500 dark:text-ink-400">
+        <div className="mt-4 text-sm text-muted">
           共找到 {filteredPosts.length} 篇文章
         </div>
         <div className="mt-6 grid grid-cols-1 gap-4 sm:gap-5">
@@ -110,7 +110,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
           ))}
         </div>
         {visiblePosts.length === 0 ? (
-          <div className="mt-8 rounded-md border border-dashed border-ink-300 p-8 text-center text-sm text-ink-500 dark:border-ink-700 dark:text-ink-400">
+          <div className="mt-8 rounded-md border border-dashed border-border p-8 text-center text-sm text-muted">
             没有找到匹配的文章。
           </div>
         ) : null}

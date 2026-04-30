@@ -31,6 +31,17 @@ const config: Config = {
         ]
       },
       colors: {
+        bg: "var(--bg)",
+        surface: "var(--surface)",
+        "surface-elevated": "var(--surface-elevated)",
+        border: "var(--border)",
+        primary: "var(--text-primary)",
+        secondary: "var(--text-secondary)",
+        muted: "var(--text-muted)",
+        accent: "var(--accent)",
+        "accent-soft": "var(--accent-soft)",
+        "tag-bg": "var(--tag-bg)",
+        "tag-text": "var(--tag-text)",
         ink: {
           50: "#f8fafc",
           100: "#eef2f6",

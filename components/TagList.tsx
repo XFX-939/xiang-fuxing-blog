@@ -38,7 +38,7 @@ export function TagList({
       {showMore && hiddenCount > 0 ? (
         <span
           className={cn(
-            "inline-flex items-center rounded-md border border-ink-200 bg-ink-50 px-2.5 py-1 text-xs font-medium text-ink-500 dark:border-ink-800 dark:bg-ink-900 dark:text-ink-400",
+            "inline-flex items-center rounded-md border border-border bg-tag-bg px-2.5 py-1 text-xs font-medium text-muted",
             compact && "px-2 py-0.5 text-[11px]"
           )}
         >

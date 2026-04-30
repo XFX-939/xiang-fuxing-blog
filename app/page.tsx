@@ -39,16 +39,16 @@ export default function HomePage() {
               <Link
                 key={topic.slug}
                 href={topic.href}
-                className="group rounded-[18px] border border-ink-200 bg-white p-5 transition hover:border-signal-300 hover:shadow-soft sm:rounded-md sm:p-6 dark:border-ink-800 dark:bg-ink-950 dark:hover:border-signal-700 dark:hover:shadow-soft-dark"
+                className="group rounded-[18px] border border-border bg-surface p-5 transition hover:border-accent hover:shadow-soft sm:rounded-md sm:p-6 dark:hover:shadow-soft-dark"
               >
-                <div className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-md bg-signal-50 text-signal-700 dark:bg-signal-950 dark:text-signal-300">
+                <div className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-md bg-accent-soft text-accent">
                   <Icon className="h-5 w-5" />
                 </div>
-                <h2 className="text-base font-semibold text-ink-950 transition group-hover:text-signal-800 dark:text-white dark:group-hover:text-signal-300">
+                <h2 className="text-base font-semibold text-primary transition group-hover:text-accent">
                   {topic.title}
                 </h2>
-                <p className="mt-3 line-clamp-2 text-sm leading-7 text-ink-600 md:line-clamp-none dark:text-ink-300">{topic.description}</p>
-                <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-signal-700 dark:text-signal-300">
+                <p className="mt-3 line-clamp-2 text-sm leading-7 text-secondary md:line-clamp-none">{topic.description}</p>
+                <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent">
                   进入专题
                   <ArrowRight className="h-4 w-4" />
                 </div>
@@ -64,7 +64,7 @@ export default function HomePage() {
           title="最新文章"
           description="记录技术判断、工程方法和管理复盘。内容不追求热闹，优先追求可验证、可迁移、可长期沉淀。"
           action={
-            <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-signal-700 hover:text-signal-900 dark:text-signal-300 dark:hover:text-signal-100">
+            <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-primary">
               全部文章
               <ArrowRight className="h-4 w-4" />
             </Link>
@@ -77,7 +77,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-white dark:bg-ink-950">
+      <section className="bg-surface">
         <div className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14">
           <SectionTitle
             eyebrow="Featured"
@@ -98,7 +98,7 @@ export default function HomePage() {
           title="代表性项目"
           description="项目不是为了展示名词，而是沉淀我在平台建设、模型可信、工具链效率和团队推动中的实际经验。"
           action={
-            <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-semibold text-signal-700 hover:text-signal-900 dark:text-signal-300 dark:hover:text-signal-100">
+            <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-primary">
               查看项目页
               <ArrowRight className="h-4 w-4" />
             </Link>
@@ -111,17 +111,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="border-t border-ink-200 bg-ink-950 text-white dark:border-ink-800">
+      <section className="border-t border-border bg-surface-elevated">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-7 px-5 py-10 sm:px-6 sm:py-14 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-signal-300">Methodology</p>
-            <h2 className="mt-3 text-2xl font-semibold leading-tight tracking-normal sm:text-3xl">个人方法论</h2>
-            <p className="mt-4 text-[15px] leading-7 text-ink-300 sm:text-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Methodology</p>
+            <h2 className="mt-3 text-2xl font-semibold leading-tight tracking-normal text-primary sm:text-3xl">个人方法论</h2>
+            <p className="mt-4 text-[15px] leading-7 text-secondary sm:text-sm">
               我更相信长期稳定的工作系统：清楚目标，拆出关键杠杆，持续推进，认真复盘。技术深度和管理视野，最终都要落在可执行的方法上。
             </p>
             <Link
               href="/methodology"
-              className="mt-6 inline-flex items-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-semibold text-ink-950 transition hover:bg-signal-100"
+              className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
             >
               查看方法论
               <ArrowRight className="h-4 w-4" />
@@ -129,9 +129,9 @@ export default function HomePage() {
           </div>
           <div className="hidden gap-3 md:grid">
             {methodologyItems.map((item) => (
-              <div key={item} className="flex gap-3 rounded-md border border-white/10 bg-white/[0.04] p-4">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-signal-300" />
-                <p className="text-sm leading-7 text-ink-200">{item}</p>
+              <div key={item} className="flex gap-3 rounded-md border border-border bg-surface p-4">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+                <p className="text-sm leading-7 text-secondary">{item}</p>
               </div>
             ))}
           </div>

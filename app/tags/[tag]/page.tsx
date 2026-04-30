@@ -42,7 +42,7 @@ export default function TagDetailPage({ params }: TagPageProps) {
         title={`标签：${tag}`}
         description={`共 ${posts.length} 篇文章。`}
         action={
-          <Link href="/tags" className="text-sm font-semibold text-signal-700 hover:text-signal-900 dark:text-signal-300 dark:hover:text-signal-100">
+          <Link href="/tags" className="text-sm font-semibold text-accent hover:text-primary">
             返回标签索引
           </Link>
         }
