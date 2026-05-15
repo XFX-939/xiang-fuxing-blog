@@ -58,7 +58,7 @@ export function HeroSection() {
                 </div>
               ))}
             </div>
-            <div className="mt-6 grid max-w-full grid-cols-1 items-start gap-4 md:grid-cols-[320px_minmax(0,1fr)] lg:grid-cols-[340px_minmax(0,1fr)] xl:grid-cols-[360px_minmax(0,1fr)]">
+            <div className="mt-6 grid max-w-full grid-cols-1 items-start gap-4 lg:grid-cols-[340px_minmax(0,1fr)] xl:grid-cols-[360px_minmax(0,1fr)]">
               <AuthorEntryCard />
               <HeroReadingGuide />
             </div>
@@ -104,17 +104,17 @@ function HeroReadingGuide() {
 function AuthorEntryCard() {
   return (
     <aside className="rounded-md border border-border bg-surface p-4 shadow-soft backdrop-blur sm:p-5 dark:shadow-soft-dark">
-      <div className="grid grid-cols-[104px_minmax(0,1fr)] items-center gap-4 sm:grid-cols-[120px_minmax(0,1fr)] md:grid-cols-1 md:gap-4">
-        <div className="relative h-[104px] w-[104px] shrink-0 overflow-hidden rounded-md bg-surface-elevated sm:h-[120px] sm:w-[120px] md:h-[136px] md:w-full">
+      <div className="flex items-center gap-4 sm:gap-5">
+        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-md bg-surface-elevated sm:h-28 sm:w-28">
           <Image
             src="/images/xiang-fuxing-profile.jpg"
             alt="向福星个人照片"
             fill
-            sizes="(max-width: 640px) 104px, (max-width: 768px) 120px, 320px"
+            sizes="(max-width: 640px) 96px, 112px"
             className="object-cover object-[50%_32%]"
           />
         </div>
-        <div className="min-w-0 md:text-center">
+        <div className="min-w-0">
           <p className="text-base font-semibold text-primary">向福星</p>
           <p className="mt-2 text-sm leading-6 text-muted">
             <span className="block">Wireless Simulation</span>
@@ -122,7 +122,7 @@ function AuthorEntryCard() {
           </p>
         </div>
       </div>
-      <div className="mt-5 grid grid-cols-2 gap-3 max-[379px]:grid-cols-1 md:grid-cols-1 xl:grid-cols-2">
+      <div className="mt-5 grid grid-cols-2 gap-3 max-[379px]:grid-cols-1">
         <Link
           href="/blog"
           className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-primary px-4 py-3 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
