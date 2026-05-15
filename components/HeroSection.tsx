@@ -58,7 +58,7 @@ export function HeroSection() {
                 </div>
               ))}
             </div>
-            <div className="mt-6 grid max-w-full grid-cols-1 items-start gap-4 lg:grid-cols-[340px_minmax(0,1fr)] lg:items-stretch xl:grid-cols-[360px_minmax(0,1fr)]">
+            <div className="mt-6 grid max-w-full grid-cols-1 items-start gap-4 lg:grid-cols-[340px_minmax(0,1fr)] xl:grid-cols-[360px_minmax(0,1fr)]">
               <AuthorEntryCard />
               <HeroReadingGuide />
             </div>
@@ -72,7 +72,7 @@ export function HeroSection() {
 
 function HeroReadingGuide() {
   return (
-    <section className="h-full rounded-md border border-border bg-surface p-5 shadow-sm backdrop-blur dark:shadow-soft-dark">
+    <section className="rounded-md border border-border bg-surface p-5 shadow-sm backdrop-blur dark:shadow-soft-dark">
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Start Here</p>
@@ -103,25 +103,25 @@ function HeroReadingGuide() {
 
 function AuthorEntryCard() {
   return (
-    <aside className="flex h-full flex-col justify-between rounded-md border border-border bg-surface p-4 shadow-soft backdrop-blur dark:shadow-soft-dark">
-      <div className="flex items-center gap-4">
-        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md bg-surface-elevated sm:h-[88px] sm:w-[88px]">
+    <aside className="rounded-md border border-border bg-surface p-4 shadow-soft backdrop-blur sm:p-5 dark:shadow-soft-dark">
+      <div className="flex items-center gap-4 sm:gap-5">
+        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-md bg-surface-elevated sm:h-28 sm:w-28">
           <Image
             src="/images/xiang-fuxing-profile.jpg"
             alt="向福星个人照片"
             fill
-            sizes="(max-width: 640px) 80px, 88px"
+            sizes="(max-width: 640px) 96px, 112px"
             className="object-cover object-[50%_32%]"
           />
         </div>
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-primary">向福星</p>
-          <p className="mt-1 text-xs leading-5 text-muted">
+          <p className="text-base font-semibold text-primary">向福星</p>
+          <p className="mt-2 text-sm leading-6 text-muted">
             Wireless Simulation · AI for Engineering
           </p>
         </div>
       </div>
-      <div className="mt-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+      <div className="mt-5 grid grid-cols-2 gap-3 max-[379px]:grid-cols-1">
         <Link
           href="/blog"
           className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-primary px-4 py-3 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
