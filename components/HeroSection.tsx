@@ -117,7 +117,8 @@ function AuthorEntryCard() {
         <div className="min-w-0">
           <p className="text-base font-semibold text-primary">向福星</p>
           <p className="mt-2 text-sm leading-6 text-muted">
-            Wireless Simulation · AI for Engineering
+            <span className="block">Wireless Simulation</span>
+            <span className="block">AI for Engineering</span>
           </p>
         </div>
       </div>
