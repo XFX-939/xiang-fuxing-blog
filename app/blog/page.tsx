@@ -1,6 +1,6 @@
 import { BlogExplorer } from "@/components/BlogExplorer";
 import { SectionTitle } from "@/components/SectionTitle";
-import { getAllCategories, getAllPosts, getAllTags } from "@/lib/posts";
+import { getAllCategories, getAllPostListItems, getAllTags } from "@/lib/posts";
 import { createMetadata } from "@/lib/utils";
 
 export const metadata = createMetadata({
@@ -16,7 +16,7 @@ type BlogPageProps = {
 };
 
 export default function BlogPage({ searchParams }: BlogPageProps) {
-  const posts = getAllPosts();
+  const posts = getAllPostListItems();
   const categories = getAllCategories();
   const tags = getAllTags();
   const initialCategory = searchParams?.category ? decodeURIComponent(searchParams.category) : "全部";

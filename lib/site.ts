@@ -29,6 +29,7 @@ export const navItems = [
   { href: "/", label: "首页" },
   { href: "/blog", label: "博客" },
   { href: "/projects", label: "项目" },
+  { href: "/collaboration", label: "合作" },
   { href: "/methodology", label: "方法论" },
   { href: "/archive", label: "归档" },
   { href: "/about", label: "关于" }

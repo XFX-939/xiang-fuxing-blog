@@ -1,6 +1,7 @@
-import { ArrowRight, BrainCircuit, CheckCircle2, Compass, GitBranch, Layers, Network, Scale, Target } from "lucide-react";
-import { CollapsibleSection } from "@/components/CollapsibleSection";
-import { SectionTitle } from "@/components/SectionTitle";
+import type { ReactNode } from "react";
+import type { LucideIcon } from "lucide-react";
+import { ArrowRight, BrainCircuit, CheckCircle2, Compass, GitBranch, Layers, Target } from "lucide-react";
+import { MethodologyNavigation, type MethodologyTocItem } from "@/components/MethodologyNavigation";
 import { createMetadata } from "@/lib/utils";
 
 export const metadata = createMetadata({
@@ -60,218 +61,194 @@ const importantCognitions = [
   }
 ];
 
+const tocItems: MethodologyTocItem[] = [
+  { id: "core-habits", label: "核心习惯" },
+  { id: "cognitive-frame", label: "认知框架" },
+  { id: "choice-principles", label: "做选择的原则" },
+  { id: "systems-thinking", label: "系统性思维" },
+  { id: "resource-integration", label: "资源整合能力" },
+  { id: "technical-learning", label: "技术学习方法" },
+  { id: "management-practice", label: "管理实践方法" },
+  { id: "ai-rd-method", label: "AI辅助研发方法" }
+];
+
 export default function MethodologyPage() {
   return (
-    <div className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-12">
-      <SectionTitle
-        eyebrow="Methodology"
-        title="我的方法论"
-        description="方法论不是口号，而是复杂工作中的稳定抓手。它帮助我在技术探索、工程交付和团队协同之间保持一致。"
-      />
+    <div className="mx-auto max-w-7xl px-5 py-8 sm:px-6 sm:py-10">
+      <section
+        id="core-habits"
+        className="scroll-mt-36 rounded-[22px] border border-border bg-surface-elevated px-5 py-8 sm:rounded-md sm:px-8 sm:py-10 lg:px-10"
+      >
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Methodology</p>
+        <h1 className="mt-3 max-w-4xl text-[34px] font-semibold leading-tight tracking-normal text-primary sm:text-5xl">
+          我的方法论
+        </h1>
+        <p className="mt-5 max-w-3xl text-[15px] leading-8 text-secondary sm:text-base">
+          方法论不是口号，而是复杂工作中的稳定抓手。它帮助我在技术探索、工程交付和团队协同之间保持一致。
+        </p>
 
-      <section className="grid grid-cols-2 gap-4 max-[379px]:grid-cols-1 md:grid-cols-4">
-        {fourSteps.map((step, index) => {
-          const Icon = step.icon;
-          return (
-            <article key={step.title} className="relative rounded-[18px] border border-border bg-surface p-5 sm:rounded-md">
-              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-accent-soft text-accent">
-                <Icon className="h-5 w-5" />
-              </div>
-              <p className="text-xs font-semibold text-muted">0{index + 1}</p>
-              <h2 className="mt-2 text-lg font-semibold text-primary">{step.title}</h2>
-              <p className="mt-3 text-sm leading-7 text-secondary">{step.description}</p>
-            </article>
-          );
-        })}
-      </section>
-
-      <section className="mt-8 rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
-        <div className="flex flex-col gap-4 border-b border-border pb-5 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">Cognitive Frame</p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-normal text-primary">认知框架</h2>
-          </div>
-          <p className="max-w-2xl text-sm leading-7 text-secondary">
-            做事方法决定执行质量，认知框架决定选择质量。面对复杂问题时，我更关注三件事：选择什么、怎么看清、如何做成。
-          </p>
-        </div>
-
-        <div className="mt-6 grid grid-cols-1 gap-4 md:hidden">
-          <CollapsibleSection title="两个坚持，两个保持" description="做选择的原则" className="bg-surface-elevated">
-            <MobileList items={choicePrinciples} />
-          </CollapsibleSection>
-          <CollapsibleSection title="系统性思维" description="看问题的方式：看全局、抓关键、做取舍" className="bg-surface-elevated">
-            <MobileStructuredList items={systemsThinking} />
-          </CollapsibleSection>
-          <CollapsibleSection title="资源整合能力" description="把事做成的能力" className="bg-surface-elevated">
-            <MobileStructuredList items={resourceIntegration} />
-          </CollapsibleSection>
-        </div>
-
-        <div className="mt-6 hidden gap-5 md:grid lg:grid-cols-[0.85fr_1.25fr_1fr]">
-          <CognitionCard
-            icon={Compass}
-            title="两个坚持，两个保持"
-            description="做选择的原则"
-            items={choicePrinciples.map((item) => ({ title: item }))}
-          />
-          <CognitionCard
-            icon={Layers}
-            title="系统性思维"
-            description="看问题的方式"
-            items={systemsThinking}
-            footnote="核心：看全局、抓关键、做取舍"
-          />
-          <CognitionCard
-            icon={Network}
-            title="资源整合能力"
-            description="把事做成的能力"
-            items={resourceIntegration}
-          />
-        </div>
-
-        <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
-          {importantCognitions.map((item) => {
-            const Icon = item.icon;
-
+        <div className="mt-8 grid grid-cols-1 gap-4 min-[430px]:grid-cols-2 lg:grid-cols-4">
+          {fourSteps.map((step, index) => {
+            const Icon = step.icon;
             return (
-              <article key={item.title} className="rounded-[18px] border border-border bg-surface-elevated p-5 sm:rounded-md">
-                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-surface text-accent shadow-sm ring-1 ring-border">
-                  <Icon className="h-5 w-5" />
+              <article
+                key={step.title}
+                className="group flex h-full flex-col rounded-[18px] border border-border bg-surface p-5 transition duration-200 hover:-translate-y-0.5 hover:border-accent hover:shadow-soft sm:rounded-md dark:hover:shadow-soft-dark"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <span className="text-3xl font-semibold leading-none text-accent/30">0{index + 1}</span>
+                  <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-accent-soft text-accent">
+                    <Icon className="h-5 w-5" />
+                  </span>
                 </div>
-                <p className="text-sm font-medium text-muted">两个重要认知</p>
-                <h3 className="mt-1 text-xl font-semibold text-primary">{item.title}</h3>
-                <p className="mt-4 text-sm leading-7 text-secondary">{item.description}</p>
+                <h2 className="mt-5 text-lg font-semibold text-primary">{step.title}</h2>
+                <p className="mt-3 text-sm leading-7 text-secondary">{step.description}</p>
               </article>
             );
           })}
         </div>
       </section>
 
-      <section className="mt-8 grid grid-cols-1 gap-4 md:hidden">
-        <CollapsibleSection title="技术学习方法" description="先建立全局，再拆概念、看代码、形成表达。">
-          <MobileList items={learning} />
-        </CollapsibleSection>
-        <CollapsibleSection title="管理实践方法" description="围绕目标、责任、过程、风险、激励和复盘做闭环。">
-          <MobileList items={management} />
-        </CollapsibleSection>
-        <CollapsibleSection title="AI辅助研发方法" description="人负责判断，AI负责加速。">
-          <MobileList items={aiMethods} />
-        </CollapsibleSection>
-      </section>
+      <div className="mt-8 grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start">
+        <MethodologyNavigation items={tocItems} />
 
-      <section className="mt-8 hidden gap-5 md:grid lg:grid-cols-[1fr_1fr]">
-        <MethodCard title="技术学习方法" items={learning} />
-        <MethodCard title="管理实践方法" items={management} />
-      </section>
+        <article className="min-w-0 space-y-8">
+          <SectionCard
+            id="cognitive-frame"
+            eyebrow="Cognitive Frame"
+            title="认知框架"
+            description="做事方法决定执行质量，认知框架决定选择质量。面对复杂问题时，我更关注三件事：选择什么、怎么看清、如何做成。"
+          >
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {importantCognitions.map((item) => {
+                const Icon = item.icon;
 
-      <section className="mt-8 hidden rounded-md border border-border bg-surface-elevated p-6 text-primary md:block">
-        <div className="flex items-start gap-4">
-          <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-accent-soft text-accent">
-            <BrainCircuit className="h-5 w-5" />
-          </div>
-          <div>
-            <h2 className="text-xl font-semibold">AI辅助研发方法</h2>
-            <div className="mt-5 grid gap-3 md:grid-cols-2">
-              {aiMethods.map((item) => (
-                <div key={item} className="flex items-start gap-3 rounded-md border border-border bg-surface p-4 text-sm leading-7 text-secondary">
-                  <CheckBullet className="mt-1 text-accent" />
-                  <span>{item}</span>
-                </div>
+                return (
+                  <article key={item.title} className="rounded-md border border-border bg-surface-elevated p-5">
+                    <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-surface text-accent shadow-sm ring-1 ring-border">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <p className="text-sm font-medium text-muted">两个重要认知</p>
+                    <h3 className="mt-1 text-xl font-semibold text-primary">{item.title}</h3>
+                    <p className="mt-4 text-sm leading-7 text-secondary">{item.description}</p>
+                  </article>
+                );
+              })}
+            </div>
+          </SectionCard>
+
+          <SectionCard id="choice-principles" eyebrow="Choice" title="两个坚持，两个保持" description="做选择的原则">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {choicePrinciples.map((item) => (
+                <ListTile key={item}>{item}</ListTile>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
+          </SectionCard>
+
+          <SectionCard id="systems-thinking" eyebrow="System" title="系统性思维" description="看问题的方式">
+            <ProcessList items={systemsThinking} />
+            <div className="mt-5 rounded-md border border-border bg-accent-soft px-4 py-3 text-sm font-medium text-accent">
+              核心：看全局、抓关键、做取舍
+            </div>
+          </SectionCard>
+
+          <SectionCard id="resource-integration" eyebrow="Integration" title="资源整合能力" description="把事做成的能力">
+            <StructuredGrid items={resourceIntegration} />
+          </SectionCard>
+
+          <section className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+            <ApplicationCard id="technical-learning" icon={Layers} title="技术学习方法" items={learning} />
+            <ApplicationCard id="management-practice" icon={Compass} title="管理实践方法" items={management} />
+            <ApplicationCard id="ai-rd-method" icon={BrainCircuit} title="AI辅助研发方法" items={aiMethods} />
+          </section>
+        </article>
+      </div>
     </div>
   );
 }
 
-function CognitionCard({
-  icon: Icon,
+function SectionCard({
+  id,
+  eyebrow,
   title,
   description,
-  items,
-  footnote
+  children
 }: {
-  icon: typeof Scale;
+  id: string;
+  eyebrow: string;
   title: string;
-  description: string;
-  items: Array<{ title: string; description?: string }>;
-  footnote?: string;
+  description?: string;
+  children: ReactNode;
 }) {
   return (
-    <article className="rounded-md border border-border bg-surface-elevated p-5">
-      <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-surface text-accent shadow-sm ring-1 ring-border">
-        <Icon className="h-5 w-5" />
-      </div>
-      <p className="text-sm font-medium text-muted">{description}</p>
-      <h3 className="mt-1 text-xl font-semibold text-primary">{title}</h3>
-      <div className="mt-5 grid gap-3">
-        {items.map((item, index) => (
-          <div key={item.title} className="rounded-md border border-border bg-surface p-4">
-            <div className="flex items-start gap-3">
-              <CheckBullet className="mt-0.5" />
-              <div>
-                <p className="text-sm font-semibold text-primary">{item.title}</p>
-                {item.description ? <p className="mt-1 text-sm leading-6 text-secondary">{item.description}</p> : null}
-              </div>
+    <section id={id} className="scroll-mt-36 rounded-[22px] border border-border bg-surface p-5 sm:rounded-md sm:p-8">
+      <header className="border-b border-border pb-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">{eyebrow}</p>
+        <h2 className="mt-2 text-2xl font-semibold tracking-normal text-primary">{title}</h2>
+        {description ? <p className="mt-3 max-w-3xl text-sm leading-7 text-secondary">{description}</p> : null}
+      </header>
+      <div className="mt-6">{children}</div>
+    </section>
+  );
+}
+
+function ProcessList({ items }: { items: Array<{ title: string; description: string }> }) {
+  return (
+    <ol className="relative grid gap-4 before:absolute before:left-4 before:top-4 before:h-[calc(100%-2rem)] before:w-px before:bg-border">
+      {items.map((item, index) => (
+        <li key={item.title} className="relative pl-12">
+          <span className="absolute left-0 top-1 inline-flex h-8 w-8 items-center justify-center rounded-full border border-accent/40 bg-surface text-xs font-semibold text-accent shadow-sm">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <div className="rounded-md border border-border bg-surface-elevated p-4 transition hover:border-accent/60">
+            <h3 className="text-base font-semibold text-primary">{item.title}</h3>
+            <p className="mt-2 text-sm leading-7 text-secondary">{item.description}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function StructuredGrid({ items }: { items: Array<{ title: string; description: string }> }) {
+  return (
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      {items.map((item) => (
+        <article key={item.title} className="rounded-md border border-border bg-surface-elevated p-4">
+          <div className="flex items-start gap-3">
+            <CheckBullet className="mt-0.5" />
+            <div>
+              <h3 className="text-sm font-semibold leading-6 text-primary">{item.title}</h3>
+              <p className="mt-1 text-sm leading-6 text-secondary">{item.description}</p>
             </div>
           </div>
-        ))}
-      </div>
-      {footnote ? (
-        <div className="mt-4 rounded-md border border-border bg-accent-soft px-4 py-3 text-sm font-medium text-accent dark:border-border dark:bg-accent-soft dark:text-accent">
-          {footnote}
-        </div>
-      ) : null}
-    </article>
-  );
-}
-
-function MethodCard({ title, items }: { title: string; items: string[] }) {
-  return (
-    <article className="rounded-md border border-border bg-surface p-6">
-      <h2 className="text-xl font-semibold text-primary">{title}</h2>
-      <div className="mt-5 grid gap-3">
-        {items.map((item, index) => (
-          <div key={item} className="flex gap-3 rounded-md border border-border bg-surface-elevated p-4 text-sm text-secondary">
-            <CheckBullet />
-            <span>{item}</span>
-          </div>
-        ))}
-      </div>
-    </article>
-  );
-}
-
-function MobileList({ items }: { items: string[] }) {
-  return (
-    <div className="grid gap-2">
-      {items.map((item, index) => (
-        <div key={item} className="flex gap-3 rounded-md border border-border bg-surface p-3 text-sm leading-6 text-secondary">
-          <CheckBullet className="mt-0.5" />
-          <span>{item}</span>
-        </div>
+        </article>
       ))}
     </div>
   );
 }
 
-function MobileStructuredList({ items }: { items: Array<{ title: string; description?: string }> }) {
+function ApplicationCard({ id, icon: Icon, title, items }: { id: string; icon: LucideIcon; title: string; items: string[] }) {
   return (
-    <div className="grid gap-2">
-      {items.map((item, index) => (
-        <div key={item.title} className="rounded-md border border-border bg-surface p-3">
-          <div className="flex gap-3">
-            <CheckBullet className="mt-0.5" />
-            <div>
-              <p className="text-sm font-semibold leading-6 text-primary">{item.title}</p>
-              {item.description ? <p className="mt-1 text-sm leading-6 text-secondary">{item.description}</p> : null}
-            </div>
-          </div>
-        </div>
-      ))}
+    <section id={id} className="scroll-mt-36 rounded-[22px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+      <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-md bg-accent-soft text-accent">
+        <Icon className="h-5 w-5" />
+      </div>
+      <h2 className="text-xl font-semibold text-primary">{title}</h2>
+      <div className="mt-5 grid gap-3">
+        {items.map((item) => (
+          <ListTile key={item}>{item}</ListTile>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ListTile({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex items-start gap-3 rounded-md border border-border bg-surface-elevated p-4 text-sm leading-7 text-secondary">
+      <CheckBullet className="mt-1" />
+      <span>{children}</span>
     </div>
   );
 }

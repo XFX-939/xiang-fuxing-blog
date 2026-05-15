@@ -5,7 +5,7 @@ import { topicHubs } from "@/lib/topics";
 import { absoluteUrl } from "@/lib/utils";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/about", "/blog", "/projects", "/methodology", "/archive", "/categories", "/tags"].map((route) => ({
+  const staticRoutes = ["", "/about", "/blog", "/projects", "/collaboration", "/methodology", "/archive", "/categories", "/tags"].map((route) => ({
     url: absoluteUrl(route),
     lastModified: new Date()
   }));

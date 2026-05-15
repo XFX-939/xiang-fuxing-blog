@@ -4,8 +4,8 @@ import { getArchiveGroups } from "@/lib/posts";
 import { createMetadata } from "@/lib/utils";
 
 export const metadata = createMetadata({
-  title: "归档",
-  description: "按年份和月份浏览所有博客文章。",
+  title: "写作轨迹",
+  description: "按年份、分类、标签和系列浏览向福星个人博客写作轨迹。",
   path: "/archive"
 });
 
@@ -34,8 +34,8 @@ export default function ArchivePage() {
     <div className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-12">
       <SectionTitle
         eyebrow="Archive"
-        title="文章归档"
-        description="按时间线快速回看文章脉络。"
+        title="写作轨迹"
+        description="从年度总结、主题系列和时间线三个角度回看文章脉络，观察技术学习、管理复盘和个人成长的长期演进。"
       />
       <ArchiveTimeline yearGroups={yearGroups} />
     </div>

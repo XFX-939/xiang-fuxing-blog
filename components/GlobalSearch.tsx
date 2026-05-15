@@ -2,44 +2,59 @@
 
 import Link from "next/link";
 import { ArrowUpRight, Search, X } from "lucide-react";
-import { useMemo, useState } from "react";
-import type { Post } from "@/lib/posts";
+import { useEffect, useState } from "react";
+import type { PostListItem } from "@/lib/posts";
 import { formatDate } from "@/lib/utils";
 
-type SearchPost = Pick<Post, "title" | "description" | "category" | "tags" | "url" | "searchText" | "date">;
-
 type GlobalSearchProps = {
-  posts: SearchPost[];
   className?: string;
   placeholder?: string;
 };
 
 const quickTerms = ["仿真", "5G", "AI Coding", "资源分配"];
 
-export function GlobalSearch({ posts, className = "", placeholder = "搜索仿真、5G、AI Coding..." }: GlobalSearchProps) {
+export function GlobalSearch({ className = "", placeholder = "搜索仿真、5G、AI Coding..." }: GlobalSearchProps) {
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
+  const [results, setResults] = useState<PostListItem[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   const normalizedQuery = query.trim().toLowerCase();
-  const results = useMemo(() => {
-    const terms = normalizedQuery.split(/\s+/).filter(Boolean);
 
-    if (terms.length === 0) {
-      return [];
+  useEffect(() => {
+    if (!normalizedQuery) {
+      setResults([]);
+      setIsSearching(false);
+      return;
     }
 
-    return posts
-      .map((post) => {
-        const haystack = [post.title, post.description, post.category, post.searchText, ...post.tags]
-          .join(" ")
-          .toLowerCase();
-        const matched = terms.filter((term) => haystack.includes(term)).length;
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      setIsSearching(true);
 
-        return { post, matched };
-      })
-      .filter((item) => item.matched === terms.length)
-      .slice(0, 6);
-  }, [normalizedQuery, posts]);
+      try {
+        const params = new URLSearchParams({ q: normalizedQuery, limit: "6" });
+        const response = await fetch(`/api/search?${params.toString()}`, {
+          signal: controller.signal
+        });
+        const data = (await response.json()) as { posts: PostListItem[] };
+        setResults(data.posts);
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setResults([]);
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsSearching(false);
+        }
+      }
+    }, 160);
+
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [normalizedQuery]);
 
   const showPanel = focused && (normalizedQuery.length > 0 || query.length === 0);
 
@@ -89,9 +104,11 @@ export function GlobalSearch({ posts, className = "", placeholder = "搜索仿�
                 ))}
               </div>
             </div>
+          ) : isSearching ? (
+            <div className="p-4 text-sm text-muted">正在全文搜索...</div>
           ) : results.length > 0 ? (
             <div className="max-h-[70vh] overflow-y-auto p-2">
-              {results.map(({ post }) => (
+              {results.map((post) => (
                 <Link
                   key={post.url}
                   href={post.url}

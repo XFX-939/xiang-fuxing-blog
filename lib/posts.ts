@@ -35,10 +35,14 @@ export type Post = PostFrontmatter & {
   url: string;
 };
 
+export type PostListItem = Omit<Post, "searchText">;
+
 export type PostWithContent = Post & {
   content: string;
   toc: TocItem[];
 };
+
+let postRecordsCache: PostWithContent[] | null = null;
 
 function getMdxFiles() {
   if (!fs.existsSync(postsDirectory)) {
@@ -83,23 +87,39 @@ function fileToPost(file: string): PostWithContent {
   };
 }
 
+function getPostRecords() {
+  if (!postRecordsCache) {
+    postRecordsCache = getMdxFiles()
+      .map(fileToPost)
+      .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)));
+  }
+
+  return postRecordsCache;
+}
+
+export function toPostListItem(post: Post): PostListItem {
+  const { searchText: _searchText, ...item } = post;
+  return item;
+}
+
 export function getAllPosts(options: { includeDrafts?: boolean } = {}): Post[] {
-  return getMdxFiles()
-    .map(fileToPost)
+  return getPostRecords()
     .filter((post) => options.includeDrafts || !post.draft)
-    .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)))
     .map(({ content: _content, toc: _toc, ...post }) => post);
+}
+
+export function getAllPostListItems(options: { includeDrafts?: boolean } = {}): PostListItem[] {
+  return getAllPosts(options).map(toPostListItem);
 }
 
 export function getPostBySlug(slug: string): PostWithContent | null {
   const decodedSlug = decodeURIComponent(slug);
-  const file = `${decodedSlug}.mdx`;
+  const post = getPostRecords().find((item) => item.slug === decodedSlug);
 
-  if (!getMdxFiles().includes(file)) {
+  if (!post) {
     return null;
   }
 
-  const post = fileToPost(file);
   return post.draft ? null : post;
 }
 

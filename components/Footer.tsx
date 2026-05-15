@@ -28,6 +28,9 @@ export function Footer() {
             <Link href="/archive" className="hover:text-accent">
               文章归档
             </Link>
+            <Link href="/collaboration" className="hover:text-accent">
+              合作交流
+            </Link>
             <Link href="/categories" className="hover:text-accent">
               分类索引
             </Link>

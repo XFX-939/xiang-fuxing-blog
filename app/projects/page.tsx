@@ -4,8 +4,8 @@ import { projects } from "@/lib/projects";
 import { createMetadata } from "@/lib/utils";
 
 export const metadata = createMetadata({
-  title: "项目",
-  description: "系统仿真平台、AI辅助研发作业流和数字孪生仿真探索等代表性项目。",
+  title: "GitHub 项目",
+  description: "向福星 GitHub 公开仓库项目展示，覆盖 AI 工具、数据看板、前端交互、量化研究、工程效率和编程学习。",
   path: "/projects"
 });
 
@@ -14,8 +14,8 @@ export default function ProjectsPage() {
     <div className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-12">
       <SectionTitle
         eyebrow="Projects"
-        title="项目经验"
-        description="以下项目均基于公开可表达的工程经验整理，重点呈现问题抽象、方法沉淀与可迁移经验。"
+        title="GitHub 公开项目"
+        description={`整理自 GitHub 公开仓库，共 ${projects.length} 个项目，覆盖 AI 工具、数据看板、前端交互、量化研究、工程效率和编程学习等方向。`}
       />
       <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-3">
         {projects.map((project) => (

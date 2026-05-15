@@ -1,15 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArticleCard } from "@/components/ArticleCard";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { Pagination } from "@/components/Pagination";
 import { SearchBox } from "@/components/SearchBox";
 import { Tag } from "@/components/Tag";
-import type { Post } from "@/lib/posts";
+import type { PostListItem } from "@/lib/posts";
 
 type BlogExplorerProps = {
-  posts: Post[];
+  posts: PostListItem[];
   categories: Array<{ name: string; count: number }>;
   tags: Array<{ name: string; count: number }>;
   initialCategory?: string;
@@ -23,24 +23,75 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
   const [tag, setTag] = useState("全部");
   const [visible, setVisible] = useState(pageSize);
   const [showAllTags, setShowAllTags] = useState(false);
+  const [searchPosts, setSearchPosts] = useState<PostListItem[]>([]);
+  const [searchTotal, setSearchTotal] = useState(0);
+  const [isSearching, setIsSearching] = useState(false);
+
+  const normalizedQuery = query.trim();
+  const hasQuery = normalizedQuery.length > 0;
+
+  useEffect(() => {
+    if (!hasQuery) {
+      setSearchPosts([]);
+      setSearchTotal(0);
+      setIsSearching(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      setIsSearching(true);
+      setSearchPosts([]);
+      setSearchTotal(0);
+
+      const params = new URLSearchParams({ q: normalizedQuery });
+      if (category !== "全部") {
+        params.set("category", category);
+      }
+      if (tag !== "全部") {
+        params.set("tag", tag);
+      }
+
+      try {
+        const response = await fetch(`/api/search?${params.toString()}`, {
+          signal: controller.signal
+        });
+        const data = (await response.json()) as { posts: PostListItem[]; total: number };
+        setSearchPosts(data.posts);
+        setSearchTotal(data.total);
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setSearchPosts([]);
+          setSearchTotal(0);
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsSearching(false);
+        }
+      }
+    }, 180);
+
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [category, hasQuery, normalizedQuery, tag]);
 
   const filteredPosts = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
+    if (hasQuery) {
+      return searchPosts;
+    }
 
     return posts.filter((post) => {
       const matchCategory = category === "全部" || post.category === category;
       const matchTag = tag === "全部" || post.tags.includes(tag);
-      const haystack = [post.title, post.description, post.category, post.searchText, ...post.tags]
-        .join(" ")
-        .toLowerCase();
-      const queryTerms = normalizedQuery.split(/\s+/).filter(Boolean);
-      const matchQuery = queryTerms.length === 0 || queryTerms.every((term) => haystack.includes(term));
 
-      return matchCategory && matchTag && matchQuery;
+      return matchCategory && matchTag;
     });
-  }, [category, posts, query, tag]);
+  }, [category, hasQuery, posts, searchPosts, tag]);
 
   const visiblePosts = filteredPosts.slice(0, visible);
+  const resultCount = hasQuery ? searchTotal : filteredPosts.length;
   const visibleTags = showAllTags ? tags : tags.slice(0, 12);
   const hiddenTagCount = Math.max(tags.length - visibleTags.length, 0);
 
@@ -102,7 +153,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
           }}
         />
         <div className="mt-4 text-sm text-muted">
-          共找到 {filteredPosts.length} 篇文章
+          {isSearching ? "正在全文搜索..." : `共找到 ${resultCount} 篇文章`}
         </div>
         <div className="mt-6 grid grid-cols-1 gap-4 sm:gap-5">
           {visiblePosts.map((post) => (

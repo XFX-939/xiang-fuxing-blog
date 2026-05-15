@@ -111,6 +111,29 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-12">
+        <div className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+          <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Collaboration</p>
+              <h2 className="mt-3 text-2xl font-semibold leading-tight tracking-normal text-primary sm:text-3xl">
+                合作与交流
+              </h2>
+              <p className="mt-4 max-w-3xl text-[15px] leading-7 text-secondary sm:text-sm">
+                如果你在做技术内容、工具产品、知识社群或个人品牌建设，欢迎围绕内容互推、项目共创、技术交流和资源连接做长期合作。
+              </p>
+            </div>
+            <Link
+              href="/collaboration"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
+            >
+              查看合作方式
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="border-t border-border bg-surface-elevated">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-7 px-5 py-10 sm:px-6 sm:py-14 lg:grid-cols-[0.9fr_1.1fr]">
           <div>

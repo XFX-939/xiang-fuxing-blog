@@ -17,12 +17,19 @@ export const mdxComponents: MDXComponents = {
   p: ({ className, ...props }) => (
     <p className={cn("leading-8 text-secondary", className)} {...props} />
   ),
-  a: ({ className, ...props }) => (
-    <a
-      className={cn("font-medium text-accent underline underline-offset-4 hover:opacity-80", className)}
-      {...props}
-    />
-  ),
+  a: ({ className, href, ...props }) => {
+    const isExternal = typeof href === "string" && /^https?:\/\//.test(href);
+
+    return (
+      <a
+        href={href}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noreferrer" : undefined}
+        className={cn("font-medium text-accent underline underline-offset-4 hover:opacity-80", className)}
+        {...props}
+      />
+    );
+  },
   blockquote: ({ className, ...props }) => (
     <blockquote
       className={cn("border-l-4 border-accent bg-accent-soft px-5 py-3 text-secondary", className)}

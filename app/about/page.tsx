@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { Github, Mail, MessageCircle, NotebookText, Video } from "lucide-react";
+import { CheckCircle2, Github, Mail, MessageCircle, NotebookText, Video } from "lucide-react";
 import { SectionTitle } from "@/components/SectionTitle";
 import { TagList } from "@/components/TagList";
 import { siteConfig } from "@/lib/site";
@@ -56,6 +56,35 @@ const principles = [
   { title: "有复盘", description: "总结经验，沉淀方法，把一次性结果变成可复用能力。" }
 ];
 
+const cognitionGroups = [
+  {
+    title: "两个坚持，两个保持",
+    description: "做选择的原则",
+    items: ["坚持做正确且有挑战的事", "坚持独立思考和判断", "保持好奇心和求知欲", "保持乐观和韧性"]
+  },
+  {
+    title: "系统性思维",
+    description: "看问题的方式",
+    items: ["定义边界", "拆系统结构", "抓关键变量", "看动态关系", "做权衡"]
+  },
+  {
+    title: "资源整合能力",
+    description: "把事情做成的能力",
+    items: ["信息整合", "人的整合", "资源整合", "节奏整合"]
+  }
+];
+
+const importantCognitions = [
+  {
+    title: "谋定而后动",
+    description: "先想清楚目标、边界、关键变量、资源条件和主要风险，再进入执行。"
+  },
+  {
+    title: "能成事、积极正向、会关注人",
+    description: "长期价值不只看技术深度，也看能否闭环结果、提供正向能量，并理解和激发身边的人。"
+  }
+];
+
 const valueTopics = [
   "无线通信系统仿真平台如何建设",
   "AI Coding 如何真正进入研发流程",
@@ -73,25 +102,25 @@ export default function AboutPage() {
       />
 
       <div className="grid grid-cols-1 gap-8">
-        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_240px] md:items-center">
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,1fr)_220px] md:items-center">
             <div>
-              <h2 className="text-xl font-semibold text-primary">个人简介</h2>
-              <p className="mt-4 text-[15px] leading-8 text-secondary sm:text-base">
+              <h2 className="text-lg font-semibold text-primary sm:text-xl">个人简介</h2>
+              <p className="mt-3 text-[15px] leading-7 text-secondary">
                 我是无线通信算法工程师，长期从事系统仿真、5G/6G技术预研、AI辅助研发、研发效能提升和技术团队管理相关工作。
               </p>
-              <p className="mt-4 text-[15px] leading-7 text-secondary sm:text-sm">
+              <p className="mt-3 text-[15px] leading-7 text-secondary">
                 我希望把复杂工程问题讲清楚，把技术经验沉淀成可复用的方法，也把个人成长和团队管理中的真实判断长期记录下来。
               </p>
             </div>
-            <div className="mx-auto w-full max-w-[240px]">
+            <div className="mx-auto w-full max-w-[220px]">
               <div className="rounded-md border border-border bg-surface-elevated p-2">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-surface-elevated">
+                <div className="relative aspect-square overflow-hidden rounded-md bg-surface-elevated">
                   <Image
                     src="/images/xiang-fuxing-profile.jpg"
                     alt="向福星个人照片"
                     fill
-                    sizes="(min-width: 768px) 240px, 70vw"
+                    sizes="(min-width: 768px) 220px, 70vw"
                     className="object-cover object-[50%_32%]"
                   />
                 </div>
@@ -129,9 +158,46 @@ export default function AboutPage() {
         </section>
 
         <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
-          <h2 className="text-xl font-semibold text-primary">我能提供什么价值</h2>
-          <p className="mt-4 text-sm leading-7 text-secondary">我希望和哪些人交流</p>
-          <p className="mt-2 leading-8 text-secondary">如果你也关注以下问题，欢迎交流：</p>
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Cognitive Frame</p>
+            <h2 className="mt-2 text-xl font-semibold text-primary">认知方法论</h2>
+            <p className="mt-3 text-sm leading-7 text-secondary">
+              这些不是抽象口号，而是我在技术探索、工程交付和团队协同里反复使用的判断框架。
+            </p>
+          </div>
+
+          <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-3">
+            {cognitionGroups.map((group) => (
+              <article key={group.title} className="rounded-md border border-border bg-surface-elevated p-4">
+                <p className="text-xs font-medium text-muted">{group.description}</p>
+                <h3 className="mt-1 font-semibold text-primary">{group.title}</h3>
+                <div className="mt-4 grid gap-2">
+                  {group.items.map((item) => (
+                    <div key={item} className="flex items-start gap-2 text-sm leading-6 text-secondary">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+            {importantCognitions.map((item) => (
+              <article key={item.title} className="rounded-md border border-border bg-accent-soft p-4">
+                <p className="text-xs font-medium text-accent">重要认知</p>
+                <h3 className="mt-1 font-semibold text-primary">{item.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-secondary">{item.description}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+          <h2 className="text-xl font-semibold text-primary">我正在长期沉淀的问题</h2>
+          <p className="mt-4 text-sm leading-7 text-secondary">欢迎非商业技术讨论</p>
+          <p className="mt-2 leading-8 text-secondary">如果你对以下公开技术问题有讨论，欢迎邮件交流：</p>
           <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {valueTopics.map((topic, index) => (
               <div key={topic} className="flex gap-3 rounded-md border border-border bg-surface-elevated p-4">

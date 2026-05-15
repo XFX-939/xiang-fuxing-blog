@@ -10,14 +10,18 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import { ArticleConversion } from "@/components/ArticleConversion";
+import { ArticleBackToTop } from "@/components/ArticleBackToTop";
+import { ArticleLike } from "@/components/ArticleLike";
+import { ArticleShare } from "@/components/ArticleShare";
 import { AuthorCard } from "@/components/AuthorCard";
 import { CodeBlockCopyButtons } from "@/components/CodeBlockCopyButtons";
 import { mdxComponents } from "@/components/MDXComponents";
+import { MobileFloatingTOC } from "@/components/MobileFloatingTOC";
 import { ReadingProgressBar } from "@/components/ReadingProgressBar";
 import { TagList } from "@/components/TagList";
 import { TOC } from "@/components/TOC";
 import { getAdjacentPosts, getAllPosts, getPostBySlug, getRecommendedPosts } from "@/lib/posts";
-import { createMetadata, formatDate } from "@/lib/utils";
+import { absoluteUrl, createMetadata, formatDate } from "@/lib/utils";
 
 type BlogDetailProps = {
   params: {
@@ -60,6 +64,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
 
   const { newer, older } = getAdjacentPosts(post.slug);
   const recommendedPosts = getRecommendedPosts(post, 3);
+  const articleUrl = absoluteUrl(post.url);
   const { content } = await compileMDX({
     source: post.content,
     components: mdxComponents,
@@ -100,6 +105,8 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
   return (
     <>
       <ReadingProgressBar />
+      <MobileFloatingTOC items={post.toc} />
+      <ArticleBackToTop />
       <div className="mx-auto max-w-6xl px-5 py-9 sm:px-6 sm:py-10">
         <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-secondary transition hover:text-accent">
           <ArrowLeft className="h-4 w-4" />
@@ -120,17 +127,17 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                 {post.title}
               </h1>
               <p className="mt-4 text-[15px] leading-8 text-secondary sm:text-base sm:leading-9">{post.description}</p>
-              <TagList className="mt-5" tags={post.tags} maxVisible={5} getHref={(tag) => `/tags/${encodeURIComponent(tag)}`} />
+              <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <TagList tags={post.tags} maxVisible={5} getHref={(tag) => `/tags/${encodeURIComponent(tag)}`} />
+                <ArticleShare url={articleUrl} title={post.title} className="w-full sm:w-auto" />
+              </div>
             </header>
-
-            <div className="mt-8 lg:hidden">
-              <TOC items={post.toc} compact />
-            </div>
 
             <div className="article-content prose prose-slate mt-8 max-w-none dark:prose-invert">
               {content}
             </div>
             <CodeBlockCopyButtons />
+            <ArticleLike slug={post.slug} title={post.title} />
 
             <div className="mt-12">
               <ArticleConversion recommendedPosts={recommendedPosts} />
@@ -159,7 +166,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
             </nav>
           </article>
 
-          <aside className="hidden lg:block">
+          <aside className="hidden self-start lg:sticky lg:top-32 lg:block lg:max-h-[calc(100vh-9rem)] lg:overflow-y-auto">
             <TOC items={post.toc} />
           </aside>
         </div>

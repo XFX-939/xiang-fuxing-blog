@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import type { Post } from "@/lib/posts";
+import type { PostListItem } from "@/lib/posts";
 import { formatDate } from "@/lib/utils";
 import { TagList } from "@/components/TagList";
 
 type ArticleCardProps = {
-  post: Post;
+  post: PostListItem;
   compact?: boolean;
 };
 
