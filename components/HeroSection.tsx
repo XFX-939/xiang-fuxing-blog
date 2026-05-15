@@ -58,25 +58,8 @@ export function HeroSection() {
                 </div>
               ))}
             </div>
-            <div className="mt-6 grid max-w-full grid-cols-1 gap-4 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-stretch">
-              <div className="grid gap-4 lg:flex lg:h-full lg:flex-col">
-                <div className="flex flex-wrap gap-3">
-                  <Link
-                    href="/blog"
-                    className="inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
-                  >
-                    阅读文章
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                  <Link
-                    href="/projects"
-                    className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border bg-surface px-5 py-3 text-sm font-semibold text-primary transition hover:border-accent hover:text-accent"
-                  >
-                    查看项目
-                  </Link>
-                </div>
-                <ProfilePhotoCard compact />
-              </div>
+            <div className="mt-6 grid max-w-full grid-cols-1 items-start gap-4 lg:grid-cols-[340px_minmax(0,1fr)] lg:items-stretch xl:grid-cols-[360px_minmax(0,1fr)]">
+              <AuthorEntryCard />
               <HeroReadingGuide />
             </div>
           </div>
@@ -89,7 +72,7 @@ export function HeroSection() {
 
 function HeroReadingGuide() {
   return (
-    <div className="hidden h-full rounded-md border border-border bg-surface p-5 shadow-sm backdrop-blur lg:block dark:shadow-soft-dark">
+    <section className="h-full rounded-md border border-border bg-surface p-5 shadow-sm backdrop-blur dark:shadow-soft-dark">
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Start Here</p>
@@ -114,31 +97,45 @@ function HeroReadingGuide() {
           </Link>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
 
-function ProfilePhotoCard({ compact = false }: { compact?: boolean }) {
+function AuthorEntryCard() {
   return (
-    <div className={`rounded-md border border-border bg-surface p-2 shadow-soft backdrop-blur dark:shadow-soft-dark ${compact ? "lg:flex lg:flex-1 lg:items-center" : ""}`}>
-      <div className={compact ? "grid grid-cols-[88px_minmax(0,1fr)] items-center gap-3 sm:grid-cols-[104px_minmax(0,1fr)] lg:w-full lg:grid-cols-[132px_minmax(0,1fr)] lg:gap-4" : ""}>
-        <div className={compact ? "relative aspect-square overflow-hidden rounded-md bg-surface-elevated" : "relative aspect-[4/5] overflow-hidden rounded-md bg-surface-elevated"}>
+    <aside className="flex h-full flex-col justify-between rounded-md border border-border bg-surface p-4 shadow-soft backdrop-blur dark:shadow-soft-dark">
+      <div className="flex items-center gap-4">
+        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md bg-surface-elevated sm:h-[88px] sm:w-[88px]">
           <Image
             src="/images/xiang-fuxing-profile.jpg"
             alt="向福星个人照片"
             fill
-            priority={!compact}
-            sizes={compact ? "(max-width: 640px) 88px, (max-width: 1024px) 104px, 132px" : "320px"}
+            sizes="(max-width: 640px) 80px, 88px"
             className="object-cover object-[50%_32%]"
           />
         </div>
-        <div className={compact ? "min-w-0 px-1 py-2" : "px-2 py-3"}>
+        <div className="min-w-0">
           <p className="text-sm font-semibold text-primary">向福星</p>
           <p className="mt-1 text-xs leading-5 text-muted">
             Wireless Simulation · AI for Engineering
           </p>
         </div>
       </div>
-    </div>
+      <div className="mt-5 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+        <Link
+          href="/blog"
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-primary px-4 py-3 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
+        >
+          阅读文章
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+        <Link
+          href="/projects"
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-border bg-surface px-4 py-3 text-sm font-semibold text-primary transition hover:border-accent hover:text-accent"
+        >
+          查看项目
+        </Link>
+      </div>
+    </aside>
   );
 }
