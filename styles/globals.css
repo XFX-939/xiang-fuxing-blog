@@ -218,9 +218,7 @@ body {
 }
 
 .article-content :where(table) {
-  display: block;
   width: 100%;
-  overflow-x: auto;
 }
 
 @media (max-width: 640px) {
