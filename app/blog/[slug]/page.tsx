@@ -13,7 +13,6 @@ import { ArticleConversion } from "@/components/ArticleConversion";
 import { ArticleBackToTop } from "@/components/ArticleBackToTop";
 import { ArticleLike } from "@/components/ArticleLike";
 import { ArticleShare } from "@/components/ArticleShare";
-import { AuthorCard } from "@/components/AuthorCard";
 import { CodeBlockCopyButtons } from "@/components/CodeBlockCopyButtons";
 import { mdxComponents } from "@/components/MDXComponents";
 import { MobileFloatingTOC } from "@/components/MobileFloatingTOC";
@@ -141,10 +140,6 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
 
             <div className="mt-12">
               <ArticleConversion recommendedPosts={recommendedPosts} />
-            </div>
-
-            <div className="mt-8">
-              <AuthorCard />
             </div>
 
             <nav className="mt-8 grid gap-4 sm:grid-cols-2" aria-label="上一篇和下一篇文章">
