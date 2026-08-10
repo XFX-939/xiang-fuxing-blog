@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">OpenClaw 多智能体五层安全边界</title>
+  <desc id="desc">从消息入口、Agent工具、工作区与MCP、记忆与敏感级别、资源与回滚五层限制多智能体能力。</desc>
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#111a30"/></linearGradient>
+    <style>
+      .t{font:700 30px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#f5f7ff}.s{font:400 15px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#a7b3ca}.h{font:700 18px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#f7f8ff}.b{font:400 14px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#c2ccdf}.num{font:700 20px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#07111f}.tag{font:600 13px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#dce6fa}
+    </style>
+  </defs>
+  <rect width="1200" height="700" rx="28" fill="url(#bg3)"/>
+  <text x="54" y="58" class="t">我给这支“数字团队”加了五层边界</text>
+  <text x="54" y="87" class="s">不是只问“它能做什么”，还要验证“越权时能不能被挡住”</text>
+
+  <g>
+    <rect x="54" y="124" width="722" height="82" rx="18" fill="#172440" stroke="#344c76"/>
+    <circle cx="96" cy="165" r="22" fill="#8da5ff"/><text x="96" y="172" text-anchor="middle" class="num">1</text>
+    <text x="134" y="155" class="h">消息与路由</text><text x="134" y="181" class="b">只有 main 绑定正式入口；专家禁 message、sessions_send 和继续委派</text>
+    <rect x="806" y="144" width="300" height="42" rx="14" fill="#172440"/><text x="832" y="171" class="tag">单一入口 · 单次最终回复</text>
+  </g>
+  <g>
+    <rect x="54" y="222" width="790" height="82" rx="18" fill="#1c2242" stroke="#4a4676"/>
+    <circle cx="96" cy="263" r="22" fill="#b793ff"/><text x="96" y="270" text-anchor="middle" class="num">2</text>
+    <text x="134" y="253" class="h">工具与执行</text><text x="134" y="279" class="b">11 个 Agent 全员 exec/process deny，elevated 关闭；ops 仅固定无参数只读动作</text>
+    <rect x="874" y="242" width="232" height="42" rx="14" fill="#1c2242"/><text x="900" y="269" class="tag">能力 ≠ 永久授权</text>
+  </g>
+  <g>
+    <rect x="54" y="320" width="858" height="82" rx="18" fill="#152a33" stroke="#32615f"/>
+    <circle cx="96" cy="361" r="22" fill="#5ed5bd"/><text x="96" y="368" text-anchor="middle" class="num">3</text>
+    <text x="134" y="351" class="h">Workspace 与 MCP</text><text x="134" y="377" class="b">独立目录、workspaceOnly；业务 MCP 只存在于获授权专家的本地 bundle</text>
+    <rect x="942" y="340" width="164" height="42" rx="14" fill="#152a33"/><text x="968" y="367" class="tag">main 无业务 MCP</text>
+  </g>
+  <g>
+    <rect x="54" y="418" width="926" height="82" rx="18" fill="#2a231d" stroke="#68563d"/>
+    <circle cx="96" cy="459" r="22" fill="#f0b45f"/><text x="96" y="466" text-anchor="middle" class="num">4</text>
+    <text x="134" y="449" class="h">Memory 与敏感级别</text><text x="134" y="475" class="b">长期事实分域保存；Token、正文、实时价格、工作秘密不进入 Shared</text>
+    <rect x="1010" y="438" width="96" height="42" rx="14" fill="#2a231d"/><text x="1036" y="465" class="tag">最小传递</text>
+  </g>
+  <g>
+    <rect x="54" y="516" width="994" height="82" rx="18" fill="#2c1d2b" stroke="#6a3d62"/>
+    <circle cx="96" cy="557" r="22" fill="#f08ac8"/><text x="96" y="564" text-anchor="middle" class="num">5</text>
+    <text x="134" y="547" class="h">资源、验收与回滚</text><text x="134" y="573" class="b">Agent 并发 2、Cron 并发 1、MCP 串行探测；正向与越权测试都要有证据</text>
+    <rect x="1078" y="536" width="68" height="42" rx="14" fill="#2c1d2b"/><text x="1092" y="563" class="tag">可回滚</text>
+  </g>
+
+  <rect x="54" y="625" width="1092" height="44" rx="14" fill="#0c1628" stroke="#243653"/>
+  <text x="78" y="653" class="tag">诚实状态：Docker Sandbox = DEGRADED　·　Tushare = DORMANT　·　未完成人工验证 = PENDING</text>
+</svg>

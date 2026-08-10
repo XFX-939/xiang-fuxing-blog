@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">OpenClaw 多智能体单次消息交互流程</title>
+  <desc id="desc">用户消息由 main 接收，必要时委派专家，专家回传结构化 Handoff，main 校验后只回复一次。</desc>
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#111a30"/></linearGradient>
+    <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#7f91b2"/></marker>
+    <style>
+      .t{font:700 30px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#f5f7ff}.s{font:400 15px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#a7b3ca}.h{font:700 17px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#f5f7ff}.b{font:400 14px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#c4cee0}.n{font:700 13px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#07111f}
+    </style>
+  </defs>
+  <rect width="1200" height="650" rx="28" fill="url(#bg2)"/>
+  <text x="52" y="58" class="t">一次问题，只产生一条最终回复</text>
+  <text x="52" y="86" class="s">简单问题 main 直答；专业任务 spawn 后先等待，专家没有对外消息能力</text>
+
+  <g>
+    <rect x="70" y="116" width="210" height="56" rx="15" fill="#16243c" stroke="#2d4265"/><text x="151" y="151" text-anchor="middle" class="h">用户 / 微信</text>
+    <rect x="356" y="116" width="210" height="56" rx="15" fill="#4f69d9"/><text x="461" y="151" text-anchor="middle" class="h">main</text>
+    <rect x="642" y="116" width="210" height="56" rx="15" fill="#7155b8"/><text x="747" y="151" text-anchor="middle" class="h">领域专家</text>
+    <rect x="928" y="116" width="210" height="56" rx="15" fill="#147b6e"/><text x="1033" y="151" text-anchor="middle" class="h">最终答复</text>
+    <path d="M175 172V596M461 172V596M747 172V596M1033 172V596" stroke="#2b3b59" stroke-width="2" stroke-dasharray="6 8"/>
+  </g>
+
+  <circle cx="175" cy="222" r="18" fill="#8da5ff"/><text x="175" y="227" text-anchor="middle" class="n">1</text>
+  <path d="M198 222H430" stroke="#7f91b2" stroke-width="2.5" marker-end="url(#a2)"/>
+  <text x="220" y="208" class="h">提出问题与约束</text><text x="220" y="240" class="s">包含授权，但不在对话中发送凭证</text>
+
+  <circle cx="461" cy="300" r="18" fill="#8da5ff"/><text x="461" y="305" text-anchor="middle" class="n">2</text>
+  <rect x="493" y="270" width="338" height="62" rx="13" fill="#14223a" stroke="#2b4165"/>
+  <text x="514" y="295" class="h">分类、敏感判断、最小化上下文</text>
+  <text x="514" y="318" class="s">不需要专属工具时，直接走第 6 步</text>
+
+  <circle cx="461" cy="382" r="18" fill="#8da5ff"/><text x="461" y="387" text-anchor="middle" class="n">3</text>
+  <path d="M484 382H716" stroke="#7f91b2" stroke-width="2.5" marker-end="url(#a2)"/>
+  <text x="507" y="366" class="h">显式 agentId 委派</text><text x="507" y="399" class="s">一次最多两个专家 · 不递归</text>
+
+  <circle cx="747" cy="458" r="18" fill="#b793ff"/><text x="747" y="463" text-anchor="middle" class="n">4</text>
+  <rect x="420" y="430" width="286" height="58" rx="13" fill="#201c38" stroke="#574378"/>
+  <text x="440" y="454" class="h">结构化 Handoff 回传</text><text x="440" y="477" class="s">证据 · 风险 · 未知项 · 置信度</text>
+  <path d="M721 458H490" stroke="#9d89c9" stroke-width="2.5" marker-end="url(#a2)"/>
+
+  <circle cx="461" cy="530" r="18" fill="#8da5ff"/><text x="461" y="535" text-anchor="middle" class="n">5</text>
+  <rect x="493" y="503" width="338" height="56" rx="13" fill="#14223a" stroke="#2b4165"/>
+  <text x="514" y="527" class="h">校验证据、处理冲突、统一表达</text>
+  <text x="514" y="550" class="s">错误与工具状态不直接透传给用户</text>
+
+  <circle cx="461" cy="598" r="18" fill="#5ed5bd"/><text x="461" y="603" text-anchor="middle" class="n">6</text>
+  <path d="M484 598H1002" stroke="#5ed5bd" stroke-width="3" marker-end="url(#a2)"/>
+  <text x="650" y="585" class="h">main 只发送一次最终回复</text>
+</svg>

@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="860" viewBox="0 0 1200 860" role="img" aria-labelledby="title desc">
+  <title id="title">OpenClaw 一主控十专家架构</title>
+  <desc id="desc">用户消息先进入 main，main 根据任务调用十个不同专家，专家通过统一 Handoff 返回，最后仍由 main 单次回复。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="1" stop-color="#111a30"/>
+    </linearGradient>
+    <linearGradient id="chief" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f7cff"/>
+      <stop offset="1" stop-color="#7357ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#000" flood-opacity=".28"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7185ad"/>
+    </marker>
+    <style>
+      .title{font:700 32px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#f5f7ff}
+      .subtitle{font:400 16px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#9cabc7}
+      .label{font:700 17px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#f7f8ff}
+      .body{font:400 14px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#b7c2d8}
+      .small{font:500 13px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#9fb0cf}
+      .chip{font:600 12px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;fill:#dbe3ff}
+    </style>
+  </defs>
+  <rect width="1200" height="860" rx="28" fill="url(#bg)"/>
+  <circle cx="1070" cy="80" r="170" fill="#4f7cff" opacity=".08"/>
+  <circle cx="110" cy="790" r="210" fill="#55d6be" opacity=".05"/>
+
+  <text x="54" y="58" class="title">OpenClaw：1 个 Chief + 10 个专家</text>
+  <text x="54" y="88" class="subtitle">模型提供能力，路由和权限决定组织关系</text>
+
+  <rect x="54" y="130" width="230" height="104" rx="18" fill="#15223a" stroke="#2a3b5d"/>
+  <text x="82" y="166" class="label">用户 / 微信</text>
+  <text x="82" y="194" class="body">唯一正式入口</text>
+  <text x="82" y="217" class="small">问题、约束与授权</text>
+
+  <path d="M 284 182 H 382" stroke="#7185ad" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+  <text x="314" y="166" class="small">输入</text>
+
+  <g filter="url(#shadow)">
+    <rect x="400" y="116" width="410" height="140" rx="24" fill="url(#chief)"/>
+  </g>
+  <text x="438" y="158" class="label" style="font-size:22px">main · Chief 管家</text>
+  <text x="438" y="190" class="body" style="fill:#eef1ff">识别意图 · 敏感判断 · 路由 · 脱敏 · 终审</text>
+  <rect x="438" y="211" width="106" height="26" rx="13" fill="#fff" opacity=".16"/>
+  <text x="455" y="229" class="chip">Luna · medium</text>
+  <rect x="556" y="211" width="103" height="26" rx="13" fill="#fff" opacity=".16"/>
+  <text x="573" y="229" class="chip">唯一消息出口</text>
+  <rect x="671" y="211" width="98" height="26" rx="13" fill="#fff" opacity=".16"/>
+  <text x="688" y="229" class="chip">无业务 MCP</text>
+
+  <path d="M 810 182 H 916" stroke="#7185ad" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+  <text x="836" y="166" class="small">单次终答</text>
+  <rect x="934" y="130" width="212" height="104" rx="18" fill="#142b28" stroke="#2c5b54"/>
+  <text x="962" y="166" class="label">最终回复</text>
+  <text x="962" y="194" class="body">由 main 汇总校验</text>
+  <text x="962" y="217" class="small">专家不能直接发送</text>
+
+  <path d="M 605 256 V 302 H 220 V 334" stroke="#7185ad" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M 605 256 V 334" stroke="#7185ad" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M 605 302 H 980 V 334" stroke="#7185ad" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="626" y="292" class="small">显式 agentId · 最大并发 2 · 深度 1</text>
+
+  <g>
+    <rect x="50" y="350" width="340" height="350" rx="22" fill="#111d33" stroke="#2a3b5d"/>
+    <text x="78" y="388" class="label">深度推理岗位</text>
+    <rect x="267" y="369" width="88" height="26" rx="13" fill="#4f7cff" opacity=".2"/>
+    <text x="287" y="387" class="chip">Sol · high</text>
+
+    <rect x="76" y="416" width="288" height="52" rx="13" fill="#172741"/>
+    <text x="96" y="438" class="label">investment</text><text x="96" y="458" class="small">投资研究 · 风险</text>
+    <rect x="76" y="480" width="288" height="52" rx="13" fill="#172741"/>
+    <text x="96" y="502" class="label">work</text><text x="96" y="522" class="small">无线 · 仿真 · 公开/脱敏</text>
+    <rect x="76" y="544" width="288" height="52" rx="13" fill="#172741"/>
+    <text x="96" y="566" class="label">ops</text><text x="96" y="586" class="small">只读诊断 · 无任意 Shell</text>
+    <rect x="76" y="608" width="288" height="52" rx="13" fill="#172741"/>
+    <text x="96" y="630" class="label">consultant</text><text x="96" y="650" class="small">战略 · 管理 · 决策框架</text>
+  </g>
+
+  <g>
+    <rect x="430" y="350" width="340" height="350" rx="22" fill="#111d33" stroke="#2a3b5d"/>
+    <text x="458" y="388" class="label">内容与知识岗位</text>
+    <rect x="647" y="369" width="88" height="26" rx="13" fill="#9a72ff" opacity=".22"/>
+    <text x="662" y="387" class="chip">Luna</text>
+
+    <rect x="456" y="416" width="288" height="64" rx="13" fill="#1c2242"/>
+    <text x="476" y="441" class="label">image</text><text x="476" y="464" class="small">封面 · 结构图 · 视觉资产</text>
+    <rect x="456" y="494" width="288" height="64" rx="13" fill="#1c2242"/>
+    <text x="476" y="519" class="label">writer</text><text x="476" y="542" class="small">博客 · 汇报 · 中文表达</text>
+    <rect x="456" y="572" width="288" height="64" rx="13" fill="#1c2242"/>
+    <text x="476" y="597" class="label">knowledge</text><text x="476" y="620" class="small">Markdown · 分类 · 长期沉淀</text>
+  </g>
+
+  <g>
+    <rect x="810" y="350" width="340" height="350" rx="22" fill="#111d33" stroke="#2a3b5d"/>
+    <text x="838" y="388" class="label">生活服务岗位</text>
+    <rect x="1027" y="369" width="88" height="26" rx="13" fill="#3dcbb1" opacity=".2"/>
+    <text x="1042" y="387" class="chip">Luna</text>
+
+    <rect x="836" y="416" width="288" height="64" rx="13" fill="#142b2e"/>
+    <text x="856" y="441" class="label">life</text><text x="856" y="464" class="small">天气 · 待办 · 本地生活</text>
+    <rect x="836" y="494" width="288" height="64" rx="13" fill="#142b2e"/>
+    <text x="856" y="519" class="label">travel</text><text x="856" y="542" class="small">航班 · 地图 · 路线</text>
+    <rect x="836" y="572" width="288" height="64" rx="13" fill="#142b2e"/>
+    <text x="856" y="597" class="label">shopping</text><text x="856" y="620" class="small">研究 · 比价 · 不下单支付</text>
+  </g>
+
+  <rect x="50" y="734" width="1100" height="78" rx="18" fill="#0c1628" stroke="#243653"/>
+  <text x="82" y="766" class="label">统一交接：Handoff → 结论 / 证据 / 风险 / 未知项 / 敏感级别</text>
+  <text x="82" y="793" class="small">独立 workspace · 独立 Memory · 专属 MCP · exec deny · 专家无消息权、无继续委派权</text>
+</svg>
