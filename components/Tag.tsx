@@ -12,7 +12,7 @@ export function Tag({ children, href, count, className }: TagProps) {
   const content = (
     <span
       className={cn(
-        "inline-flex max-w-full items-center gap-1 rounded-md border border-border bg-tag-bg px-2.5 py-1 text-xs font-medium text-tag-text transition",
+        "inline-flex max-w-full items-center gap-1 border border-border bg-tag-bg px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.06em] text-tag-text transition",
         href && "hover:border-accent hover:text-accent hover:bg-accent-soft",
         className
       )}

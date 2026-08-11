@@ -1,5 +1,5 @@
-import { Logo } from "@/components/Logo";
 import { siteConfig } from "@/lib/site";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 const footerContacts = [
@@ -11,53 +11,80 @@ const footerContacts = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-surface-elevated">
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-5 py-10 sm:px-6 md:grid-cols-[1.5fr_1fr_1fr]">
-        <div>
-          <Logo text={siteConfig.siteName} gradientId="logo-signal-footer" markClassName="h-8 w-8" textClassName="text-sm" />
-          <p className="mt-3 max-w-xl text-sm leading-7 text-secondary">
-            {siteConfig.siteDescription}
-          </p>
-        </div>
-        <div>
-          <p className="text-sm font-semibold text-primary">内容</p>
-          <div className="mt-3 grid gap-2 text-[13px] leading-6 text-secondary sm:text-sm">
-            <Link href="/blog" className="hover:text-accent">
-              全部文章
-            </Link>
-            <Link href="/archive" className="hover:text-accent">
-              文章归档
-            </Link>
-            <Link href="/collaboration" className="hover:text-accent">
-              合作交流
-            </Link>
-            <Link href="/categories" className="hover:text-accent">
-              分类索引
-            </Link>
-            <Link href="/tags" className="hover:text-accent">
-              标签索引
+    <footer className="border-t-4 border-[#f15a29] bg-[#171816] text-[#f3eee4]">
+      <div className="mx-auto max-w-[90rem] px-5 py-14 sm:px-6 sm:py-16 lg:px-8">
+        <div className="grid gap-14 lg:grid-cols-[minmax(0,1.6fr)_minmax(12rem,0.65fr)_minmax(16rem,0.85fr)] lg:gap-10 xl:gap-16">
+          <div>
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.24em] text-[#8db4cc]">
+              XFX · Signal Field Notes
+            </p>
+            <h2 className="mt-5 max-w-3xl text-3xl font-bold leading-[1.25] tracking-[-0.035em] text-[#f7f1e7] sm:text-4xl lg:text-[2.75rem]">
+              把复杂问题，写成可验证的系统判断。
+            </h2>
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-[#aaa9a2] sm:text-base">
+              {siteConfig.siteDescription}
+            </p>
+            <Link
+              href="/collaboration"
+              className="group mt-8 inline-flex items-center gap-4 border-b border-[#f15a29] pb-2 text-sm font-bold text-[#f7f1e7] transition-colors hover:text-[#ff8a63] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7043] focus-visible:ring-offset-4 focus-visible:ring-offset-[#171816]"
+            >
+              发起一次交流
+              <ArrowUpRight className="h-4 w-4 text-[#ff7043] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
             </Link>
           </div>
-        </div>
-        <div>
-          <p className="text-sm font-semibold text-primary">联系</p>
-          <div className="mt-3 grid grid-cols-1 gap-x-4 gap-y-2 text-[13px] leading-6 text-secondary min-[430px]:grid-cols-2 sm:grid-cols-1 sm:text-sm">
-            {footerContacts.map((contact) => (
-              <a
-                key={contact.label}
-                href={contact.href}
-                target={contact.external ? "_blank" : undefined}
-                rel={contact.external ? "noreferrer" : undefined}
-                className="min-w-0 break-words hover:text-accent"
-              >
-                {contact.label}：{contact.value}
-              </a>
-            ))}
+
+          <div>
+            <div className="flex items-center gap-3 border-b border-white/20 pb-3">
+              <span className="h-0.5 w-6 bg-[#f15a29]" aria-hidden="true" />
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8db4cc]">内容索引</p>
+            </div>
+            <div className="grid text-sm font-semibold text-[#c8c5bb]">
+              {[
+                ["/blog", "全部文章"],
+                ["/archive", "文章归档"],
+                ["/collaboration", "合作交流"],
+                ["/categories", "分类索引"],
+                ["/tags", "标签索引"]
+              ].map(([href, label]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="border-b border-white/15 py-3 transition-colors hover:border-[#f15a29] hover:pl-2 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#ff7043]"
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center gap-3 border-b border-white/20 pb-3">
+              <span className="h-0.5 w-6 bg-[#f15a29]" aria-hidden="true" />
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8db4cc]">联系与关注</p>
+            </div>
+            <div className="grid text-sm text-[#c8c5bb]">
+              {footerContacts.map((contact) => (
+                <a
+                  key={contact.label}
+                  href={contact.href}
+                  target={contact.external ? "_blank" : undefined}
+                  rel={contact.external ? "noreferrer" : undefined}
+                  className="group grid min-w-0 grid-cols-[4.25rem_minmax(0,1fr)] gap-3 border-b border-white/15 py-3 transition-colors hover:border-[#f15a29] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#ff7043]"
+                >
+                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-[#7898ad] group-hover:text-[#ff8a63]">
+                    {contact.label}
+                  </span>
+                  <span className="min-w-0 break-words text-right group-hover:text-white">{contact.value}</span>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="mx-auto max-w-6xl px-5 pb-8 text-xs text-muted sm:px-6">
-        <span>© {new Date().getFullYear()} {siteConfig.author}</span>
+
+        <div className="mt-16 flex flex-col gap-3 border-t border-white/20 pt-6 font-mono text-[10px] uppercase tracking-[0.14em] text-[#767a78] sm:flex-row sm:items-center sm:justify-between">
+          <span>© {new Date().getFullYear()} {siteConfig.author}</span>
+          <span>Independent research · Continuous notes</span>
+        </div>
       </div>
     </footer>
   );

@@ -11,8 +11,18 @@ export function ReadingProgressBar() {
 
     const updateProgress = () => {
       const element = document.documentElement;
-      const scrollable = element.scrollHeight - window.innerHeight;
-      const value = scrollable > 0 ? (element.scrollTop / scrollable) * 100 : 0;
+      const readingSurface = document.querySelector<HTMLElement>("[data-reading-surface]");
+      let start = 0;
+      let end = element.scrollHeight - window.innerHeight;
+
+      if (readingSurface) {
+        const surfaceTop = window.scrollY + readingSurface.getBoundingClientRect().top;
+        start = Math.max(0, surfaceTop - window.innerHeight * 0.2);
+        end = surfaceTop + readingSurface.offsetHeight - window.innerHeight * 0.72;
+      }
+
+      const scrollable = Math.max(0, end - start);
+      const value = scrollable > 0 ? ((window.scrollY - start) / scrollable) * 100 : 0;
       setProgress(Math.min(100, Math.max(0, value)));
     };
 
@@ -34,18 +44,24 @@ export function ReadingProgressBar() {
 
   return (
     <>
-      <div className="fixed inset-x-0 top-0 z-[60] h-1 bg-border/60" aria-hidden="true">
+      <div
+        className="fixed inset-x-0 top-0 z-[60] h-[3px] bg-border/60"
+        role="progressbar"
+        aria-label="文章阅读进度"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={roundedProgress}
+      >
         <div
-          className="h-full bg-gradient-to-r from-signal-500 via-cyan-400 to-violet-400 shadow-[0_0_14px_rgba(56,189,248,0.4)] transition-[width] duration-150 ease-out"
-          style={{ width: `${progress}%` }}
+          className="h-full origin-left bg-accent transition-transform duration-100 ease-out will-change-transform"
+          style={{ transform: `scaleX(${progress / 100})` }}
         />
       </div>
       <div
-        className="fixed bottom-5 right-5 z-[45] hidden items-center gap-2 rounded-full border border-border bg-surface/90 px-3 py-1.5 text-xs font-semibold text-secondary shadow-soft backdrop-blur-xl dark:shadow-soft-dark sm:flex"
+        className="fixed bottom-5 right-5 z-[45] hidden items-center gap-2 border border-border border-l-2 border-l-accent bg-surface/90 px-3 py-2 text-[11px] font-semibold tracking-[0.06em] text-secondary backdrop-blur-xl sm:flex"
         aria-label={`阅读进度 ${roundedProgress}%`}
       >
-        <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-        <span>阅读进度</span>
+        <span>已读</span>
         <span className="tabular-nums text-accent">{roundedProgress}%</span>
       </div>
     </>

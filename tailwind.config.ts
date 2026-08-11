@@ -12,15 +12,29 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: [
-          "Inter",
+          "var(--font-cabinet)",
+          "Avenir Next",
           "-apple-system",
           "BlinkMacSystemFont",
-          "Segoe UI",
           "PingFang SC",
+          "Segoe UI",
           "Microsoft YaHei",
-          "Helvetica Neue",
           "Arial",
           "sans-serif"
+        ],
+        display: [
+          "var(--font-cabinet)",
+          "Avenir Next",
+          "PingFang SC",
+          "Microsoft YaHei",
+          "sans-serif"
+        ],
+        serif: [
+          "Songti SC",
+          "Noto Serif CJK SC",
+          "STSong",
+          "SimSun",
+          "serif"
         ],
         mono: [
           "JetBrains Mono",
@@ -39,7 +53,10 @@ const config: Config = {
         secondary: "var(--text-secondary)",
         muted: "var(--text-muted)",
         accent: "var(--accent)",
+        "accent-bright": "var(--accent-bright)",
         "accent-soft": "var(--accent-soft)",
+        denim: "var(--denim)",
+        moss: "var(--moss)",
         "tag-bg": "var(--tag-bg)",
         "tag-text": "var(--tag-text)",
         ink: {
@@ -76,8 +93,8 @@ const config: Config = {
         }
       },
       boxShadow: {
-        soft: "0 18px 60px rgba(15, 23, 42, 0.08)",
-        "soft-dark": "0 18px 60px rgba(0, 0, 0, 0.28)"
+        soft: "0 24px 70px rgba(22, 26, 25, 0.10)",
+        "soft-dark": "0 24px 70px rgba(0, 0, 0, 0.32)"
       },
       backgroundImage: {
         "subtle-grid":

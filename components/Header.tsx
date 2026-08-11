@@ -1,55 +1,41 @@
 import Link from "next/link";
 import { GlobalSearch } from "@/components/GlobalSearch";
-import { Logo } from "@/components/Logo";
 import { MobileNav } from "@/components/MobileNav";
 import { NavLink } from "@/components/NavLink";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { UIVersionSwitch } from "@/components/UIVersionSwitch";
 import { navItems } from "@/lib/site";
-import { topicHubs } from "@/lib/topics";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 w-full max-w-full overflow-x-clip border-b border-border bg-surface backdrop-blur-xl">
-      <div className="border-b border-border bg-ink-950 text-white dark:bg-[#050a14]">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-2 text-xs sm:px-6">
-          <p className="truncate font-semibold tracking-normal text-cyan-100">
-            用 AI 重构复杂工程问题的建模、仿真与决策
-          </p>
-          <div className="hidden shrink-0 items-center gap-2 lg:flex">
-            {topicHubs.map((topic) => (
-              <Link
-                key={topic.slug}
-                href={topic.href}
-                className="rounded-md px-2 py-1 text-[11px] font-medium text-slate-300 transition hover:bg-white/10 hover:text-white"
-              >
-                {topic.title}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-5 sm:px-6">
-        <Link href="/" className="group shrink-0 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
-          <Logo text="向福星" gradientId="logo-signal-header" textClassName="hidden sm:inline xl:inline" />
+    <header className="sticky top-0 z-40 w-full border-b border-[#171816]/20 bg-[#f3eee4] text-[#171816] dark:border-white/15 dark:bg-[#0d141b] dark:text-[#f3eee4]">
+      <div className="mx-auto flex h-[4.25rem] max-w-[90rem] items-center gap-3 px-4 sm:gap-5 sm:px-6 lg:px-8">
+        <Link
+          href="/"
+          aria-label="返回首页"
+          className="group inline-flex shrink-0 items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f15a29] focus-visible:ring-offset-4 focus-visible:ring-offset-[#f3eee4] dark:focus-visible:ring-offset-[#0d141b]"
+        >
+          <span className="h-8 w-[3px] bg-[#f15a29] transition-transform duration-300 group-hover:scale-y-75" aria-hidden="true" />
+          <span className="grid leading-none">
+            <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.24em] text-[#2d5d7f] dark:text-[#8db4cc]">
+              Signal Field Notes
+            </span>
+            <span className="mt-1.5 text-[15px] font-bold tracking-[0.12em]">向福星</span>
+          </span>
         </Link>
 
-        <nav className="hidden min-w-0 shrink-0 items-center gap-1 xl:flex" aria-label="主导航">
+        <nav className="hidden h-full min-w-0 flex-1 items-stretch justify-center xl:flex" aria-label="主导航">
           {navItems.map((item) => (
             <NavLink key={item.href} href={item.href} label={item.label} />
           ))}
         </nav>
 
-        <GlobalSearch className="hidden min-w-[18rem] flex-1 lg:block xl:max-w-[34rem] 2xl:max-w-[38rem]" />
-
-        <div className="flex items-center gap-2">
+        <div className="ml-auto flex min-w-0 items-center gap-2 sm:gap-3">
+          <GlobalSearch className="hidden w-[clamp(13rem,20vw,19rem)] lg:block" />
+          <UIVersionSwitch active="signal" className="hidden xl:inline-flex" />
           <ThemeToggle />
           <MobileNav />
         </div>
-      </div>
-
-      <div className="mx-auto max-w-6xl px-5 pb-3 sm:px-6 xl:hidden">
-        <GlobalSearch />
       </div>
     </header>
   );

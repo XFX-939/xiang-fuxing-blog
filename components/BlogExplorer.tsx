@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowDown, Search, X } from "lucide-react";
 import { ArticleCard } from "@/components/ArticleCard";
-import { CategoryFilter } from "@/components/CategoryFilter";
-import { Pagination } from "@/components/Pagination";
-import { SearchBox } from "@/components/SearchBox";
-import { Tag } from "@/components/Tag";
 import type { PostListItem } from "@/lib/posts";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 type BlogExplorerProps = {
   posts: PostListItem[];
@@ -18,6 +20,8 @@ type BlogExplorerProps = {
 const pageSize = 6;
 
 export function BlogExplorer({ posts, categories, tags, initialCategory = "全部" }: BlogExplorerProps) {
+  const explorerRef = useRef<HTMLDivElement>(null);
+  const filterRailRef = useRef<HTMLElement>(null);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState(initialCategory);
   const [tag, setTag] = useState("全部");
@@ -93,7 +97,87 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
   const visiblePosts = filteredPosts.slice(0, visible);
   const resultCount = hasQuery ? searchTotal : filteredPosts.length;
   const visibleTags = showAllTags ? tags : tags.slice(0, 12);
-  const hiddenTagCount = Math.max(tags.length - visibleTags.length, 0);
+  const hasHiddenTags = tags.length > 12;
+  const motionKey = visiblePosts.map((post) => post.slug).join("|");
+  const signalTopics = useMemo(() => {
+    const topicNames = tags.slice(0, 10).map((item) => item.name);
+
+    if (topicNames.length > 0) {
+      return topicNames;
+    }
+
+    return categories.slice(0, 10).map((item) => item.name);
+  }, [categories, tags]);
+
+  useGSAP(
+    () => {
+      const scope = explorerRef.current;
+
+      if (!scope) {
+        return;
+      }
+
+      const media = gsap.matchMedia();
+
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        const signalTrack = scope.querySelector<HTMLElement>("[data-signal-track]");
+
+        if (signalTrack) {
+          gsap.to(signalTrack, {
+            xPercent: -50,
+            duration: 34,
+            ease: "none",
+            repeat: -1
+          });
+        }
+
+        const rows = gsap.utils.toArray<HTMLElement>("[data-article-row]", scope);
+
+        rows.forEach((row) => {
+          const revealItems = row.querySelectorAll<HTMLElement>("[data-reveal]");
+
+          gsap.fromTo(
+            revealItems,
+            { autoAlpha: 0.18, y: 12 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              stagger: 0.045,
+              ease: "none",
+              scrollTrigger: {
+                trigger: row,
+                start: "top 92%",
+                end: "top 68%",
+                scrub: 0.35
+              }
+            }
+          );
+        });
+      });
+
+      media.add("(min-width: 1024px)", () => {
+        if (!filterRailRef.current) {
+          return;
+        }
+
+        ScrollTrigger.create({
+          trigger: scope,
+          start: "top top+=104",
+          end: "bottom bottom-=48",
+          pin: filterRailRef.current,
+          pinSpacing: false,
+          invalidateOnRefresh: true
+        });
+      });
+
+      return () => media.revert();
+    },
+    {
+      scope: explorerRef,
+      dependencies: [motionKey],
+      revertOnUpdate: true
+    }
+  );
 
   function resetAndSetCategory(nextCategory: string) {
     setCategory(nextCategory);
@@ -106,67 +190,173 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
-      <aside className="space-y-4 lg:space-y-6">
-        <div className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md lg:p-4">
-          <p className="mb-3 text-sm font-semibold text-primary">分类</p>
-          <CategoryFilter categories={categories} value={category} onChange={resetAndSetCategory} />
-        </div>
-        <div className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md lg:p-4">
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <p className="text-sm font-semibold text-primary">标签</p>
-            {hiddenTagCount > 0 || showAllTags ? (
-              <button
-                type="button"
-                onClick={() => setShowAllTags((value) => !value)}
-                className="text-xs font-semibold text-accent hover:opacity-80"
+    <div ref={explorerRef}>
+      {signalTopics.length > 0 ? (
+        <div className="overflow-hidden border-y border-border py-3" aria-label="研究主题流">
+          <div data-signal-track className="flex w-max will-change-transform">
+            {[0, 1].map((groupIndex) => (
+              <div
+                key={groupIndex}
+                aria-hidden={groupIndex === 1 ? "true" : undefined}
+                className="flex shrink-0 items-center gap-5 pr-5 text-[11px] font-semibold tracking-[0.12em] text-muted sm:gap-8 sm:pr-8"
               >
-                {showAllTags ? "收起标签" : `展开更多 ${hiddenTagCount}`}
-              </button>
-            ) : null}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => resetAndSetTag("全部")}
-              className="rounded-md border border-border bg-tag-bg px-2.5 py-1 text-xs font-medium text-tag-text transition hover:border-accent hover:text-accent"
-            >
-              全部
-            </button>
-            {visibleTags.map((item) => (
-              <button key={item.name} type="button" onClick={() => resetAndSetTag(item.name)}>
-                <Tag className={tag === item.name ? "border-accent bg-accent text-white dark:text-bg" : ""} count={item.count}>
-                  {item.name}
-                </Tag>
-              </button>
+                {signalTopics.map((topic) => (
+                  <span key={`${groupIndex}-${topic}`} className="flex items-center gap-5 whitespace-nowrap sm:gap-8">
+                    <span>{topic}</span>
+                    <span aria-hidden="true" className="h-1.5 w-1.5 bg-accent" />
+                  </span>
+                ))}
+              </div>
             ))}
           </div>
         </div>
-      </aside>
+      ) : null}
 
-      <section className="min-w-0">
-        <SearchBox
-          value={query}
-          onChange={(value) => {
-            setQuery(value);
-            setVisible(pageSize);
-          }}
-        />
-        <div className="mt-4 text-sm text-muted">
-          {isSearching ? "正在全文搜索..." : `共找到 ${resultCount} 篇文章`}
-        </div>
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:gap-5">
-          {visiblePosts.map((post) => (
-            <ArticleCard key={post.slug} post={post} />
-          ))}
-        </div>
-        {visiblePosts.length === 0 ? (
-          <div className="mt-8 rounded-md border border-dashed border-border p-8 text-center text-sm text-muted">
-            没有找到匹配的文章。
+      <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12">
+        <aside ref={filterRailRef} className="h-fit min-w-0" aria-label="文章筛选">
+          <div className="border-t border-border pt-4">
+            <div className="mb-3 flex items-center justify-between gap-4">
+              <h2 className="text-xs font-semibold tracking-[0.12em] text-primary">分类检索</h2>
+              <span className="font-mono text-[11px] tabular-nums text-muted">{posts.length}</span>
+            </div>
+            <div className="-mx-1 flex gap-4 overflow-x-auto px-1 pb-2 scrollbar-hide lg:mx-0 lg:block lg:space-y-0 lg:overflow-visible lg:px-0 lg:pb-0">
+              <button
+                type="button"
+                onClick={() => resetAndSetCategory("全部")}
+                aria-pressed={category === "全部"}
+                className={`flex shrink-0 items-center justify-between gap-4 border-b-2 px-0 py-2 text-left text-sm transition lg:w-full lg:border-b lg:border-l-2 lg:px-3 lg:py-2.5 ${
+                  category === "全部"
+                    ? "border-accent font-semibold text-accent"
+                    : "border-transparent text-secondary hover:text-accent lg:border-b-border lg:border-l-transparent"
+                }`}
+              >
+                <span>全部</span>
+                <span className="font-mono text-[11px] tabular-nums text-muted">{posts.length}</span>
+              </button>
+              {categories.map((item) => (
+                <button
+                  key={item.name}
+                  type="button"
+                  onClick={() => resetAndSetCategory(item.name)}
+                  aria-pressed={category === item.name}
+                  className={`flex shrink-0 items-center justify-between gap-4 border-b-2 px-0 py-2 text-left text-sm transition lg:w-full lg:border-b lg:border-l-2 lg:px-3 lg:py-2.5 ${
+                    category === item.name
+                      ? "border-accent font-semibold text-accent"
+                      : "border-transparent text-secondary hover:text-accent lg:border-b-border lg:border-l-transparent"
+                  }`}
+                >
+                  <span>{item.name}</span>
+                  <span className="font-mono text-[11px] tabular-nums text-muted">{item.count}</span>
+                </button>
+              ))}
+            </div>
           </div>
-        ) : null}
-        <Pagination visible={visiblePosts.length} total={filteredPosts.length} onLoadMore={() => setVisible((value) => value + pageSize)} />
-      </section>
+
+          <div className="mt-8 border-t border-border pt-4">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <h2 className="text-xs font-semibold tracking-[0.12em] text-primary">标签信号</h2>
+              {hasHiddenTags ? (
+                <button
+                  type="button"
+                  onClick={() => setShowAllTags((value) => !value)}
+                  className="border-b border-transparent text-[11px] font-semibold text-accent transition hover:border-accent"
+                >
+                  {showAllTags ? "收起" : `展开 +${tags.length - 12}`}
+                </button>
+              ) : null}
+            </div>
+            <div className="flex flex-wrap gap-x-4 gap-y-3">
+              <button
+                type="button"
+                onClick={() => resetAndSetTag("全部")}
+                aria-pressed={tag === "全部"}
+                className={`border-b pb-0.5 text-xs transition ${
+                  tag === "全部" ? "border-accent font-semibold text-accent" : "border-transparent text-muted hover:border-accent hover:text-accent"
+                }`}
+              >
+                #全部
+              </button>
+              {visibleTags.map((item) => (
+                <button
+                  key={item.name}
+                  type="button"
+                  onClick={() => resetAndSetTag(item.name)}
+                  aria-pressed={tag === item.name}
+                  className={`border-b pb-0.5 text-xs transition ${
+                    tag === item.name ? "border-accent font-semibold text-accent" : "border-transparent text-muted hover:border-accent hover:text-accent"
+                  }`}
+                >
+                  #{item.name} <span className="font-mono text-[10px]">{item.count}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </aside>
+
+        <section className="min-w-0" aria-labelledby="article-index-heading">
+          <label className="group relative flex min-h-14 items-center border-y border-border transition focus-within:border-accent">
+            <span className="sr-only">搜索文章</span>
+            <Search className="pointer-events-none ml-1 h-4 w-4 shrink-0 text-muted transition group-focus-within:text-accent sm:ml-3" />
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => {
+                setQuery(event.target.value);
+                setVisible(pageSize);
+              }}
+              placeholder="搜索标题、摘要、正文或标签"
+              className="h-14 min-w-0 flex-1 bg-transparent px-4 text-sm text-primary outline-none placeholder:text-muted"
+            />
+            {query ? (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                className="mr-1 inline-flex h-9 w-9 items-center justify-center text-muted transition hover:bg-accent-soft hover:text-accent sm:mr-2"
+                aria-label="清空搜索"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            ) : null}
+          </label>
+
+          <div className="mt-8 flex items-end justify-between gap-6 border-b border-border pb-4">
+            <div>
+              <h2 id="article-index-heading" className="text-2xl font-semibold tracking-[-0.025em] text-primary sm:text-3xl">
+                文章索引
+              </h2>
+              <p className="mt-2 text-sm text-muted">
+                {isSearching ? "正在扫描全文信号…" : hasQuery ? `“${normalizedQuery}” 找到 ${resultCount} 篇` : `当前范围 ${resultCount} 篇`}
+              </p>
+            </div>
+            <span className="hidden font-mono text-xs tabular-nums text-muted sm:block">新 → 旧</span>
+          </div>
+
+          <div data-article-index className="border-t border-border">
+            {visiblePosts.map((post, index) => (
+              <ArticleCard key={post.slug} post={post} index={index + 1} />
+            ))}
+          </div>
+
+          {visiblePosts.length === 0 ? (
+            <div className="border-b border-border px-4 py-16 text-center text-sm leading-7 text-muted">
+              没有找到匹配的文章。试试减少关键词，或切换分类与标签。
+            </div>
+          ) : null}
+
+          {visiblePosts.length < filteredPosts.length ? (
+            <div className="mt-8 border-y border-border py-3 text-center">
+              <button
+                type="button"
+                onClick={() => setVisible((value) => value + pageSize)}
+                className="inline-flex min-h-11 items-center gap-3 px-5 text-sm font-semibold text-primary transition hover:bg-accent hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                继续读取
+                <ArrowDown className="h-4 w-4" />
+              </button>
+            </div>
+          ) : null}
+        </section>
+      </div>
     </div>
   );
 }

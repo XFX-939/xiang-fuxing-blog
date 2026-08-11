@@ -19,18 +19,22 @@ export function TOC({ items, compact = false, collapsible = false, className }: 
   }
 
   const list = (
-    <ol className="grid gap-2">
-      {items.map((item) => (
-        <li key={item.id} className={item.depth === 3 ? "pl-4" : ""}>
+    <ol className="grid gap-0">
+      {items.map((item, index) => (
+        <li key={item.id}>
           <a
             href={`#${item.id}`}
             aria-current={activeId === item.id ? "location" : undefined}
             className={cn(
-              "block rounded-sm border-l-2 border-transparent px-2 py-1 leading-6 text-secondary transition hover:border-accent/60 hover:bg-accent-soft hover:text-accent",
-              activeId === item.id && "border-accent bg-accent-soft font-semibold text-accent"
+              "-ml-[17px] grid grid-cols-[2rem_minmax(0,1fr)] border-l-2 border-transparent py-2 pl-4 pr-1 text-secondary transition hover:border-accent/50 hover:text-accent",
+              item.depth === 3 && "pl-7 text-[13px]",
+              activeId === item.id && "border-accent font-semibold text-accent"
             )}
           >
-            {item.text}
+            <span className="pt-0.5 font-mono text-[10px] font-medium tabular-nums text-muted">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className="leading-6">{item.text}</span>
           </a>
         </li>
       ))}
@@ -41,12 +45,12 @@ export function TOC({ items, compact = false, collapsible = false, className }: 
     return (
       <details
         className={cn(
-          "group rounded-md border border-border bg-surface/95 p-3 text-sm shadow-sm backdrop-blur-xl",
+          "group border-y border-border bg-surface/95 px-1 py-3 text-sm backdrop-blur-xl",
           className
         )}
       >
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-xs font-semibold uppercase tracking-[0.16em] text-muted marker:hidden">
-          <span>目录</span>
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-xs font-semibold tracking-[0.12em] text-primary marker:hidden">
+          <span>阅读导航</span>
           <span className="text-[11px] font-medium normal-case tracking-normal text-accent group-open:hidden">
             展开
           </span>
@@ -63,14 +67,15 @@ export function TOC({ items, compact = false, collapsible = false, className }: 
     <nav
       aria-label="文章目录"
       className={cn(
-        "rounded-md border border-border bg-surface p-4 text-sm",
-        compact ? "p-3" : "",
+        "border-l border-border pl-4 text-sm",
+        compact && "pl-3",
         className
       )}
     >
-      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
-        目录
-      </p>
+      <div className="mb-4 flex items-baseline justify-between gap-4">
+        <p className="text-xs font-semibold tracking-[0.12em] text-primary">阅读导航</p>
+        <span className="font-mono text-[10px] tabular-nums text-muted">{items.length}</span>
+      </div>
       {list}
     </nav>
   );

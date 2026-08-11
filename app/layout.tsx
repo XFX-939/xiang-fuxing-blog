@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import "katex/dist/katex.min.css";
 import "@/styles/globals.css";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { siteConfig } from "@/lib/site";
 import { absoluteUrl } from "@/lib/utils";
+
+const cabinetGrotesk = localFont({
+  src: [
+    { path: "./fonts/CabinetGrotesk-Regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/CabinetGrotesk-Medium.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/CabinetGrotesk-Bold.woff2", weight: "700", style: "normal" }
+  ],
+  variable: "--font-cabinet",
+  display: "swap"
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
@@ -38,15 +47,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
-      <body className="min-h-screen overflow-x-hidden bg-bg font-sans text-primary antialiased">
-        <ThemeProvider>
-          <div className="flex min-h-screen w-full max-w-full flex-col overflow-x-clip">
-            <Header />
-            <main className="w-full max-w-full flex-1 overflow-x-clip">{children}</main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+    <html lang="zh-CN" suppressHydrationWarning className={cabinetGrotesk.variable}>
+      <body className="min-h-screen overflow-x-hidden antialiased">
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
