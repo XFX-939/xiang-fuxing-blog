@@ -22,7 +22,7 @@ async function copyText(text: string) {
 export function CodeBlockCopyButtons() {
   useEffect(() => {
     const figures = Array.from(
-      document.querySelectorAll<HTMLElement>(".article-content [data-rehype-pretty-code-figure]")
+      document.querySelectorAll<HTMLElement>(".article-content figure[data-rehype-pretty-code-figure]")
     );
     const cleanups: Array<() => void> = [];
 

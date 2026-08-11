@@ -117,12 +117,23 @@ body {
   content: "";
 }
 
-.article-content [data-rehype-pretty-code-figure] {
+.article-content :where(span[data-rehype-pretty-code-figure]) {
+  display: inline;
+}
+
+.article-content :where(span[data-rehype-pretty-code-figure] code) {
+  display: inline;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.article-content figure[data-rehype-pretty-code-figure] {
   position: relative;
   margin: 1.5rem 0;
 }
 
-.article-content [data-rehype-pretty-code-figure] pre {
+.article-content figure[data-rehype-pretty-code-figure] pre {
   margin: 0;
   max-width: 100%;
   overflow-x: auto;
@@ -135,8 +146,8 @@ body {
   color: var(--text-secondary);
 }
 
-.article-content [data-rehype-pretty-code-figure]:hover .code-copy-button,
-.article-content [data-rehype-pretty-code-figure]:focus-within .code-copy-button {
+.article-content figure[data-rehype-pretty-code-figure]:hover .code-copy-button,
+.article-content figure[data-rehype-pretty-code-figure]:focus-within .code-copy-button {
   opacity: 1;
 }
 
@@ -175,7 +186,7 @@ body {
   color: var(--accent);
 }
 
-.article-content [data-rehype-pretty-code-figure] code {
+.article-content figure[data-rehype-pretty-code-figure] code {
   display: grid;
   min-width: 100%;
   font-family: "JetBrains Mono", "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
@@ -184,21 +195,21 @@ body {
   color: inherit;
 }
 
-.article-content [data-language]::selection {
+.article-content figure[data-rehype-pretty-code-figure] [data-language]::selection {
   background: rgba(34, 211, 238, 0.24);
 }
 
-.article-content [data-line] {
+.article-content figure[data-rehype-pretty-code-figure] [data-line] {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
   min-height: 1.65rem;
 }
 
-.article-content [data-line] span {
+.article-content figure[data-rehype-pretty-code-figure] [data-line] span {
   color: var(--shiki-light, rgb(30 41 59));
 }
 
-.dark .article-content [data-line] span {
+.dark .article-content figure[data-rehype-pretty-code-figure] [data-line] span {
   color: var(--shiki-dark, rgb(226 232 240));
 }
 
@@ -260,11 +271,11 @@ body {
     padding-right: 1rem;
   }
 
-  .article-content [data-rehype-pretty-code-figure] {
+  .article-content figure[data-rehype-pretty-code-figure] {
     margin: 1.25rem -0.15rem;
   }
 
-  .article-content [data-rehype-pretty-code-figure] pre {
+  .article-content figure[data-rehype-pretty-code-figure] pre {
     padding: 1rem 0.85rem;
     font-size: 0.82rem;
     line-height: 1.85;
