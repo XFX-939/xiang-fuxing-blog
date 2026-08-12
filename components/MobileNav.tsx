@@ -80,21 +80,21 @@ export function MobileNav() {
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((value) => !value)}
-        className="inline-flex h-10 w-10 items-center justify-center border border-[#171816] bg-[#171816] text-[#f3eee4] transition-colors hover:border-[#f15a29] hover:bg-[#f15a29] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f15a29] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f3eee4] dark:border-[#f3eee4] dark:bg-[#f3eee4] dark:text-[#111820] dark:hover:border-[#ff7043] dark:hover:bg-[#ff7043] dark:focus-visible:ring-offset-[#0d141b]"
+        className="inline-flex h-11 w-11 items-center justify-center border border-[#171816] bg-[#171816] text-[#f3eee4] transition-colors hover:border-[#f15a29] hover:bg-[#f15a29] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f15a29] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f3eee4] dark:border-[#f3eee4] dark:bg-[#f3eee4] dark:text-[#111820] dark:hover:border-[#ff7043] dark:hover:bg-[#ff7043] dark:focus-visible:ring-offset-[#0d141b]"
       >
         {open ? <X className="h-[18px] w-[18px]" aria-hidden="true" /> : <Menu className="h-[18px] w-[18px]" aria-hidden="true" />}
       </button>
 
       {open ? (
         <>
-          <div className="fixed inset-0 z-40 bg-[#171816]/55" aria-hidden="true" onMouseDown={closeMenu} />
+          <div className="fixed inset-0 z-[60] bg-[#171816]/55" aria-hidden="true" onMouseDown={closeMenu} />
           <div
             ref={panelRef}
             id={panelId}
             role="dialog"
             aria-modal="true"
             aria-label="全站导航"
-            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-[25rem] flex-col overscroll-contain overflow-y-auto border-l border-white/20 bg-[#111a22] px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] pt-5 text-[#f3eee4] sm:px-7"
+            className="fixed inset-y-0 right-0 z-[70] flex w-full max-w-[25rem] flex-col overscroll-contain overflow-y-auto border-l border-white/20 bg-[#111a22] px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] pt-5 text-[#f3eee4] sm:px-7"
           >
             <div className="flex items-start justify-between gap-6 border-b border-white/20 pb-5">
               <div>
@@ -109,7 +109,7 @@ export function MobileNav() {
                 aria-label="关闭导航"
                 title="关闭导航"
                 onClick={closeMenu}
-                className="inline-flex h-10 w-10 shrink-0 items-center justify-center border border-white/30 text-[#f3eee4] transition-colors hover:border-[#ff7043] hover:bg-[#ff7043] hover:text-[#111820] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7043] focus-visible:ring-offset-2 focus-visible:ring-offset-[#111a22]"
+                className="inline-flex h-11 w-11 shrink-0 items-center justify-center border border-white/30 text-[#f3eee4] transition-colors hover:border-[#ff7043] hover:bg-[#ff7043] hover:text-[#111820] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7043] focus-visible:ring-offset-2 focus-visible:ring-offset-[#111a22]"
               >
                 <X className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>

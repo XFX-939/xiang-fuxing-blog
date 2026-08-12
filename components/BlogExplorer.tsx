@@ -183,7 +183,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
                 type="button"
                 onClick={() => resetAndSetCategory("全部")}
                 aria-pressed={category === "全部"}
-                className={`flex shrink-0 items-center justify-between gap-4 border-b-2 px-0 py-1.5 text-left text-sm transition sm:py-2 lg:w-full lg:border-b lg:border-l-2 lg:px-3 lg:py-2.5 ${
+                className={`flex min-h-11 shrink-0 items-center justify-between gap-4 border-b-2 px-0 py-1.5 text-left text-sm transition sm:py-2 lg:min-h-0 lg:w-full lg:border-b lg:border-l-2 lg:px-3 lg:py-2.5 ${
                   category === "全部"
                     ? "border-accent font-semibold text-accent"
                     : "border-transparent text-secondary hover:text-accent lg:border-b-border lg:border-l-transparent"
@@ -198,7 +198,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
                   type="button"
                   onClick={() => resetAndSetCategory(item.name)}
                   aria-pressed={category === item.name}
-                  className={`flex shrink-0 items-center justify-between gap-4 border-b-2 px-0 py-1.5 text-left text-sm transition sm:py-2 lg:w-full lg:border-b lg:border-l-2 lg:px-3 lg:py-2.5 ${
+                  className={`flex min-h-11 shrink-0 items-center justify-between gap-4 border-b-2 px-0 py-1.5 text-left text-sm transition sm:py-2 lg:min-h-0 lg:w-full lg:border-b lg:border-l-2 lg:px-3 lg:py-2.5 ${
                     category === item.name
                       ? "border-accent font-semibold text-accent"
                       : "border-transparent text-secondary hover:text-accent lg:border-b-border lg:border-l-transparent"
@@ -267,7 +267,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
               <button
                 type="button"
                 onClick={() => setQuery("")}
-                className="mr-1 inline-flex h-9 w-9 items-center justify-center text-muted transition hover:bg-accent-soft hover:text-accent sm:mr-2"
+                className="mr-1 inline-flex h-11 w-11 items-center justify-center text-muted transition hover:bg-accent-soft hover:text-accent sm:mr-2"
                 aria-label="清空搜索"
               >
                 <X className="h-4 w-4" />

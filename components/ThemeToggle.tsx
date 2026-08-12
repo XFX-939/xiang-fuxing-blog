@@ -33,7 +33,7 @@ export function ThemeToggle() {
       title={mounted ? `切换主题，当前为${label}` : "切换主题"}
       aria-pressed={mounted ? resolved === "dark" : undefined}
       onClick={toggleTheme}
-      className="group inline-flex h-10 w-10 shrink-0 items-center justify-center border border-[#171816]/25 bg-transparent text-[#2d5d7f] transition-colors duration-200 hover:border-[#171816] hover:bg-[#171816] hover:text-[#f3eee4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f15a29] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f3eee4] dark:border-white/20 dark:text-[#9abbd0] dark:hover:border-[#f3eee4] dark:hover:bg-[#f3eee4] dark:hover:text-[#111820] dark:focus-visible:ring-offset-[#0d141b]"
+      className="group inline-flex h-11 w-11 shrink-0 items-center justify-center border border-[#171816]/25 bg-transparent text-[#2d5d7f] transition-colors duration-200 hover:border-[#171816] hover:bg-[#171816] hover:text-[#f3eee4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f15a29] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f3eee4] dark:border-white/20 dark:text-[#9abbd0] dark:hover:border-[#f3eee4] dark:hover:bg-[#f3eee4] dark:hover:text-[#111820] dark:focus-visible:ring-offset-[#0d141b]"
     >
       {mounted ? (
         <Icon className="h-[17px] w-[17px] transition-transform duration-300 group-hover:rotate-12" aria-hidden="true" />

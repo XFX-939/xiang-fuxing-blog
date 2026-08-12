@@ -248,7 +248,7 @@ function ProjectLinks({ links, className }: { links: Project["links"]; className
       {links.map((link) => {
         const isExternal = link.href.startsWith("http");
         const linkClassName =
-          "group/link inline-flex min-h-11 items-center gap-2 border-b border-accent/40 py-2 text-sm font-semibold text-primary transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-surface sm:min-h-0 sm:py-1";
+          "group/link inline-flex min-h-11 items-center gap-2 border-b border-accent/40 py-2 text-sm font-semibold text-primary transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-surface lg:min-h-0 lg:py-1";
         const content = (
           <>
             {link.label}

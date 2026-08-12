@@ -58,7 +58,7 @@ export function ReadingProgressBar() {
         />
       </div>
       <div
-        className="fixed bottom-5 right-5 z-[45] hidden items-center gap-2 border border-border border-l-2 border-l-accent bg-surface/90 px-3 py-2 text-[11px] font-semibold tracking-[0.06em] text-secondary backdrop-blur-xl sm:flex"
+        className="fixed bottom-5 right-5 z-[45] hidden items-center gap-2 border border-border border-l-2 border-l-accent bg-surface/90 px-3 py-2 text-xs font-semibold tracking-[0.06em] text-secondary backdrop-blur-xl lg:flex"
         aria-label={`阅读进度 ${roundedProgress}%`}
       >
         <span>已读</span>

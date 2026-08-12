@@ -41,6 +41,8 @@ export function ArticleBackToTop() {
       onClick={scrollToTop}
       aria-label="返回文章顶部"
       title="返回顶部"
+      aria-hidden={!visible}
+      tabIndex={visible ? 0 : -1}
       className={cn(
         "fixed bottom-[calc(env(safe-area-inset-bottom)+1rem)] right-[7rem] z-40 inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface/95 text-primary shadow-soft backdrop-blur-xl transition duration-200 dark:shadow-soft-dark sm:right-[7.25rem]",
         "hover:border-accent hover:text-accent focus:outline-none focus-visible:ring-4 focus-visible:ring-accent-soft",
