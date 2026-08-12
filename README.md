@@ -78,15 +78,11 @@ draft: false
 - 导航菜单
 - 默认分类
 
-项目数据集中在 `lib/projects.ts`，可替换为真实项目、论文、专利、演讲或内部实践复盘。
+项目数据分为两层：`data/github-repos.generated.json` 保存 GitHub 公开仓库的事实快照，`lib/projects.ts` 保存中文介绍、成果和展示顺序等策展内容。同步时不覆盖人工策展文案。
 
-## 如何部署到 Vercel
+## 部署边界
 
-1. 将项目推送到 GitHub。
-2. 在 Vercel 新建项目并选择该仓库。
-3. Framework Preset 选择 Next.js。
-4. Build Command 使用 `npm run build`。
-5. 部署前把 `lib/site.ts` 中的 `siteUrl` 改成真实域名。
+站点发布到个人 Ubuntu 服务器，通过已有 release/current 发布流程更新 `xiangfuxing.tech`。发布前必须完成类型检查、规范检查和干净构建；不使用 Vercel。
 
 sitemap 地址：
 

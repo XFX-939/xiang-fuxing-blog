@@ -1,3 +1,5 @@
+import githubRepoSnapshot from "@/data/github-repos.generated.json";
+
 export type Project = {
   name: string;
   description: string;
@@ -9,13 +11,145 @@ export type Project = {
   stars?: number;
   forks?: number;
   isFork?: boolean;
+  githubDescription?: string;
+  primaryLanguage?: string;
   links: Array<{
     label: string;
     href: string;
   }>;
 };
 
-export const projects: Project[] = [
+const curatedProjects: Project[] = [
+  {
+    name: "openclaw-multi-agent-team",
+    description:
+      "一套经过真实运行验证的 OpenClaw 1 Chief + 10 Specialists 多智能体架构参考，覆盖职责路由、独立工作区、交接协议、最小权限与验收边界。",
+    direction: "多智能体系统 / Agent 治理 / 安全边界",
+    outcomes: [
+      "将 main 设为唯一对外入口，统一承担理解、路由、脱敏与最终答复",
+      "为专家角色拆分独立 workspace、记忆、工具和 MCP 边界",
+      "提供脱敏配置、Handoff Schema、静态检查与可复现验收步骤"
+    ],
+    technologies: ["OpenClaw", "Multi-Agent", "JavaScript", "MCP", "Security"],
+    status: "近期发布",
+    links: [{ label: "GitHub 仓库", href: "https://github.com/XFX-939/openclaw-multi-agent-team" }]
+  },
+  {
+    name: "harmonyos-clashbox-guide",
+    description:
+      "Mate X7 / HarmonyOS 6 安装 ClashBox 的签名、验签、覆盖升级与数据保留实录，只发布教程、脱敏示例和本地校验脚本。",
+    direction: "HarmonyOS / 安全发布 / 设备实录",
+    outcomes: [
+      "完成 unsigned HAP 的哈希校验、签名与逐文件一致性验证",
+      "验证短期调试证书到一年期证书的非卸载覆盖升级",
+      "明确证书、设备标识、签名包等不可公开的安全红线"
+    ],
+    technologies: ["HarmonyOS", "DevEco Studio", "HDC", "Shell", "Supply Chain"],
+    status: "近期发布",
+    links: [{ label: "GitHub 仓库", href: "https://github.com/XFX-939/harmonyos-clashbox-guide" }]
+  },
+  {
+    name: "kr-personal-proxy-runbook",
+    description:
+      "面向单用户场景的公开脱敏运行手册，记录 Ubuntu VPS 上 sing-box REALITY 的事务式部署，以及 HarmonyOS DNS、TUN 与分流故障复盘。",
+    direction: "网络运维 / 故障复盘 / 可回滚部署",
+    outcomes: [
+      "形成先检查、再备份、后变更并可回滚的部署流程",
+      "保留服务端最小配置、客户端分流骨架和 DNS/TUN 补丁",
+      "以不可用占位符替代节点、订阅和设备数据，确保公开边界"
+    ],
+    technologies: ["sing-box", "REALITY", "Ubuntu", "Mihomo", "Runbook"],
+    status: "近期发布",
+    links: [{ label: "GitHub 仓库", href: "https://github.com/XFX-939/kr-personal-proxy-runbook" }]
+  },
+  {
+    name: "ai-learning-lab",
+    description:
+      "AI 学习实验室 MVP，把学习路线、在线实验、参数调节、结果可视化、实验记录和项目实战组织在同一套本地学习工作台中。",
+    direction: "AI 教育 / 在线实验 / 学习工作台",
+    outcomes: [
+      "搭建从课程、实验到项目实战的完整学习路径",
+      "支持 Pyodide 浏览器内训练与梯度下降可视化",
+      "使用本地状态保存学习进度和实验记录"
+    ],
+    technologies: ["Next.js", "TypeScript", "Pyodide", "Zustand", "Recharts"],
+    status: "公开原型",
+    links: [{ label: "GitHub 仓库", href: "https://github.com/XFX-939/ai-learning-lab" }]
+  },
+  {
+    name: "PPTutor",
+    description:
+      "本地 PPTX 全文搜索、命中页预览与自动版本管理桌面应用，可按记得的文字定位文件和页码，并保留历史版本。",
+    direction: "本地知识检索 / 桌面工具 / Fork 实践",
+    outcomes: [
+      "通过 FTS5 实现页级全文索引、繁简归一和子串召回",
+      "调用本机 PowerPoint 渲染命中页并支持原始页序浏览",
+      "自动监听文件变化并提供可恢复的版本管理"
+    ],
+    technologies: ["Python", "PySide6", "SQLite FTS5", "OpenCC", "PyInstaller"],
+    status: "Fork 实践",
+    isFork: true,
+    links: [{ label: "GitHub 仓库", href: "https://github.com/XFX-939/PPTutor" }]
+  },
+  {
+    name: "airview_everyday",
+    description:
+      "面向解决方案工作的 AI 信息助手，用时间轴、信息库、大屏、论文精读和多 AI 圆桌组织公开线索与工作材料。",
+    direction: "信息雷达 / 方案工作 / Fork 实践",
+    outcomes: [
+      "聚合解决方案线索并按时间、类型和关键词筛选",
+      "加入论文精读、大屏视图和原文封面补全",
+      "通过浏览器伴侣把同一问题分发给多个已登录 AI 页面"
+    ],
+    technologies: ["JavaScript", "Information Radar", "Browser Extension", "LLM", "Timeline"],
+    status: "Fork 实践",
+    isFork: true,
+    links: [{ label: "GitHub 仓库", href: "https://github.com/XFX-939/airview_everyday" }]
+  },
+  {
+    name: "claude-session-hub",
+    description:
+      "将 Claude、Gemini、Codex 等多个 AI CLI 聚合到一个 Electron 工作台，并支持多成员群聊、独立工作区和场景化协作。",
+    direction: "AI CLI 工作台 / Electron / Fork 实践",
+    outcomes: [
+      "统一管理多个 AI CLI 的单聊与群聊会话",
+      "为群聊子会话提供隔离工作区，减少目录污染",
+      "按通用、开发等场景提供轻量协作约束"
+    ],
+    technologies: ["Electron", "JavaScript", "AI CLI", "Local Workspace", "Multi-Agent"],
+    status: "Fork 实践",
+    isFork: true,
+    links: [{ label: "GitHub 仓库", href: "https://github.com/XFX-939/claude-session-hub" }]
+  },
+  {
+    name: "ai-arena-extension",
+    description:
+      "多 AI Chrome 扩展，可让多个已登录的主流 AI 页面围绕同一问题协作或辩论，并保存可检索的会话与结构化报告。",
+    direction: "浏览器扩展 / 多 AI 协作 / Fork 实践",
+    outcomes: [
+      "在一个界面内组织多个 AI 的并行讨论",
+      "支持角色模板、定向追问、会话检索与折叠模式",
+      "将多轮讨论整理成结构化 HTML 报告"
+    ],
+    technologies: ["JavaScript", "Chrome Extension", "Multi-AI", "Prompt Workflow", "Local UI"],
+    status: "Fork 实践",
+    isFork: true,
+    links: [{ label: "GitHub 仓库", href: "https://github.com/XFX-939/ai-arena-extension" }]
+  },
+  {
+    name: "esports",
+    description:
+      "面向游戏护航工作室的响应式展示站，组织服务分类、下单规则、导师介绍、招募和官方客服引导，不接入支付或博彩化功能。",
+    direction: "响应式官网 / 服务说明 / 前端实践",
+    outcomes: [
+      "用清晰的信息架构呈现服务原则、规则与风险提醒",
+      "覆盖导师展示、招募表单和客服引导",
+      "加入年龄限制与理性消费边界"
+    ],
+    technologies: ["React", "Vite", "JavaScript", "Responsive UI", "Node.js"],
+    status: "公开项目",
+    links: [{ label: "GitHub 仓库", href: "https://github.com/XFX-939/esports" }]
+  },
   {
     name: "flight",
     description:
@@ -392,3 +526,55 @@ export const projects: Project[] = [
     links: [{ label: "GitHub 仓库", href: "https://github.com/XFX-939/PHP" }]
   }
 ];
+
+const githubReposByName = new Map(githubRepoSnapshot.repositories.map((repository) => [repository.name, repository]));
+
+export const projects: Project[] = curatedProjects.map((project) => {
+  const repository = githubReposByName.get(project.name);
+
+  if (!repository) {
+    return project;
+  }
+
+  return {
+    ...project,
+    updatedAt: repository.updatedAt,
+    stars: repository.stars,
+    forks: repository.forks,
+    isFork: repository.isFork,
+    githubDescription: repository.description || undefined,
+    primaryLanguage: repository.primaryLanguage || undefined,
+    links: project.links.map((link, index) => (index === 0 ? { ...link, href: repository.url } : link))
+  };
+});
+
+const projectByName = new Map(projects.map((project) => [project.name, project]));
+
+function requireProject(name: string) {
+  const project = projectByName.get(name);
+
+  if (!project) {
+    throw new Error(`Missing curated project: ${name}`);
+  }
+
+  return project;
+}
+
+const leadProjectName = "openclaw-multi-agent-team";
+const spotlightProjectNames = ["harmonyos-clashbox-guide", "kr-personal-proxy-runbook", "ai-learning-lab"];
+const currentProjectNames = ["xiang-fuxing-blog", "netcraft-6g", "flight", "blogfactory", "felix-finboard", "FilePilot"];
+const visibleProjectNames = new Set([leadProjectName, ...spotlightProjectNames, ...currentProjectNames]);
+
+export const projectGroups = {
+  lead: requireProject(leadProjectName),
+  spotlight: spotlightProjectNames.map(requireProject),
+  current: currentProjectNames.map(requireProject),
+  archive: projects.filter((project) => !visibleProjectNames.has(project.name))
+};
+
+export const githubProjectSnapshot = {
+  account: githubRepoSnapshot.account,
+  syncedAt: githubRepoSnapshot.syncedAt,
+  publicRepositoryCount: githubRepoSnapshot.repositories.length,
+  curatedProjectCount: projects.length
+};

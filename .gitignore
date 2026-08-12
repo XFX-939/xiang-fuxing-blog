@@ -10,4 +10,5 @@ dist
 .idea
 tsconfig.tsbuildinfo
 .env*.local
-data/
+data/*
+!data/github-repos.generated.json

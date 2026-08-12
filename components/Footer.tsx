@@ -15,7 +15,7 @@ export function Footer() {
       <div className="mx-auto max-w-[90rem] px-5 py-14 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid gap-14 lg:grid-cols-[minmax(0,1.6fr)_minmax(12rem,0.65fr)_minmax(16rem,0.85fr)] lg:gap-10 xl:gap-16">
           <div>
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.24em] text-[#8db4cc]">
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[#8db4cc]">
               XFX · Signal Field Notes
             </p>
             <h2 className="mt-5 max-w-3xl text-3xl font-bold leading-[1.25] tracking-[-0.035em] text-[#f7f1e7] sm:text-4xl lg:text-[2.75rem]">
@@ -36,7 +36,7 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-3 border-b border-white/20 pb-3">
               <span className="h-0.5 w-6 bg-[#f15a29]" aria-hidden="true" />
-              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8db4cc]">内容索引</p>
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-[#8db4cc]">内容索引</p>
             </div>
             <div className="grid text-sm font-semibold text-[#c8c5bb]">
               {[
@@ -60,7 +60,7 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-3 border-b border-white/20 pb-3">
               <span className="h-0.5 w-6 bg-[#f15a29]" aria-hidden="true" />
-              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8db4cc]">联系与关注</p>
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-[#8db4cc]">联系与关注</p>
             </div>
             <div className="grid text-sm text-[#c8c5bb]">
               {footerContacts.map((contact) => (
@@ -71,7 +71,7 @@ export function Footer() {
                   rel={contact.external ? "noreferrer" : undefined}
                   className="group grid min-w-0 grid-cols-[4.25rem_minmax(0,1fr)] gap-3 border-b border-white/15 py-3 transition-colors hover:border-[#f15a29] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#ff7043]"
                 >
-                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-[#7898ad] group-hover:text-[#ff8a63]">
+                  <span className="font-mono text-xs uppercase tracking-[0.1em] text-[#8da9bb] group-hover:text-[#ff8a63]">
                     {contact.label}
                   </span>
                   <span className="min-w-0 break-words text-right group-hover:text-white">{contact.value}</span>
@@ -81,7 +81,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-3 border-t border-white/20 pt-6 font-mono text-[10px] uppercase tracking-[0.14em] text-[#767a78] sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-16 flex flex-col gap-3 border-t border-white/20 pt-6 font-mono text-xs uppercase tracking-[0.1em] text-[#9a9d99] sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} {siteConfig.author}</span>
           <span>Independent research · Continuous notes</span>
         </div>

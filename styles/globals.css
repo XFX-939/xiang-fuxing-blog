@@ -10,7 +10,7 @@
   --border: rgba(22, 26, 25, 0.18);
   --text-primary: #161a19;
   --text-secondary: #3f4845;
-  --text-muted: #6d756f;
+  --text-muted: #626b66;
   --accent: #b84422;
   --accent-bright: #e35d32;
   --accent-soft: rgba(227, 93, 50, 0.12);
@@ -32,7 +32,7 @@
   --accent: #ff936b;
   --accent-bright: #e9683e;
   --accent-soft: rgba(233, 104, 62, 0.14);
-  --denim: #6d9ca7;
+  --denim: #183d47;
   --moss: #9eaa8f;
   --tag-bg: rgba(238, 232, 220, 0.04);
   --tag-text: #c9c1b4;
@@ -85,19 +85,6 @@ body::before {
   background: rgba(227, 93, 50, 0.24);
 }
 
-@keyframes signal-marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.signal-marquee {
-  animation: signal-marquee 30s linear infinite;
-}
-
 .signal-grid {
   background-image:
     linear-gradient(to right, var(--border) 1px, transparent 1px),
@@ -147,8 +134,8 @@ body::before {
 }
 
 .anchor-heading {
-  color: inherit;
-  text-decoration: none;
+  color: inherit !important;
+  text-decoration: none !important;
 }
 
 .article-content {
@@ -306,8 +293,8 @@ body::before {
 
 @media (max-width: 640px) {
   .article-content {
-    font-size: 0.95rem;
-    line-height: 1.85;
+    font-size: 1rem;
+    line-height: 1.9;
   }
 
   .article-content :where(p) {
@@ -349,7 +336,7 @@ body::before {
 
   .article-content figure[data-rehype-pretty-code-figure] pre {
     padding: 1rem 0.85rem;
-    font-size: 0.82rem;
+    font-size: 0.875rem;
     line-height: 1.85;
   }
 

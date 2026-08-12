@@ -4,7 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowDown, Search, X } from "lucide-react";
+import Link from "next/link";
+import { ArrowDown, ArrowRight, Search, X } from "lucide-react";
 import { ArticleCard } from "@/components/ArticleCard";
 import type { PostListItem } from "@/lib/posts";
 
@@ -27,7 +28,6 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
   const [category, setCategory] = useState(initialCategory);
   const [tag, setTag] = useState("全部");
   const [visible, setVisible] = useState(pageSize);
-  const [showAllTags, setShowAllTags] = useState(false);
   const [searchPosts, setSearchPosts] = useState<PostListItem[]>([]);
   const [searchTotal, setSearchTotal] = useState(0);
   const [isSearching, setIsSearching] = useState(false);
@@ -97,19 +97,9 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
 
   const visiblePosts = filteredPosts.slice(0, visible);
   const resultCount = hasQuery ? searchTotal : filteredPosts.length;
-  const visibleTags = showAllTags ? tags : tags.slice(0, defaultTagLimit);
+  const visibleTags = tags.slice(0, defaultTagLimit);
   const hasHiddenTags = tags.length > defaultTagLimit;
   const motionKey = visiblePosts.map((post) => post.slug).join("|");
-  const signalTopics = useMemo(() => {
-    const topicNames = tags.slice(0, 10).map((item) => item.name);
-
-    if (topicNames.length > 0) {
-      return topicNames;
-    }
-
-    return categories.slice(0, 10).map((item) => item.name);
-  }, [categories, tags]);
-
   useGSAP(
     () => {
       const scope = explorerRef.current;
@@ -121,17 +111,6 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
       const media = gsap.matchMedia();
 
       media.add("(prefers-reduced-motion: no-preference)", () => {
-        const signalTrack = scope.querySelector<HTMLElement>("[data-signal-track]");
-
-        if (signalTrack) {
-          gsap.to(signalTrack, {
-            xPercent: -50,
-            duration: 34,
-            ease: "none",
-            repeat: -1
-          });
-        }
-
         const rows = gsap.utils.toArray<HTMLElement>("[data-article-row]", scope);
 
         rows.forEach((row) => {
@@ -192,28 +171,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
 
   return (
     <div ref={explorerRef}>
-      {signalTopics.length > 0 ? (
-        <div className="overflow-hidden border-y border-border py-2.5 sm:py-3" aria-label="研究主题流">
-          <div data-signal-track className="flex w-max will-change-transform">
-            {[0, 1].map((groupIndex) => (
-              <div
-                key={groupIndex}
-                aria-hidden={groupIndex === 1 ? "true" : undefined}
-                className="flex shrink-0 items-center gap-4 pr-4 text-[11px] font-semibold tracking-[0.12em] text-muted sm:gap-8 sm:pr-8"
-              >
-                {signalTopics.map((topic) => (
-                  <span key={`${groupIndex}-${topic}`} className="flex items-center gap-4 whitespace-nowrap sm:gap-8">
-                    <span>{topic}</span>
-                    <span aria-hidden="true" className="h-1.5 w-1.5 bg-accent" />
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : null}
-
-      <div className="mt-5 grid grid-cols-1 gap-5 sm:mt-10 sm:gap-10 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12">
+      <div className="grid grid-cols-1 gap-5 sm:gap-10 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12">
         <aside ref={filterRailRef} className="h-fit min-w-0" aria-label="文章筛选">
           <div className="border-t border-border pt-3 sm:pt-4">
             <div className="mb-2 flex items-center justify-between gap-4 sm:mb-3">
@@ -257,13 +215,10 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
             <div className="mb-3 flex items-center justify-between gap-3 sm:mb-4">
               <h2 className="text-xs font-semibold tracking-[0.12em] text-primary">标签信号</h2>
               {hasHiddenTags ? (
-                <button
-                  type="button"
-                  onClick={() => setShowAllTags((value) => !value)}
-                  className="border-b border-transparent text-[11px] font-semibold text-accent transition hover:border-accent"
-                >
-                  {showAllTags ? "收起" : `展开 +${tags.length - defaultTagLimit}`}
-                </button>
+                <Link href="/tags" className="inline-flex min-h-11 items-center gap-1 text-xs font-semibold text-accent transition hover:text-primary lg:min-h-0">
+                  全部标签
+                  <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </Link>
               ) : null}
             </div>
             <div className="flex flex-wrap gap-x-3 gap-y-2 sm:gap-x-4 sm:gap-y-3">
@@ -271,7 +226,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
                 type="button"
                 onClick={() => resetAndSetTag("全部")}
                 aria-pressed={tag === "全部"}
-                className={`border-b pb-0.5 text-xs transition ${
+                className={`inline-flex min-h-11 items-center border-b px-1 text-xs transition lg:min-h-0 lg:py-1 ${
                   tag === "全部" ? "border-accent font-semibold text-accent" : "border-transparent text-muted hover:border-accent hover:text-accent"
                 }`}
               >
@@ -283,11 +238,11 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
                   type="button"
                   onClick={() => resetAndSetTag(item.name)}
                   aria-pressed={tag === item.name}
-                  className={`border-b pb-0.5 text-xs transition ${
+                  className={`inline-flex min-h-11 items-center border-b px-1 text-xs transition lg:min-h-0 lg:py-1 ${
                     tag === item.name ? "border-accent font-semibold text-accent" : "border-transparent text-muted hover:border-accent hover:text-accent"
                   }`}
                 >
-                  #{item.name} <span className="font-mono text-[10px]">{item.count}</span>
+                  #{item.name} <span className="ml-1 font-mono text-xs">{item.count}</span>
                 </button>
               ))}
             </div>

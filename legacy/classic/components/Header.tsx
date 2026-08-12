@@ -44,7 +44,7 @@ export function Header() {
         <GlobalSearch className="hidden min-w-[18rem] flex-1 xl:block xl:max-w-[34rem] 2xl:max-w-[38rem]" />
 
         <div className="flex items-center gap-2">
-          <div className="hidden xl:block">
+          <div className="hidden sm:block">
             <UIVersionSwitch active="classic" />
           </div>
           <ThemeToggle />

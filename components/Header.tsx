@@ -3,7 +3,6 @@ import { GlobalSearch } from "@/components/GlobalSearch";
 import { MobileNav } from "@/components/MobileNav";
 import { NavLink } from "@/components/NavLink";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { UIVersionSwitch } from "@/components/UIVersionSwitch";
 import { navItems } from "@/lib/site";
 
 export function Header() {
@@ -17,7 +16,7 @@ export function Header() {
         >
           <span className="h-8 w-[3px] bg-[#f15a29] transition-transform duration-300 group-hover:scale-y-75" aria-hidden="true" />
           <span className="grid leading-none">
-            <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.24em] text-[#2d5d7f] dark:text-[#8db4cc]">
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-[#2d5d7f] dark:text-[#8db4cc]">
               Signal Field Notes
             </span>
             <span className="mt-1.5 text-[15px] font-bold tracking-[0.12em]">向福星</span>
@@ -32,7 +31,6 @@ export function Header() {
 
         <div className="ml-auto flex min-w-0 items-center gap-2 sm:gap-3">
           <GlobalSearch className="hidden w-[clamp(13rem,20vw,19rem)] lg:block" />
-          <UIVersionSwitch active="signal" className="hidden xl:inline-flex" />
           <ThemeToggle />
           <MobileNav />
         </div>

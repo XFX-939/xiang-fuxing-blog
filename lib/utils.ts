@@ -51,7 +51,7 @@ export function createMetadata({
   const url = absoluteUrl(path);
 
   return {
-    title: pageTitle,
+    title: { absolute: pageTitle },
     description: pageDescription,
     alternates: {
       canonical: url

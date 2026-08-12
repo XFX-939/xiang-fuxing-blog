@@ -40,20 +40,20 @@ export function HomeMotion({ children }: { children: ReactNode }) {
           );
         });
 
-        const words = gsap.utils.toArray<HTMLElement>("[data-scrub-word]", root);
-        if (words.length > 0) {
+        const manifestoLines = gsap.utils.toArray<HTMLElement>("[data-scrub-line]", root);
+        if (manifestoLines.length > 0) {
           gsap.fromTo(
-            words,
-            { opacity: 0.13 },
+            manifestoLines,
+            { y: 18 },
             {
-              opacity: 1,
-              stagger: 0.08,
-              ease: "none",
+              y: 0,
+              stagger: 0.12,
+              ease: "power2.out",
               scrollTrigger: {
-                trigger: words[0].parentElement,
-                start: "top 74%",
-                end: "bottom 48%",
-                scrub: 0.65
+                trigger: manifestoLines[0].parentElement,
+                start: "top 82%",
+                end: "top 52%",
+                scrub: 0.45
               }
             }
           );

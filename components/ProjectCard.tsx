@@ -219,7 +219,7 @@ function OutcomeList({
     <ol className={cn("grid", compact ? "gap-2" : "gap-3", className)}>
       {outcomes.map((outcome, outcomeIndex) => (
         <li key={outcome} className="grid grid-cols-[1.6rem_minmax(0,1fr)] gap-2 text-sm leading-6 text-secondary">
-          <span className="font-mono text-[10px] font-semibold text-accent">
+          <span className="font-mono text-xs font-semibold text-accent">
             {String(outcomeIndex + 1).padStart(2, "0")}
           </span>
           <span>{outcome}</span>

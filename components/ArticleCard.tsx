@@ -10,7 +10,7 @@ type ArticleCardProps = {
 };
 
 export function ArticleCard({ post, compact = false, index }: ArticleCardProps) {
-  const visibleTags = post.tags.slice(0, compact ? 2 : 3);
+  const visibleTags = post.tags.slice(0, 2);
   const hiddenTagCount = Math.max(post.tags.length - visibleTags.length, 0);
 
   return (
@@ -72,7 +72,7 @@ export function ArticleCard({ post, compact = false, index }: ArticleCardProps) 
           </Link>
 
           {visibleTags.length > 0 ? (
-            <div data-reveal className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted">
+            <div data-reveal className="mt-4 hidden flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted sm:flex">
               {visibleTags.map((tag) => (
                 <Link
                   key={tag}

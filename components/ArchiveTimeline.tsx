@@ -219,15 +219,25 @@ export function ArchiveTimeline({ yearGroups }: ArchiveTimelineProps) {
   const filteredYearKeys = useMemo(() => filteredYearGroups.map((group) => group.year), [filteredYearGroups]);
   const filteredMonthKeys = useMemo(() => filteredYearGroups.flatMap((group) => group.months.map((month) => month.key)), [filteredYearGroups]);
 
-  const [openYears, setOpenYears] = useState<Set<string>>(() => new Set(years));
-  const [openMonths, setOpenMonths] = useState<Set<string>>(
-    () => new Set(yearGroups.flatMap((group) => group.months.map((month) => month.key)))
-  );
+  const initialYear = yearGroups[0];
+  const initialMonth = initialYear?.months[0];
+  const [openYears, setOpenYears] = useState<Set<string>>(() => new Set(initialYear ? [initialYear.year] : []));
+  const [openMonths, setOpenMonths] = useState<Set<string>>(() => new Set(initialMonth ? [initialMonth.key] : []));
 
   useEffect(() => {
-    setOpenYears(new Set(filteredYearKeys));
-    setOpenMonths(new Set(filteredMonthKeys));
-  }, [filteredMonthKeys, filteredYearKeys]);
+    const hasActiveFilters = year !== ALL || category !== ALL || tag !== ALL || series !== ALL || query.trim().length > 0;
+
+    if (hasActiveFilters) {
+      setOpenYears(new Set(filteredYearKeys));
+      setOpenMonths(new Set(filteredMonthKeys));
+      return;
+    }
+
+    const latestYear = filteredYearGroups[0];
+    const latestMonth = latestYear?.months[0];
+    setOpenYears(new Set(latestYear ? [latestYear.year] : []));
+    setOpenMonths(new Set(latestMonth ? [latestMonth.key] : []));
+  }, [category, filteredMonthKeys, filteredYearGroups, filteredYearKeys, query, series, tag, year]);
 
   const allExpanded = openYears.size === filteredYearKeys.length && openMonths.size === filteredMonthKeys.length;
 
@@ -419,22 +429,14 @@ export function ArchiveTimeline({ yearGroups }: ArchiveTimelineProps) {
               当前匹配 {filteredPosts.length} / {allPosts.length} 篇文章，仍按年份、月份保留折叠时间线。
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+          <div className="sm:flex sm:flex-wrap">
             <button
               type="button"
               onClick={allExpanded ? collapseAll : expandAll}
-              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-border bg-surface-elevated px-3 py-2 text-sm font-medium text-secondary transition hover:border-accent hover:text-accent"
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-border bg-surface-elevated px-3 py-2 text-sm font-medium text-secondary transition hover:border-accent hover:text-accent sm:w-auto"
             >
               {allExpanded ? <ChevronsDownUp className="h-4 w-4" /> : <ChevronsUpDown className="h-4 w-4" />}
               {allExpanded ? "全部折叠" : "全部展开"}
-            </button>
-            <button
-              type="button"
-              onClick={expandAll}
-              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-border bg-surface-elevated px-3 py-2 text-sm font-medium text-secondary transition hover:border-accent hover:text-accent"
-            >
-              <ChevronsUpDown className="h-4 w-4" />
-              展开结果
             </button>
           </div>
         </div>

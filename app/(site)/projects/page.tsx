@@ -1,6 +1,6 @@
 import { ProjectCard } from "@/components/ProjectCard";
 import { SectionTitle } from "@/components/SectionTitle";
-import { projects } from "@/lib/projects";
+import { githubProjectSnapshot, projectGroups } from "@/lib/projects";
 import { createMetadata } from "@/lib/utils";
 
 export const metadata = createMetadata({
@@ -9,21 +9,18 @@ export const metadata = createMetadata({
   path: "/projects"
 });
 
-const leadProject = projects[0];
-const spotlightProjects = projects.slice(1, 4);
-const currentProjects = projects.slice(4, 13);
-const archiveProjects = projects.slice(13);
-
 export default function ProjectsPage() {
+  const { lead, spotlight, current, archive } = projectGroups;
+
   return (
     <div className="w-full max-w-full overflow-x-hidden">
       <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
         <SectionTitle
           as="h1"
           variant="editorial"
-          eyebrow="Public engineering ledger / 2020—2026"
-          title="公开项目，按时间与意图重新编排"
-          description={`共 ${projects.length} 个 GitHub 公开仓库。这里不是等权的卡片墙，而是一份持续更新的工程刊物：从当前试验场，到早期学习轨迹。`}
+          eyebrow={`GitHub / ${githubProjectSnapshot.account} / 更新于 ${githubProjectSnapshot.syncedAt}`}
+          title="公开项目，按意图而不是热度编排"
+          description={`GitHub 当前共 ${githubProjectSnapshot.publicRepositoryCount} 个公开仓库，其中 ${githubProjectSnapshot.curatedProjectCount} 个纳入这份工程刊物。首屏仅保留当前主线，早期项目收入可展开的档案。`}
         />
 
         <div className="mb-16 grid gap-6 border-y border-border py-5 text-sm leading-6 text-secondary sm:grid-cols-3 lg:mb-24">
@@ -53,7 +50,7 @@ export default function ProjectsPage() {
               以最近更新时间为线索，突出当前正在发生的实验。
             </p>
           </div>
-          <ProjectCard project={leadProject} index={0} variant="feature" />
+          <ProjectCard project={lead} index={0} variant="feature" />
         </section>
 
         <section className="mt-24 sm:mt-32" aria-labelledby="spotlight-projects-title">
@@ -64,11 +61,11 @@ export default function ProjectsPage() {
                 正在发生的工程现场
               </h2>
               <p className="mt-5 max-w-sm text-sm leading-7 text-secondary">
-                三条互相叠加的信号：3D 交互、复杂信息可视化，以及 AI 辅助内容生产。
+                三条近期主线：设备侧安全发布、可回滚网络运维，以及可交互的 AI 学习实验。
               </p>
             </div>
             <div className="relative grid gap-8 pb-8">
-              {spotlightProjects.map((project, projectIndex) => (
+              {spotlight.map((project, projectIndex) => (
                 <ProjectCard
                   key={project.name}
                   project={project}
@@ -90,33 +87,37 @@ export default function ProjectsPage() {
               </h2>
             </div>
             <p className="max-w-lg text-sm leading-7 text-secondary">
-              从小型游戏、金融研究终端到本地文件工具，每一条都保留目标、技术路径与公开链接。
+              只保留六个能代表当前方向的项目，完整的历史路径收入下方档案。
             </p>
           </div>
           <div className="mt-8 grid gap-x-12 md:grid-cols-2">
-            {currentProjects.map((project, projectIndex) => (
+            {current.map((project, projectIndex) => (
               <ProjectCard key={project.name} project={project} index={projectIndex + 4} variant="note" />
             ))}
           </div>
         </section>
 
         <section className="mt-24 sm:mt-36" aria-labelledby="archive-projects-title">
-          <div className="grid gap-6 border-t border-border pt-6 lg:grid-cols-[minmax(0,0.35fr)_minmax(0,1fr)]">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Learning archive</p>
-              <h2 id="archive-projects-title" className="mt-3 max-w-sm font-display text-3xl font-semibold tracking-[-0.035em] text-primary sm:text-4xl">
-                早期路径，不删除的坐标
-              </h2>
-            </div>
-            <p className="max-w-2xl text-sm leading-7 text-secondary lg:pt-1">
-              历史项目是学习过程的真实截面。以索引式版面保留完整描述、产出、技术标签与原始仓库。
+          <details className="group border-y border-border">
+            <summary className="flex min-h-20 cursor-pointer list-none items-center justify-between gap-8 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">Learning archive</p>
+                <h2 id="archive-projects-title" className="mt-2 font-display text-3xl font-semibold tracking-[-0.035em] text-primary sm:text-4xl">
+                  早期路径 · {archive.length} 个项目
+                </h2>
+              </div>
+              <span className="shrink-0 text-sm font-semibold text-secondary group-open:hidden">展开档案 ↓</span>
+              <span className="hidden shrink-0 text-sm font-semibold text-secondary group-open:inline">收起档案 ↑</span>
+            </summary>
+            <p className="max-w-3xl pb-7 text-[15px] leading-7 text-secondary">
+              这些仓库保留了早期学习、Fork 实践和产品实验的真实轨迹。默认收起，需要时再展开查看。
             </p>
-          </div>
-          <div className="mt-8 border-b border-border">
-            {archiveProjects.map((project, projectIndex) => (
-              <ProjectCard key={project.name} project={project} index={projectIndex + 13} variant="archive" />
-            ))}
-          </div>
+            <div className="border-b border-border">
+              {archive.map((project, projectIndex) => (
+                <ProjectCard key={project.name} project={project} index={projectIndex + 10} variant="archive" />
+              ))}
+            </div>
+          </details>
         </section>
       </div>
     </div>

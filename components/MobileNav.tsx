@@ -5,7 +5,6 @@ import { Menu, X } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { GlobalSearch } from "@/components/GlobalSearch";
 import { NavLink } from "@/components/NavLink";
-import { UIVersionSwitch } from "@/components/UIVersionSwitch";
 import { navItems } from "@/lib/site";
 import { topicHubs } from "@/lib/topics";
 
@@ -117,11 +116,6 @@ export function MobileNav() {
             </div>
 
             <GlobalSearch className="mt-6" onNavigate={closeMenu} placeholder="检索文章与主题..." />
-
-            <div className="mt-4 flex items-center justify-between gap-4 border-y border-white/15 py-3">
-              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8db4cc]">界面版本</p>
-              <UIVersionSwitch active="signal" tone="ink" />
-            </div>
 
             <nav className="mt-7" aria-label="移动端主导航">
               {navItems.map((item) => (

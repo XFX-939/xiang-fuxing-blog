@@ -35,7 +35,7 @@ export function MobileNav() {
             />
           ))}
           <div className="my-2 border-t border-border" />
-          <div className="px-3 py-2">
+          <div className="px-3 py-2 sm:hidden">
             <UIVersionSwitch active="classic" />
           </div>
           <div className="my-2 border-t border-border" />

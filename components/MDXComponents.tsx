@@ -19,13 +19,19 @@ export const mdxComponents: MDXComponents = {
   ),
   a: ({ className, href, ...props }) => {
     const isExternal = typeof href === "string" && /^https?:\/\//.test(href);
+    const isHeadingAnchor = className?.includes("anchor-heading");
 
     return (
       <a
         href={href}
         target={isExternal ? "_blank" : undefined}
         rel={isExternal ? "noreferrer" : undefined}
-        className={cn("font-medium text-accent underline underline-offset-4 hover:opacity-80", className)}
+        className={cn(
+          isHeadingAnchor
+            ? "font-medium text-primary no-underline"
+            : "font-medium text-accent underline underline-offset-4 hover:opacity-80",
+          className
+        )}
         {...props}
       />
     );

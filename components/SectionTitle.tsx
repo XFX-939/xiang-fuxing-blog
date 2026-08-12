@@ -23,7 +23,7 @@ export function SectionTitle({ eyebrow, title, description, action, variant = "d
             {title}
           </Heading>
           {description ? (
-            <p className="mt-3 max-w-2xl text-[15px] leading-7 text-secondary sm:text-sm">
+            <p className="mt-3 max-w-2xl text-[15px] leading-7 text-secondary sm:text-base sm:leading-8">
               {description}
             </p>
           ) : null}

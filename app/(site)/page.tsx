@@ -19,17 +19,15 @@ const topicGridClasses = [
 
 const stackTop = ["7rem", "8.5rem", "10rem"];
 
-const manifesto = [
-  "真正有价值的工程经验，",
-  "不只是一个漂亮的结论。",
-  "它应该带着边界、假设与证据，",
-  "能被复盘，",
-  "也能被下一次实践继续验证。"
-];
+const manifesto = {
+  lead: ["工程经验的价值，", "不在于漂亮的结论。"],
+  detail: "它更应该说明问题的边界、成立的假设和支撑判断的证据。",
+  outcome: "这样，经验才能被复盘，也能在下一次实践里继续验证。"
+};
 
 export default function HomePage() {
   const latestPosts = getLatestPosts(4);
-  const selectedProjects = ["netcraft-6g", "felix-quant", "FilePilot"]
+  const selectedProjects = ["openclaw-multi-agent-team", "netcraft-6g", "FilePilot"]
     .map((name) => projects.find((project) => project.name === name))
     .filter((project): project is (typeof projects)[number] => Boolean(project));
 
@@ -56,28 +54,32 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="group/writing grid border-l border-t border-border md:grid-cols-2 lg:flex lg:min-h-[31rem]" data-reveal>
+        <div className="grid border-l border-t border-border lg:grid-cols-12 lg:grid-rows-3" data-reveal>
           {latestPosts.map((post, index) => (
             <Link
               key={post.slug}
               href={post.url}
-              className={`group relative flex min-h-[23rem] flex-col justify-between overflow-hidden border-b border-r border-border bg-surface/50 p-6 transition-[flex,background-color] duration-700 ease-out hover:bg-surface sm:p-8 lg:min-w-0 lg:flex-1 lg:p-9 lg:hover:!flex-[1.7] ${index === 0 ? "lg:flex-[1.55] lg:group-hover/writing:flex-1" : ""}`}
+              className={`group relative flex min-w-0 flex-col justify-between overflow-hidden border-b border-r border-border bg-surface/50 transition-colors duration-500 hover:bg-surface ${
+                index === 0
+                  ? "min-h-[28rem] p-7 sm:p-9 lg:col-span-7 lg:row-span-3 lg:min-h-[35rem] lg:p-11"
+                  : "min-h-[13rem] p-6 sm:p-7 lg:col-span-5 lg:row-span-1 lg:min-h-0"
+              }`}
             >
               <div>
-                <div className="flex items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+                <div className="flex items-center justify-between gap-3 font-mono text-xs uppercase tracking-[0.1em] text-muted">
                   <span>{String(index + 1).padStart(2, "0")}</span>
                   <ArrowUpRight className="h-4 w-4 text-accent transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </div>
-                <div className="mt-8 h-px w-10 bg-accent-bright transition-all duration-700 group-hover:w-full" />
-                <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.12em] text-accent">{post.category}</p>
-                <h3 className="mt-4 font-serif text-[clamp(1.65rem,2.8vw,2.8rem)] leading-[1.14] tracking-[-0.035em] text-primary">
+                <div className={index === 0 ? "mt-10 h-px w-12 bg-accent-bright transition-all duration-700 group-hover:w-full" : "mt-5 h-px w-8 bg-accent-bright transition-all duration-700 group-hover:w-20"} />
+                <p className="mt-5 text-xs font-semibold tracking-[0.08em] text-accent">{post.category}</p>
+                <h3 className={`mt-3 font-serif leading-[1.14] tracking-[-0.035em] text-primary ${index === 0 ? "max-w-3xl text-[clamp(2.4rem,4vw,4.8rem)]" : "line-clamp-2 text-2xl sm:text-[1.7rem]"}`}>
                   {post.title}
                 </h3>
-                <p className="mt-5 line-clamp-3 text-sm leading-7 text-secondary opacity-80 transition-opacity duration-500 group-hover:opacity-100">
-                  {post.description}
-                </p>
+                {index === 0 ? (
+                  <p className="mt-6 line-clamp-3 max-w-2xl text-base leading-8 text-secondary">{post.description}</p>
+                ) : null}
               </div>
-              <div className="mt-10 flex items-center justify-between border-t border-border pt-4 font-mono text-[10px] tracking-[0.08em] text-muted">
+              <div className={`flex items-center justify-between border-t border-border pt-4 text-xs text-muted ${index === 0 ? "mt-10" : "mt-5"}`}>
                 <time dateTime={post.date}>{formatDate(post.date)}</time>
                 <span>{post.readingTime}</span>
               </div>
@@ -118,9 +120,6 @@ export default function HomePage() {
                       {topic.slogan}
                     </p>
                     <div className={`mt-5 h-px w-12 transition-all duration-700 group-hover:w-full ${index === 0 ? "bg-[#f3a082]" : "bg-accent-bright"}`} />
-                    <p className={`mt-4 line-clamp-2 text-xs leading-6 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${index === 0 ? "text-white/60" : "text-muted"}`}>
-                      {topic.description}
-                    </p>
                   </div>
                 </Link>
               );
@@ -129,14 +128,30 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[90rem] px-5 py-28 sm:px-8 sm:py-40 lg:px-10 xl:px-14" aria-label="写作宣言">
-        <p className="max-w-[80rem] font-serif text-[clamp(2.6rem,6.5vw,7rem)] leading-[1.02] tracking-[-0.055em] text-primary">
-          {manifesto.map((chunk) => (
-            <span key={chunk} data-scrub-word className="mr-[0.16em] inline text-primary">
-              {chunk}
-            </span>
-          ))}
-        </p>
+      <section className="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 sm:py-32 lg:px-10 xl:px-14" aria-labelledby="manifesto-heading">
+        <div className="grid gap-10 border-y border-border py-10 sm:py-14 lg:grid-cols-12 lg:gap-12 lg:py-20">
+          <div className="lg:col-span-7">
+            <h2
+              id="manifesto-heading"
+              data-scrub-line
+              className="max-w-[22ch] font-serif text-[clamp(2.25rem,4vw,4.5rem)] leading-[1.1] tracking-[-0.03em] text-primary"
+            >
+              {manifesto.lead.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </h2>
+          </div>
+          <div className="flex max-w-2xl flex-col justify-end gap-5 lg:col-span-5 lg:pb-1">
+            <p data-scrub-line className="text-base leading-8 text-secondary sm:text-lg sm:leading-9">
+              {manifesto.detail}
+            </p>
+            <p data-scrub-line className="border-l-2 border-accent-bright pl-5 text-base font-medium leading-8 text-primary sm:text-lg sm:leading-9">
+              {manifesto.outcome}
+            </p>
+          </div>
+        </div>
       </section>
 
       <section className="border-y border-border bg-surface-elevated/40" aria-labelledby="projects-heading">
