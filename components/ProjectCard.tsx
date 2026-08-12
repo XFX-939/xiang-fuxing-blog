@@ -32,7 +32,11 @@ export function ProjectCard({
     () => {
       const article = articleRef.current;
 
-      if (!article || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (
+        !article ||
+        window.matchMedia("(max-width: 767px)").matches ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
         return;
       }
 

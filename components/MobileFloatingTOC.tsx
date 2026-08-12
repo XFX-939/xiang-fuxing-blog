@@ -18,7 +18,6 @@ type MobileFloatingTOCProps = {
 export function MobileFloatingTOC({ items }: MobileFloatingTOCProps) {
   const [open, setOpen] = useState(false);
   const activeId = useActiveHeading(items);
-  const activeItem = items.find((item) => item.id === activeId) ?? items[0];
 
   useEffect(() => {
     if (!open) {
@@ -50,18 +49,13 @@ export function MobileFloatingTOC({ items }: MobileFloatingTOCProps) {
         aria-label="打开文章目录"
         aria-expanded={open}
         className={cn(
-          "fixed bottom-5 right-5 z-50 inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-surface/95 px-4 py-2.5 text-sm font-semibold text-primary shadow-soft backdrop-blur-xl transition",
+          "fixed bottom-[calc(env(safe-area-inset-bottom)+1rem)] right-4 z-50 inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-surface/95 px-4 py-2.5 text-sm font-semibold text-primary shadow-soft backdrop-blur-xl transition sm:right-5",
           "hover:border-accent hover:text-accent focus:outline-none focus-visible:ring-4 focus-visible:ring-accent-soft dark:shadow-soft-dark",
           open && "pointer-events-none opacity-0"
         )}
       >
         <ListTree className="h-4 w-4 text-accent" />
         <span>目录</span>
-        {activeItem ? (
-          <span className="max-w-[9rem] truncate border-l border-border pl-2 text-xs font-medium text-muted">
-            {activeItem.text}
-          </span>
-        ) : null}
       </button>
 
       {open ? (
@@ -72,7 +66,7 @@ export function MobileFloatingTOC({ items }: MobileFloatingTOCProps) {
             className="absolute inset-0 bg-bg/50 backdrop-blur-[2px]"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute inset-x-3 bottom-3 overflow-hidden rounded-[18px] border border-border bg-surface shadow-soft dark:shadow-soft-dark">
+          <div className="absolute inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.75rem)] overflow-hidden rounded-[18px] border border-border bg-surface shadow-soft dark:shadow-soft-dark">
             <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">TOC</p>

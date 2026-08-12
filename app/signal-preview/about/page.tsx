@@ -132,7 +132,7 @@ export default function AboutPage() {
               <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/45 to-transparent" aria-hidden="true" />
               <figcaption className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-white sm:bottom-7 sm:left-7 sm:right-7">
                 <span>Field portrait</span>
-                <span>Systems / Signals / People</span>
+                <span className="hidden min-[360px]:inline">Systems / Signals / People</span>
               </figcaption>
             </figure>
           </div>

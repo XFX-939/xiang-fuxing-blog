@@ -95,7 +95,7 @@ export function MobileNav() {
             role="dialog"
             aria-modal="true"
             aria-label="全站导航"
-            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-[25rem] flex-col overflow-y-auto border-l border-white/20 bg-[#111a22] px-5 pb-8 pt-5 text-[#f3eee4] sm:px-7"
+            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-[25rem] flex-col overscroll-contain overflow-y-auto border-l border-white/20 bg-[#111a22] px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] pt-5 text-[#f3eee4] sm:px-7"
           >
             <div className="flex items-start justify-between gap-6 border-b border-white/20 pb-5">
               <div>

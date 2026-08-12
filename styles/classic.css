@@ -96,9 +96,10 @@
 }
 
 @media (max-width: 768px) {
-  [data-ui-version="classic"] main :where(h1, h2, h3, p, li, a, span),
-  .classic-site main :where(h1, h2, h3, p, li, a, span) {
+  [data-ui-version="classic"] main :where(h1, h2, h3, p, li),
+  .classic-site main :where(h1, h2, h3, p, li),
+  [data-ui-version="classic"] .article-content :where(a),
+  .classic-site .article-content :where(a) {
     overflow-wrap: anywhere;
-    word-break: break-word;
   }
 }

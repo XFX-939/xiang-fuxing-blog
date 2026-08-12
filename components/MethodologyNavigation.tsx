@@ -67,7 +67,7 @@ export function MethodologyNavigation({ items }: MethodologyNavigationProps) {
 
   return (
     <>
-      <div className="fixed inset-x-0 top-[8.7rem] z-30 h-1 bg-border/60 lg:top-[6.1rem]" aria-hidden="true">
+      <div className="fixed inset-x-0 top-0 z-[60] h-1 bg-border/60" aria-hidden="true">
         <div
           className="h-full bg-gradient-to-r from-signal-500 via-cyan-400 to-violet-400 shadow-[0_0_14px_rgba(56,189,248,0.35)] transition-[width] duration-150 ease-out"
           style={{ width: `${progress}%` }}

@@ -24,7 +24,7 @@ export function MobileNav() {
       </button>
 
       {open ? (
-        <div className="absolute left-4 right-4 top-[9.25rem] z-50 rounded-md border border-border bg-surface p-2 shadow-soft dark:shadow-soft-dark">
+        <div className="fixed inset-x-4 top-[9.625rem] z-50 max-h-[calc(100dvh_-_10.625rem_-_env(safe-area-inset-bottom))] overflow-y-auto overscroll-contain rounded-md border border-border bg-surface p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-soft sm:top-[9.375rem] sm:max-h-[calc(100dvh_-_10.375rem_-_env(safe-area-inset-bottom))] dark:shadow-soft-dark">
           {navItems.map((item) => (
             <NavLink
               key={item.href}

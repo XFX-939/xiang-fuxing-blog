@@ -18,6 +18,7 @@ type BlogExplorerProps = {
 };
 
 const pageSize = 6;
+const defaultTagLimit = 6;
 
 export function BlogExplorer({ posts, categories, tags, initialCategory = "全部" }: BlogExplorerProps) {
   const explorerRef = useRef<HTMLDivElement>(null);
@@ -96,8 +97,8 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
 
   const visiblePosts = filteredPosts.slice(0, visible);
   const resultCount = hasQuery ? searchTotal : filteredPosts.length;
-  const visibleTags = showAllTags ? tags : tags.slice(0, 12);
-  const hasHiddenTags = tags.length > 12;
+  const visibleTags = showAllTags ? tags : tags.slice(0, defaultTagLimit);
+  const hasHiddenTags = tags.length > defaultTagLimit;
   const motionKey = visiblePosts.map((post) => post.slug).join("|");
   const signalTopics = useMemo(() => {
     const topicNames = tags.slice(0, 10).map((item) => item.name);
@@ -192,16 +193,16 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
   return (
     <div ref={explorerRef}>
       {signalTopics.length > 0 ? (
-        <div className="overflow-hidden border-y border-border py-3" aria-label="研究主题流">
+        <div className="overflow-hidden border-y border-border py-2.5 sm:py-3" aria-label="研究主题流">
           <div data-signal-track className="flex w-max will-change-transform">
             {[0, 1].map((groupIndex) => (
               <div
                 key={groupIndex}
                 aria-hidden={groupIndex === 1 ? "true" : undefined}
-                className="flex shrink-0 items-center gap-5 pr-5 text-[11px] font-semibold tracking-[0.12em] text-muted sm:gap-8 sm:pr-8"
+                className="flex shrink-0 items-center gap-4 pr-4 text-[11px] font-semibold tracking-[0.12em] text-muted sm:gap-8 sm:pr-8"
               >
                 {signalTopics.map((topic) => (
-                  <span key={`${groupIndex}-${topic}`} className="flex items-center gap-5 whitespace-nowrap sm:gap-8">
+                  <span key={`${groupIndex}-${topic}`} className="flex items-center gap-4 whitespace-nowrap sm:gap-8">
                     <span>{topic}</span>
                     <span aria-hidden="true" className="h-1.5 w-1.5 bg-accent" />
                   </span>
@@ -212,19 +213,19 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
         </div>
       ) : null}
 
-      <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12">
+      <div className="mt-5 grid grid-cols-1 gap-5 sm:mt-10 sm:gap-10 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12">
         <aside ref={filterRailRef} className="h-fit min-w-0" aria-label="文章筛选">
-          <div className="border-t border-border pt-4">
-            <div className="mb-3 flex items-center justify-between gap-4">
+          <div className="border-t border-border pt-3 sm:pt-4">
+            <div className="mb-2 flex items-center justify-between gap-4 sm:mb-3">
               <h2 className="text-xs font-semibold tracking-[0.12em] text-primary">分类检索</h2>
               <span className="font-mono text-[11px] tabular-nums text-muted">{posts.length}</span>
             </div>
-            <div className="-mx-1 flex gap-4 overflow-x-auto px-1 pb-2 scrollbar-hide lg:mx-0 lg:block lg:space-y-0 lg:overflow-visible lg:px-0 lg:pb-0">
+            <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1 scrollbar-hide sm:gap-4 sm:pb-2 lg:mx-0 lg:block lg:space-y-0 lg:overflow-visible lg:px-0 lg:pb-0">
               <button
                 type="button"
                 onClick={() => resetAndSetCategory("全部")}
                 aria-pressed={category === "全部"}
-                className={`flex shrink-0 items-center justify-between gap-4 border-b-2 px-0 py-2 text-left text-sm transition lg:w-full lg:border-b lg:border-l-2 lg:px-3 lg:py-2.5 ${
+                className={`flex shrink-0 items-center justify-between gap-4 border-b-2 px-0 py-1.5 text-left text-sm transition sm:py-2 lg:w-full lg:border-b lg:border-l-2 lg:px-3 lg:py-2.5 ${
                   category === "全部"
                     ? "border-accent font-semibold text-accent"
                     : "border-transparent text-secondary hover:text-accent lg:border-b-border lg:border-l-transparent"
@@ -239,7 +240,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
                   type="button"
                   onClick={() => resetAndSetCategory(item.name)}
                   aria-pressed={category === item.name}
-                  className={`flex shrink-0 items-center justify-between gap-4 border-b-2 px-0 py-2 text-left text-sm transition lg:w-full lg:border-b lg:border-l-2 lg:px-3 lg:py-2.5 ${
+                  className={`flex shrink-0 items-center justify-between gap-4 border-b-2 px-0 py-1.5 text-left text-sm transition sm:py-2 lg:w-full lg:border-b lg:border-l-2 lg:px-3 lg:py-2.5 ${
                     category === item.name
                       ? "border-accent font-semibold text-accent"
                       : "border-transparent text-secondary hover:text-accent lg:border-b-border lg:border-l-transparent"
@@ -252,8 +253,8 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
             </div>
           </div>
 
-          <div className="mt-8 border-t border-border pt-4">
-            <div className="mb-4 flex items-center justify-between gap-3">
+          <div className="mt-5 border-t border-border pt-3 sm:mt-8 sm:pt-4">
+            <div className="mb-3 flex items-center justify-between gap-3 sm:mb-4">
               <h2 className="text-xs font-semibold tracking-[0.12em] text-primary">标签信号</h2>
               {hasHiddenTags ? (
                 <button
@@ -261,11 +262,11 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
                   onClick={() => setShowAllTags((value) => !value)}
                   className="border-b border-transparent text-[11px] font-semibold text-accent transition hover:border-accent"
                 >
-                  {showAllTags ? "收起" : `展开 +${tags.length - 12}`}
+                  {showAllTags ? "收起" : `展开 +${tags.length - defaultTagLimit}`}
                 </button>
               ) : null}
             </div>
-            <div className="flex flex-wrap gap-x-4 gap-y-3">
+            <div className="flex flex-wrap gap-x-3 gap-y-2 sm:gap-x-4 sm:gap-y-3">
               <button
                 type="button"
                 onClick={() => resetAndSetTag("全部")}
@@ -294,7 +295,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
         </aside>
 
         <section className="min-w-0" aria-labelledby="article-index-heading">
-          <label className="group relative flex min-h-14 items-center border-y border-border transition focus-within:border-accent">
+          <label className="group relative flex min-h-12 items-center border-y border-border transition focus-within:border-accent sm:min-h-14">
             <span className="sr-only">搜索文章</span>
             <Search className="pointer-events-none ml-1 h-4 w-4 shrink-0 text-muted transition group-focus-within:text-accent sm:ml-3" />
             <input
@@ -305,7 +306,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
                 setVisible(pageSize);
               }}
               placeholder="搜索标题、摘要、正文或标签"
-              className="h-14 min-w-0 flex-1 bg-transparent px-4 text-sm text-primary outline-none placeholder:text-muted"
+              className="h-12 min-w-0 flex-1 bg-transparent px-3 text-base text-primary outline-none placeholder:text-muted sm:h-14 sm:px-4 sm:text-sm"
             />
             {query ? (
               <button
@@ -319,7 +320,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
             ) : null}
           </label>
 
-          <div className="mt-8 flex items-end justify-between gap-6 border-b border-border pb-4">
+          <div className="mt-6 flex items-end justify-between gap-6 border-b border-border pb-3 sm:mt-8 sm:pb-4">
             <div>
               <h2 id="article-index-heading" className="text-2xl font-semibold tracking-[-0.025em] text-primary sm:text-3xl">
                 文章索引
@@ -344,7 +345,7 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
           ) : null}
 
           {visiblePosts.length < filteredPosts.length ? (
-            <div className="mt-8 border-y border-border py-3 text-center">
+            <div className="mt-6 border-y border-border py-3 text-center sm:mt-8">
               <button
                 type="button"
                 onClick={() => setVisible((value) => value + pageSize)}

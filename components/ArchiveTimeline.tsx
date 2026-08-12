@@ -327,7 +327,7 @@ export function ArchiveTimeline({ yearGroups }: ArchiveTimelineProps) {
         </div>
       </section>
 
-      <section className="mt-6 rounded-[18px] border border-border bg-surface p-4 sm:rounded-md sm:p-5" aria-label="归档筛选">
+      <section className="mt-6 w-full min-w-0 max-w-full rounded-[18px] border border-border bg-surface p-4 sm:rounded-md sm:p-5" aria-label="归档筛选">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <p className="text-sm font-semibold text-primary">筛选写作轨迹</p>
@@ -343,7 +343,7 @@ export function ArchiveTimeline({ yearGroups }: ArchiveTimelineProps) {
           </button>
         </div>
 
-        <div className="mt-5 grid gap-5">
+        <div className="mt-5 grid min-w-0 gap-5">
           <FilterGroup label="年份">
             <button type="button" onClick={() => setYear(ALL)} className={filterButtonClass(year === ALL)}>
               全部
@@ -378,13 +378,13 @@ export function ArchiveTimeline({ yearGroups }: ArchiveTimelineProps) {
             ))}
           </FilterGroup>
 
-          <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-            <label className="grid gap-2">
+          <div className="grid min-w-0 gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+            <label className="grid min-w-0 gap-2">
               <span className="text-sm font-semibold text-primary">标签</span>
               <select
                 value={tag}
                 onChange={(event) => setTag(event.target.value)}
-                className="h-11 rounded-md border border-border bg-surface-elevated px-3 text-sm text-secondary outline-none transition focus:border-accent focus:ring-4 focus:ring-accent-soft"
+                className="h-11 w-full min-w-0 max-w-full rounded-md border border-border bg-surface-elevated px-3 text-sm text-secondary outline-none transition focus:border-accent focus:ring-4 focus:ring-accent-soft"
               >
                 <option value={ALL}>全部标签</option>
                 {tags.map((item) => (
@@ -395,9 +395,9 @@ export function ArchiveTimeline({ yearGroups }: ArchiveTimelineProps) {
               </select>
             </label>
 
-            <label className="grid gap-2">
+            <label className="grid min-w-0 gap-2">
               <span className="text-sm font-semibold text-primary">关键词</span>
-              <span className="relative">
+              <span className="relative block min-w-0">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
                 <input
                   value={query}
@@ -580,9 +580,9 @@ function MetricCard({ icon, label, value }: { icon: ReactNode; label: string; va
 
 function FilterGroup({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div>
+    <div className="w-full min-w-0 max-w-full">
       <p className="mb-2 text-sm font-semibold text-primary">{label}</p>
-      <div className="scrollbar-hide flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
+      <div className="scrollbar-hide flex w-full min-w-0 max-w-full gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
         {children}
       </div>
     </div>

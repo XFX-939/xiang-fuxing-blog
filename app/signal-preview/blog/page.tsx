@@ -23,9 +23,9 @@ export default function BlogPage({ searchParams }: BlogPageProps) {
   return (
     <div className="w-full max-w-full overflow-x-hidden">
       <section className="border-b border-border" aria-labelledby="field-notes-title">
-        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:px-6 sm:py-20 lg:grid-cols-[minmax(0,1.55fr)_minmax(16rem,0.7fr)] lg:items-end lg:py-24">
+        <div className="mx-auto grid max-w-6xl gap-5 px-5 py-8 sm:gap-10 sm:px-6 sm:py-20 lg:grid-cols-[minmax(0,1.55fr)_minmax(16rem,0.7fr)] lg:items-end lg:py-24">
           <div className="max-w-6xl">
-            <p className="mb-5 text-xs font-semibold tracking-[0.18em] text-accent">
+            <p className="mb-3 text-xs font-semibold tracking-[0.18em] text-accent sm:mb-5">
               无线通信 · AI 研发 · 系统实践
             </p>
             <h1
@@ -50,14 +50,14 @@ export default function BlogPage({ searchParams }: BlogPageProps) {
             <p className="text-base leading-8 text-secondary">
               从系统仿真到技术管理，把复杂问题拆成可复现、可验证、可继续推进的现场记录。
             </p>
-            <p className="mt-4 text-sm leading-7 text-muted">
+            <p className="mt-3 text-sm leading-7 text-muted sm:mt-4">
               支持全文检索，也可按分类与标签缩小信号范围。
             </p>
           </div>
         </div>
       </section>
 
-      <div className="mx-auto max-w-6xl px-5 py-12 sm:px-6 sm:py-16">
+      <div className="mx-auto max-w-6xl px-5 py-6 sm:px-6 sm:py-16">
         <BlogExplorer posts={posts} categories={categories} tags={tags} initialCategory={initialCategory} />
       </div>
     </div>

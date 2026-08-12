@@ -41,7 +41,7 @@ export function Header() {
           ))}
         </nav>
 
-        <GlobalSearch className="hidden min-w-[18rem] flex-1 lg:block xl:max-w-[34rem] 2xl:max-w-[38rem]" />
+        <GlobalSearch className="hidden min-w-[18rem] flex-1 xl:block xl:max-w-[34rem] 2xl:max-w-[38rem]" />
 
         <div className="flex items-center gap-2">
           <div className="hidden xl:block">

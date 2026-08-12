@@ -60,9 +60,15 @@ body::before {
 }
 
 @media (max-width: 768px) {
-  main :where(h1, h2, h3, p, li, a, span) {
+  main :where(h1, h2, h3, p, li),
+  .article-content :where(a) {
     overflow-wrap: anywhere;
-    word-break: break-word;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
   }
 }
 

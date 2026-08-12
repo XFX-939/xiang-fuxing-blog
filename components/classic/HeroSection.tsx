@@ -37,7 +37,7 @@ export function HeroSection() {
             <p className="mb-5 hidden rounded-md border border-border bg-surface px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-accent sm:inline-flex">
               Personal Knowledge System
             </p>
-            <h1 className="max-w-[18rem] text-[30px] font-semibold leading-[1.22] tracking-[-0.02em] text-primary min-[390px]:max-w-[19rem] sm:max-w-4xl sm:text-5xl sm:tracking-normal lg:max-w-none lg:text-[clamp(2.4rem,4vw,2.75rem)] xl:whitespace-nowrap 2xl:text-5xl">
+            <h1 className="max-w-[18rem] text-[30px] font-semibold leading-[1.22] tracking-[-0.02em] text-primary max-[389px]:max-w-full max-[389px]:text-[28px] max-[389px]:leading-[1.2] min-[390px]:max-w-[19rem] sm:max-w-4xl sm:text-5xl sm:tracking-normal lg:max-w-none lg:text-[clamp(2.4rem,4vw,2.75rem)] xl:whitespace-nowrap 2xl:text-5xl">
               用 AI 重构复杂工程问题的建模、仿真与决策
             </h1>
             <p className="mt-5 max-w-3xl text-[15px] font-semibold leading-7 text-accent sm:text-base">

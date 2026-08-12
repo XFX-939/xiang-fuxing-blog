@@ -28,7 +28,7 @@ export function HeroSection() {
             </div>
 
             <div className="max-w-6xl py-14 pr-0 lg:py-20 lg:pr-12" data-reveal>
-              <h1 className="max-w-6xl font-serif text-[clamp(3.15rem,5.8vw,6rem)] font-normal leading-[0.93] tracking-[-0.065em] text-primary">
+              <h1 className="max-w-6xl font-serif text-[2.7rem] font-normal leading-[0.93] tracking-[-0.065em] text-primary min-[360px]:text-[3.15rem] sm:text-[clamp(3.15rem,5.8vw,6rem)]">
                 <span className="block">把复杂系统，</span>
                 <span className="block text-denim dark:text-[#8fb6bf]">变成可验证的判断。</span>
               </h1>
