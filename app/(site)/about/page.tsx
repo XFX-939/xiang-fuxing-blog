@@ -1,7 +1,8 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { ArrowUpRight, Github, Mail, MessageCircle, NotebookText, Video } from "lucide-react";
-import { SectionTitle } from "@/components/SectionTitle";
+import { CheckCircle2, Github, Mail, MessageCircle, NotebookText, Video } from "lucide-react";
+import { SectionTitle } from "@/components/classic/SectionTitle";
+import { TagList } from "@/components/classic/TagList";
 import { siteConfig } from "@/lib/site";
 import { createMetadata } from "@/lib/utils";
 
@@ -93,182 +94,135 @@ const valueTopics = [
 
 export default function AboutPage() {
   return (
-    <div className="w-full max-w-full overflow-x-hidden">
-      <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
-        <SectionTitle
-          as="h1"
-          variant="editorial"
-          eyebrow="Wireless systems / AI-assisted R&D / Team practice"
-          title="把复杂系统讲清楚，也把经验沉淀下来"
-          description="技术深度、工程判断和组织协作，是我长期希望放在同一张工作地图里打磨的能力。"
-        />
+    <div className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-12">
+      <SectionTitle
+        eyebrow="About"
+        title="关于我"
+        description="技术深度、工程判断和组织协作，是我长期希望放在同一张工作地图里打磨的能力。"
+      />
 
-        <section className="relative border-y border-border" aria-labelledby="profile-title">
-          <div className="grid items-stretch lg:grid-cols-[minmax(0,0.9fr)_minmax(22rem,0.52fr)]">
-            <div className="relative z-10 flex flex-col justify-center py-10 lg:-mr-16 lg:py-20">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">向福星 / 无线通信算法工程师</p>
-              <h2 id="profile-title" className="mt-6 max-w-4xl font-display text-[clamp(2.6rem,6vw,5.8rem)] font-semibold leading-[0.94] tracking-[-0.055em] text-primary">
-                技术深度，工程判断，以及人与系统。
-              </h2>
-              <div className="mt-9 max-w-2xl border-l border-accent pl-5 sm:pl-7">
-                <p className="text-[15px] leading-8 text-secondary sm:text-base">
-                  我是无线通信算法工程师，长期从事系统仿真、5G/6G技术预研、AI辅助研发、研发效能提升和技术团队管理相关工作。
-                </p>
-                <p className="mt-4 text-[15px] leading-8 text-secondary sm:text-base">
-                  我希望把复杂工程问题讲清楚，把技术经验沉淀成可复用的方法，也把个人成长和团队管理中的真实判断长期记录下来。
-                </p>
-              </div>
+      <div className="grid grid-cols-1 gap-8">
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,1fr)_220px] md:items-center">
+            <div>
+              <h2 className="text-lg font-semibold text-primary sm:text-xl">个人简介</h2>
+              <p className="mt-3 text-[15px] leading-7 text-secondary">
+                我是无线通信算法工程师，长期从事系统仿真、5G/6G技术预研、AI辅助研发、研发效能提升和技术团队管理相关工作。
+              </p>
+              <p className="mt-3 text-[15px] leading-7 text-secondary">
+                我希望把复杂工程问题讲清楚，把技术经验沉淀成可复用的方法，也把个人成长和团队管理中的真实判断长期记录下来。
+              </p>
             </div>
-
-            <figure className="group relative mx-auto min-h-[430px] w-full max-w-[34rem] overflow-hidden border-x border-border bg-surface-elevated sm:min-h-[560px] lg:mx-0 lg:max-w-none">
-              <Image
-                src="/images/xiang-fuxing-profile.jpg"
-                alt="向福星个人照片"
-                fill
-                priority
-                sizes="(min-width: 1024px) 38vw, (min-width: 640px) 70vw, 100vw"
-                className="object-cover object-[50%_30%] saturate-[0.82] contrast-[1.04] transition-[transform,filter] duration-700 ease-out group-hover:scale-[1.025] group-hover:saturate-100"
-              />
-              <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/45 to-transparent" aria-hidden="true" />
-              <figcaption className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-white sm:bottom-7 sm:left-7 sm:right-7">
-                <span>Field portrait</span>
-                <span className="hidden min-[360px]:inline">Systems / Signals / People</span>
-              </figcaption>
-            </figure>
-          </div>
-        </section>
-
-        <section className="grid gap-10 border-b border-border py-20 sm:py-28 lg:grid-cols-[minmax(0,0.36fr)_minmax(0,1fr)] lg:gap-16" aria-labelledby="focus-title">
-          <header className="lg:sticky lg:top-28 lg:self-start">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Research map</p>
-            <h2 id="focus-title" className="mt-3 font-display text-3xl font-semibold tracking-[-0.035em] text-primary sm:text-4xl">我的关注方向</h2>
-            <p className="mt-5 max-w-sm text-sm leading-7 text-secondary">从空口算法到研发系统，我更关心变量之间的关系，而不是孤立的技术名词。</p>
-          </header>
-
-          <div>
-            <div className="grid border-t border-border sm:grid-cols-2">
-              {focusAreas.map((area, index) => (
-                <div key={area} className="group flex min-h-24 items-start gap-4 border-b border-border py-5 sm:px-5 sm:odd:border-r sm:first:pl-0">
-                  <span className="font-mono text-[10px] font-semibold text-accent">{String(index + 1).padStart(2, "0")}</span>
-                  <span className="text-base font-medium leading-7 text-primary transition-transform duration-300 group-hover:translate-x-1">{area}</span>
+            <div className="mx-auto w-full max-w-[220px]">
+              <div className="rounded-md border border-border bg-surface-elevated p-2">
+                <div className="relative aspect-square overflow-hidden rounded-md bg-surface-elevated">
+                  <Image
+                    src="/images/xiang-fuxing-profile.jpg"
+                    alt="向福星个人照片"
+                    fill
+                    sizes="(min-width: 768px) 220px, 70vw"
+                    className="object-cover object-[50%_32%]"
+                  />
                 </div>
-              ))}
-            </div>
-
-            <div className="mt-16 border-t border-border pt-6">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <h3 className="font-display text-2xl font-semibold tracking-[-0.025em] text-primary">我的能力标签</h3>
-                <p className="text-xs uppercase tracking-[0.14em] text-muted">Capability index / {skills.length}</p>
-              </div>
-              <div className="mt-7 grid grid-cols-2 border-t border-border sm:grid-cols-3">
-                {skills.map((skill) => (
-                  <span key={skill} className="border-b border-border py-3 pr-3 text-sm leading-6 text-secondary transition-colors hover:text-accent sm:even:px-3">
-                    {skill}
-                  </span>
-                ))}
               </div>
             </div>
           </div>
         </section>
 
-        <section className="grid gap-10 border-b border-border py-20 sm:py-28 lg:grid-cols-[minmax(0,0.36fr)_minmax(0,1fr)] lg:gap-16" aria-labelledby="principles-title">
-          <header>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Operating rhythm</p>
-            <h2 id="principles-title" className="mt-3 font-display text-3xl font-semibold tracking-[-0.035em] text-primary sm:text-4xl">我的工作原则</h2>
-          </header>
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+          <h2 className="text-xl font-semibold text-primary">我的关注方向</h2>
+          <div className="mt-5 grid grid-cols-2 gap-3 max-[379px]:grid-cols-1 sm:grid-cols-2">
+            {focusAreas.map((area) => (
+              <div key={area} className="rounded-md border border-border bg-surface-elevated px-4 py-3 text-sm leading-6 text-secondary">
+                {area}
+              </div>
+            ))}
+          </div>
+        </section>
 
-          <div className="grid border-y border-border sm:grid-cols-2 xl:grid-cols-4">
-            {principles.map((principle, index) => (
-              <article key={principle.title} className="group min-h-64 border-b border-border p-5 last:border-b-0 sm:border-r sm:last:border-r-0 xl:border-b-0">
-                <span className="font-display text-5xl font-semibold tracking-[-0.05em] text-accent/25 transition-colors duration-300 group-hover:text-accent">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-10 text-lg font-semibold text-primary">{principle.title}</h3>
-                <p className="mt-4 text-sm leading-7 text-secondary">{principle.description}</p>
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+          <h2 className="text-xl font-semibold text-primary">我的能力标签</h2>
+          <TagList className="mt-5" tags={skills} maxVisible={skills.length} showMore={false} compact />
+        </section>
+
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+          <h2 className="text-xl font-semibold text-primary">我的工作原则</h2>
+          <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-4">
+            {principles.map((principle) => (
+              <article key={principle.title} className="rounded-md border border-border bg-surface-elevated p-4">
+                <h3 className="font-semibold text-primary">{principle.title}</h3>
+                <p className="mt-3 line-clamp-3 text-sm leading-7 text-secondary md:line-clamp-none">{principle.description}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="grid gap-10 border-b border-border py-20 sm:py-28 lg:grid-cols-[minmax(0,0.36fr)_minmax(0,1fr)] lg:gap-16" aria-labelledby="cognition-title">
-          <header className="lg:sticky lg:top-28 lg:self-start">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Cognitive frame</p>
-            <h2 id="cognition-title" className="mt-3 font-display text-3xl font-semibold tracking-[-0.035em] text-primary sm:text-4xl">认知方法论</h2>
-            <p className="mt-5 max-w-sm text-sm leading-7 text-secondary">
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Cognitive Frame</p>
+            <h2 className="mt-2 text-xl font-semibold text-primary">认知方法论</h2>
+            <p className="mt-3 text-sm leading-7 text-secondary">
               这些不是抽象口号，而是我在技术探索、工程交付和团队协同里反复使用的判断框架。
             </p>
-          </header>
+          </div>
 
-          <div>
-            <div className="grid gap-0 border-y border-border lg:grid-cols-3">
-              {cognitionGroups.map((group) => (
-                <article key={group.title} className="border-b border-border py-7 lg:border-b-0 lg:border-r lg:px-7 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0">
-                  <p className="text-xs font-medium text-muted">{group.description}</p>
-                  <h3 className="mt-2 min-h-14 text-lg font-semibold leading-7 text-primary">{group.title}</h3>
-                  <ul className="mt-6 grid gap-3">
-                    {group.items.map((item) => (
-                      <li key={item} className="grid grid-cols-[0.75rem_minmax(0,1fr)] gap-3 text-sm leading-6 text-secondary">
-                        <span className="mt-[0.65rem] h-px w-3 bg-accent" aria-hidden="true" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
-            </div>
+          <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-3">
+            {cognitionGroups.map((group) => (
+              <article key={group.title} className="rounded-md border border-border bg-surface-elevated p-4">
+                <p className="text-xs font-medium text-muted">{group.description}</p>
+                <h3 className="mt-1 font-semibold text-primary">{group.title}</h3>
+                <div className="mt-4 grid gap-2">
+                  {group.items.map((item) => (
+                    <div key={item} className="flex items-start gap-2 text-sm leading-6 text-secondary">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
 
-            <div className="mt-12 grid gap-px bg-border md:grid-cols-2">
-              {importantCognitions.map((item) => (
-                <article key={item.title} className="bg-accent-soft p-6 sm:p-8">
-                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">重要认知</p>
-                  <h3 className="mt-3 font-display text-2xl font-semibold tracking-[-0.025em] text-primary">{item.title}</h3>
-                  <p className="mt-5 text-sm leading-7 text-secondary">{item.description}</p>
-                </article>
-              ))}
-            </div>
+          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+            {importantCognitions.map((item) => (
+              <article key={item.title} className="rounded-md border border-border bg-accent-soft p-4">
+                <p className="text-xs font-medium text-accent">重要认知</p>
+                <h3 className="mt-1 font-semibold text-primary">{item.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-secondary">{item.description}</p>
+              </article>
+            ))}
           </div>
         </section>
 
-        <section className="grid gap-10 border-b border-border py-20 sm:py-28 lg:grid-cols-[minmax(0,0.36fr)_minmax(0,1fr)] lg:gap-16" aria-labelledby="questions-title">
-          <header>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Long-term questions</p>
-            <h2 id="questions-title" className="mt-3 font-display text-3xl font-semibold tracking-[-0.035em] text-primary sm:text-4xl">我正在长期沉淀的问题</h2>
-          </header>
-
-          <div>
-            <p className="text-base font-semibold text-primary">欢迎非商业技术讨论</p>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-secondary">如果你对以下公开技术问题有讨论，欢迎邮件交流：</p>
-            <ol className="mt-8 border-b border-border">
-              {valueTopics.map((topic, index) => (
-                <li key={topic} className="group grid grid-cols-[2rem_minmax(0,1fr)] gap-4 border-t border-border py-6 sm:grid-cols-[4rem_minmax(0,1fr)] sm:items-center">
-                  <span className="font-mono text-xs font-semibold text-accent">{String(index + 1).padStart(2, "0")}</span>
-                  <span className="text-base leading-7 text-secondary transition-transform duration-300 group-hover:translate-x-2 group-hover:text-primary sm:text-lg">{topic}</span>
-                </li>
-              ))}
-            </ol>
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+          <h2 className="text-xl font-semibold text-primary">我正在长期沉淀的问题</h2>
+          <p className="mt-4 text-sm leading-7 text-secondary">欢迎非商业技术讨论</p>
+          <p className="mt-2 leading-8 text-secondary">如果你对以下公开技术问题有讨论，欢迎邮件交流：</p>
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {valueTopics.map((topic, index) => (
+              <div key={topic} className="flex gap-3 rounded-md border border-border bg-surface-elevated p-4">
+                <span className="mt-0.5 text-xs font-semibold text-accent">{String(index + 1).padStart(2, "0")}</span>
+                <span className="text-sm leading-7 text-secondary">{topic}</span>
+              </div>
+            ))}
           </div>
         </section>
 
-        <section className="grid gap-10 pt-20 sm:pt-28 lg:grid-cols-[minmax(0,0.36fr)_minmax(0,1fr)] lg:gap-16" aria-labelledby="contact-title">
-          <header>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Open channels</p>
-            <h2 id="contact-title" className="mt-3 font-display text-3xl font-semibold tracking-[-0.035em] text-primary sm:text-4xl">联系我</h2>
-            <p className="mt-5 max-w-sm text-sm leading-7 text-secondary">关于公开技术问题、工程方法与写作交流，可以从以下渠道找到我。</p>
-          </header>
-
-          <div className="grid border-b border-border sm:grid-cols-2">
+        <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
+          <h2 className="text-xl font-semibold text-primary">联系我</h2>
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <ContactLink href={`mailto:${siteConfig.email}`} icon={<Mail className="h-4 w-4" />} label="Email" value={siteConfig.email} />
             <ContactLink href={siteConfig.github} icon={<Github className="h-4 w-4" />} label="GitHub" value={siteConfig.githubName} external />
             <ContactLink href={siteConfig.zhihu} icon={<MessageCircle className="h-4 w-4" />} label="知乎" value={siteConfig.zhihuName} external />
             <ContactLink href={siteConfig.xiaohongshu} icon={<NotebookText className="h-4 w-4" />} label="小红书" value={siteConfig.xiaohongshuName} external />
             <ContactLink href={siteConfig.douyin} icon={<Video className="h-4 w-4" />} label="抖音" value={siteConfig.douyinName} external />
-            <div className="group flex min-w-0 items-center gap-4 border-t border-border py-5 sm:px-5 sm:even:border-l">
-              <MessageCircle className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
-              <span className="min-w-0">
-                <span className="block text-sm font-semibold text-primary">微信</span>
-                <span className="mt-1 block break-all text-xs text-muted">{siteConfig.wechat}</span>
+            <span className="contact-link">
+              <MessageCircle className="h-4 w-4 shrink-0" />
+              <span>
+                <span className="block">微信</span>
+                <span className="block text-xs text-muted">{siteConfig.wechat}</span>
               </span>
-            </div>
+            </span>
           </div>
         </section>
       </div>
@@ -290,18 +244,12 @@ function ContactLink({
   external?: boolean;
 }) {
   return (
-    <a
-      href={href}
-      target={external ? "_blank" : undefined}
-      rel={external ? "noreferrer" : undefined}
-      className="group flex min-w-0 items-center gap-4 border-t border-border py-5 transition-colors hover:bg-surface-elevated sm:px-5 sm:even:border-l focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent"
-    >
-      <span className="shrink-0 text-accent">{icon}</span>
-      <span className="min-w-0 flex-1">
-        <span className="block text-sm font-semibold text-primary transition-colors group-hover:text-accent">{label}</span>
-        <span className="mt-1 block break-all text-xs text-muted">{value}</span>
+    <a href={href} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined} className="contact-link">
+      <span className="shrink-0">{icon}</span>
+      <span>
+        <span className="block">{label}</span>
+        <span className="block break-all text-xs text-muted">{value}</span>
       </span>
-      <ArrowUpRight className="h-4 w-4 shrink-0 text-muted transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" aria-hidden="true" />
     </a>
   );
 }

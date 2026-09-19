@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, FolderOpen } from "lucide-react";
-import { SectionTitle } from "@/components/SectionTitle";
+import { SectionTitle } from "@/components/classic/SectionTitle";
 import { getAllCategories, getAllPosts } from "@/lib/posts";
 import { createMetadata, formatDate } from "@/lib/utils";
 
@@ -17,7 +17,6 @@ export default function CategoriesPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
       <SectionTitle
-        as="h1"
         eyebrow="Categories"
         title="分类索引"
         description="分类用于组织文章主线，适合按知识领域系统浏览；标签则用于连接跨领域的问题线索。"

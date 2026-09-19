@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Github, Mail, MessageCircle, NotebookText, ShieldCheck, Video } from "lucide-react";
-import { SectionTitle } from "@/components/SectionTitle";
+import { SectionTitle } from "@/components/classic/SectionTitle";
 import { siteConfig } from "@/lib/site";
 import { createMetadata } from "@/lib/utils";
 
@@ -97,7 +97,6 @@ export default function CollaborationPage() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-12">
       <SectionTitle
-        as="h1"
         eyebrow="Collaboration"
         title="合作与交流"
         description="这个页面用于承接非商业技术讨论、公开资料交流和长期知识沉淀。交流不追求热闹，优先看问题质量、公开边界和长期价值。"

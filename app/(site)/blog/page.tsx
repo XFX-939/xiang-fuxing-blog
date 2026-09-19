@@ -1,4 +1,5 @@
-import { BlogExplorer } from "@/components/BlogExplorer";
+import { BlogExplorer } from "@/components/classic/BlogExplorer";
+import { SectionTitle } from "@/components/classic/SectionTitle";
 import { getAllCategories, getAllPostListItems, getAllTags } from "@/lib/posts";
 import { createMetadata } from "@/lib/utils";
 
@@ -21,45 +22,13 @@ export default function BlogPage({ searchParams }: BlogPageProps) {
   const initialCategory = searchParams?.category ? decodeURIComponent(searchParams.category) : "全部";
 
   return (
-    <div className="w-full max-w-full overflow-x-hidden">
-      <section className="border-b border-border" aria-labelledby="field-notes-title">
-        <div className="mx-auto grid max-w-6xl gap-5 px-5 py-8 sm:gap-10 sm:px-6 sm:py-20 lg:grid-cols-[minmax(0,1.55fr)_minmax(16rem,0.7fr)] lg:items-end lg:py-24">
-          <div className="max-w-6xl">
-            <p className="mb-3 text-xs font-semibold tracking-[0.18em] text-accent sm:mb-5">
-              无线通信 · AI 研发 · 系统实践
-            </p>
-            <h1
-              id="field-notes-title"
-              className="max-w-6xl text-[clamp(3rem,7vw,6.75rem)] font-semibold leading-[0.92] tracking-[-0.065em] text-primary"
-            >
-              信号场
-              <span
-                aria-hidden="true"
-                className="relative mx-[0.12em] inline-flex h-[0.64em] w-[1.12em] translate-y-[0.02em] items-center overflow-hidden border-y border-accent align-baseline"
-              >
-                <span className="h-px w-full bg-accent" />
-                <span className="absolute left-[18%] h-[38%] w-px bg-accent" />
-                <span className="absolute left-[49%] h-[78%] w-px bg-accent" />
-                <span className="absolute right-[18%] h-[52%] w-px bg-accent" />
-              </span>
-              笔记
-            </h1>
-          </div>
-
-          <div className="border-l-2 border-accent pl-5 sm:pl-6">
-            <p className="text-base leading-8 text-secondary">
-              从系统仿真到技术管理，把复杂问题拆成可复现、可验证、可继续推进的现场记录。
-            </p>
-            <p className="mt-3 text-sm leading-7 text-muted sm:mt-4">
-              支持全文检索，也可按分类与标签缩小信号范围。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <div className="mx-auto max-w-6xl px-5 py-6 sm:px-6 sm:py-16">
-        <BlogExplorer posts={posts} categories={categories} tags={tags} initialCategory={initialCategory} />
-      </div>
+    <div className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-12">
+      <SectionTitle
+        eyebrow="Blog"
+        title="文章体系"
+        description="按分类、标签和关键词检索文章。搜索会覆盖标题、摘要、正文和标签，默认按发布时间倒序。"
+      />
+      <BlogExplorer posts={posts} categories={categories} tags={tags} initialCategory={initialCategory} />
     </div>
   );
 }
