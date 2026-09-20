@@ -38,6 +38,7 @@ export default function TagDetailPage({ params }: TagPageProps) {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
       <SectionTitle
+        as="h1"
         eyebrow="Tag"
         title={`标签：${tag}`}
         description={`共 ${posts.length} 篇文章。`}

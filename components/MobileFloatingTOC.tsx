@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { ListTree, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useActiveHeading } from "@/components/useActiveHeading";
@@ -18,24 +18,64 @@ type MobileFloatingTOCProps = {
 export function MobileFloatingTOC({ items }: MobileFloatingTOCProps) {
   const [open, setOpen] = useState(false);
   const activeId = useActiveHeading(items);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const wasOpenRef = useRef(false);
+
+  const closeDialog = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
     if (!open) {
+      if (wasOpenRef.current) {
+        triggerRef.current?.focus();
+      }
       return;
     }
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setOpen(false);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
+    wasOpenRef.current = true;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const frame = window.requestAnimationFrame(() => closeRef.current?.focus());
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.cancelAnimationFrame(frame);
+      document.body.style.overflow = previousOverflow;
     };
   }, [open]);
+
+  function handleDialogKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeDialog();
+      return;
+    }
+
+    if (event.key !== "Tab" || !dialogRef.current) {
+      return;
+    }
+
+    const focusable = Array.from(
+      dialogRef.current.querySelectorAll<HTMLElement>(
+        'button:not([disabled]):not([tabindex="-1"]), a[href]:not([tabindex="-1"])'
+      )
+    );
+
+    if (focusable.length === 0) {
+      return;
+    }
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
 
   if (items.length === 0) {
     return null;
@@ -45,6 +85,7 @@ export function MobileFloatingTOC({ items }: MobileFloatingTOCProps) {
     <div className="lg:hidden">
       <button
         type="button"
+        ref={triggerRef}
         onClick={() => setOpen(true)}
         aria-label="打开文章目录"
         aria-expanded={open}
@@ -59,22 +100,33 @@ export function MobileFloatingTOC({ items }: MobileFloatingTOCProps) {
       </button>
 
       {open ? (
-        <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="文章目录">
+        <div
+          ref={dialogRef}
+          className="fixed inset-0 z-50"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="mobile-toc-title"
+          onKeyDown={handleDialogKeyDown}
+        >
           <button
             type="button"
             aria-label="关闭文章目录"
+            tabIndex={-1}
             className="absolute inset-0 bg-bg/50 backdrop-blur-[2px]"
-            onClick={() => setOpen(false)}
+            onClick={closeDialog}
           />
           <div className="absolute inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.75rem)] overflow-hidden rounded-[18px] border border-border bg-surface shadow-soft dark:shadow-soft-dark">
             <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">TOC</p>
-                <h2 className="mt-1 text-base font-semibold text-primary">文章目录</h2>
+                <h2 id="mobile-toc-title" className="mt-1 text-base font-semibold text-primary">
+                  文章目录
+                </h2>
               </div>
               <button
                 type="button"
-                onClick={() => setOpen(false)}
+                ref={closeRef}
+                onClick={closeDialog}
                 aria-label="关闭目录"
                 className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-border text-muted transition hover:border-accent hover:text-accent"
               >
@@ -88,7 +140,7 @@ export function MobileFloatingTOC({ items }: MobileFloatingTOCProps) {
                   <li key={item.id} className={item.depth === 3 ? "pl-4" : ""}>
                     <a
                       href={`#${item.id}`}
-                      onClick={() => setOpen(false)}
+                      onClick={closeDialog}
                       aria-current={activeId === item.id ? "location" : undefined}
                       className={cn(
                         "block rounded-md border border-border bg-surface-elevated px-3 py-2.5 text-sm leading-6 text-secondary transition hover:border-accent hover:text-accent",

@@ -17,6 +17,7 @@ export default function CategoriesPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
       <SectionTitle
+        as="h1"
         eyebrow="Categories"
         title="分类索引"
         description="分类用于组织文章主线，适合按知识领域系统浏览；标签则用于连接跨领域的问题线索。"
@@ -33,9 +34,9 @@ export default function CategoriesPage() {
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-accent-soft text-accent">
-                  <FolderOpen className="h-5 w-5" />
+                  <FolderOpen className="h-5 w-5" aria-hidden="true" />
                 </div>
-                <ArrowRight className="mt-2 h-4 w-4 text-muted transition group-hover:text-accent" />
+                <ArrowRight className="mt-2 h-4 w-4 text-muted transition group-hover:text-accent" aria-hidden="true" />
               </div>
               <h2 className="mt-5 text-xl font-semibold text-primary transition group-hover:text-accent">
                 {category.name}

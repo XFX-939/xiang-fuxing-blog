@@ -14,6 +14,7 @@ export function CategoryFilter({ categories, value, onChange }: CategoryFilterPr
       <button
         type="button"
         onClick={() => onChange("全部")}
+        aria-pressed={value === "全部"}
         className={filterClass(value === "全部")}
       >
         全部
@@ -23,6 +24,7 @@ export function CategoryFilter({ categories, value, onChange }: CategoryFilterPr
           key={category.name}
           type="button"
           onClick={() => onChange(category.name)}
+          aria-pressed={value === category.name}
           className={filterClass(value === category.name)}
         >
           {category.name}
@@ -37,7 +39,7 @@ export function CategoryFilter({ categories, value, onChange }: CategoryFilterPr
 
 function filterClass(active: boolean) {
   return cn(
-    "shrink-0 rounded-md border px-3 py-2 text-sm font-medium transition",
+    "min-h-11 shrink-0 rounded-md border px-3 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
     active
       ? "border-accent bg-accent text-white dark:text-bg"
       : "border-border bg-surface text-secondary hover:border-accent hover:text-accent"

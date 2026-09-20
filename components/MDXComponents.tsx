@@ -43,7 +43,7 @@ export const mdxComponents: MDXComponents = {
     />
   ),
   table: ({ className, ...props }) => (
-    <div className="my-6 overflow-x-auto rounded-md border border-border">
+    <div className="article-table-wrap my-6 overflow-x-auto rounded-md border border-border">
       <table className={cn("w-full min-w-full divide-y divide-border text-sm", className)} {...props} />
     </div>
   ),

@@ -97,13 +97,14 @@ export default function CollaborationPage() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-12">
       <SectionTitle
+        as="h1"
         eyebrow="Collaboration"
         title="合作与交流"
         description="这个页面用于承接非商业技术讨论、公开资料交流和长期知识沉淀。交流不追求热闹，优先看问题质量、公开边界和长期价值。"
       />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <main className="grid gap-6">
+        <div className="grid gap-6">
           <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Why</p>
             <h2 className="mt-3 text-2xl font-semibold text-primary">我希望建立怎样的交流关系</h2>
@@ -117,7 +118,7 @@ export default function CollaborationPage() {
 
           <section className="rounded-[18px] border border-accent/30 bg-accent-soft p-5 sm:rounded-md sm:p-6">
             <div className="flex items-start gap-3">
-              <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-accent" />
+              <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Non-commercial Notice</p>
                 <h2 className="mt-3 text-2xl font-semibold text-primary">非商业声明</h2>
@@ -140,7 +141,7 @@ export default function CollaborationPage() {
                 <div className="mt-5 grid gap-2">
                   {item.points.map((point) => (
                     <div key={point} className="flex gap-2 text-sm leading-6 text-secondary">
-                      <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-accent" />
+                      <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
                       <span>{point}</span>
                     </div>
                   ))}
@@ -154,7 +155,7 @@ export default function CollaborationPage() {
             <div className="mt-5 grid gap-3">
               {suitableTopics.map((topic) => (
                 <div key={topic} className="flex gap-3 rounded-md border border-border bg-surface-elevated p-4">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
                   <span className="text-sm leading-7 text-secondary">{topic}</span>
                 </div>
               ))}
@@ -163,7 +164,7 @@ export default function CollaborationPage() {
 
           <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
             <div className="flex items-start gap-3">
-              <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-accent" />
+              <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
               <div>
                 <h2 className="text-2xl font-semibold text-primary">交流边界</h2>
                 <p className="mt-3 text-sm leading-7 text-secondary">
@@ -179,7 +180,7 @@ export default function CollaborationPage() {
               ))}
             </div>
           </section>
-        </main>
+        </div>
 
         <aside className="lg:sticky lg:top-32 lg:self-start">
           <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
@@ -194,7 +195,7 @@ export default function CollaborationPage() {
               className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
             >
               邮件联系
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
 
             <div className="mt-5 grid gap-3">
@@ -208,7 +209,7 @@ export default function CollaborationPage() {
                     rel={contact.external ? "noreferrer" : undefined}
                     className="flex min-w-0 items-center gap-3 rounded-md border border-border bg-surface-elevated p-3 text-sm text-secondary transition hover:border-accent hover:text-accent"
                   >
-                    <Icon className="h-4 w-4 shrink-0" />
+                    <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
                     <span className="min-w-0">
                       <span className="block font-semibold">{contact.label}</span>
                       <span className="block truncate text-xs text-muted">{contact.value}</span>
@@ -217,7 +218,7 @@ export default function CollaborationPage() {
                 );
               })}
               <div className="flex min-w-0 items-center gap-3 rounded-md border border-border bg-surface-elevated p-3 text-sm text-secondary">
-                <MessageCircle className="h-4 w-4 shrink-0" />
+                <MessageCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
                 <span>
                   <span className="block font-semibold">微信</span>
                   <span className="block text-xs text-muted">{siteConfig.wechat}</span>

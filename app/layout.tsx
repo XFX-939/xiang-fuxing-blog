@@ -36,12 +36,14 @@ export const metadata: Metadata = {
     url: siteConfig.siteUrl,
     siteName: siteConfig.siteName,
     title: siteConfig.siteName,
-    description: siteConfig.siteDescription
+    description: siteConfig.siteDescription,
+    images: [absoluteUrl("/images/xiang-fuxing-profile.jpg")]
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.siteName,
-    description: siteConfig.siteDescription
+    description: siteConfig.siteDescription,
+    images: [absoluteUrl("/images/xiang-fuxing-profile.jpg")]
   }
 };
 

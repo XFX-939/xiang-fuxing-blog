@@ -17,7 +17,7 @@ export function SearchBox({ value, onChange, placeholder = "搜索标题、摘�
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="h-12 w-full rounded-md border border-border bg-surface pl-10 pr-3 text-sm text-primary outline-none transition placeholder:text-muted focus:border-accent focus:ring-4 focus:ring-accent-soft sm:h-11"
+        className="h-12 w-full rounded-md border border-border bg-surface pl-10 pr-3 text-base text-primary outline-none transition placeholder:text-muted focus:border-accent focus:ring-4 focus:ring-accent-soft sm:h-11 sm:text-sm"
       />
     </label>
   );

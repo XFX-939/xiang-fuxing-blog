@@ -32,9 +32,9 @@ export function ThemeToggle() {
       aria-label={mounted ? `切换主题，当前为${label}` : "切换主题"}
       title={mounted ? `切换主题，当前为${label}` : "切换主题"}
       onClick={toggleTheme}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-secondary transition hover:border-accent hover:text-accent"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-border bg-surface text-secondary transition hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
     >
-      {mounted ? <Icon className="h-4 w-4" /> : <span className="h-4 w-4" aria-hidden="true" />}
+      {mounted ? <Icon className="h-4 w-4" aria-hidden="true" /> : <span className="h-4 w-4" aria-hidden="true" />}
     </button>
   );
 }

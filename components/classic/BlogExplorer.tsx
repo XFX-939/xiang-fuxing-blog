@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArticleCard } from "@/components/classic/ArticleCard";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { Pagination } from "@/components/Pagination";
@@ -13,19 +13,84 @@ type BlogExplorerProps = {
   categories: Array<{ name: string; count: number }>;
   tags: Array<{ name: string; count: number }>;
   initialCategory?: string;
+  initialTag?: string;
+  initialQuery?: string;
 };
 
 const pageSize = 6;
 
-export function BlogExplorer({ posts, categories, tags, initialCategory = "全部" }: BlogExplorerProps) {
-  const [query, setQuery] = useState("");
+export function BlogExplorer({
+  posts,
+  categories,
+  tags,
+  initialCategory = "全部",
+  initialTag = "全部",
+  initialQuery = ""
+}: BlogExplorerProps) {
+  const [query, setQuery] = useState(initialQuery);
   const [category, setCategory] = useState(initialCategory);
-  const [tag, setTag] = useState("全部");
+  const [tag, setTag] = useState(initialTag);
   const [visible, setVisible] = useState(pageSize);
   const [showAllTags, setShowAllTags] = useState(false);
   const [searchPosts, setSearchPosts] = useState<PostListItem[]>([]);
   const [searchTotal, setSearchTotal] = useState(0);
   const [isSearching, setIsSearching] = useState(false);
+  const queryEditingRef = useRef(false);
+  const queryHistoryTimerRef = useRef<number | null>(null);
+
+  function writeUrl(next: { category?: string; tag?: string; query?: string }, mode: "push" | "replace") {
+    const params = new URLSearchParams(window.location.search);
+    const nextCategory = next.category ?? category;
+    const nextTag = next.tag ?? tag;
+    const nextQuery = next.query ?? query;
+
+    if (nextCategory === "全部") {
+      params.delete("category");
+    } else {
+      params.set("category", nextCategory);
+    }
+
+    if (nextTag === "全部") {
+      params.delete("tag");
+    } else {
+      params.set("tag", nextTag);
+    }
+
+    if (nextQuery.trim()) {
+      params.set("q", nextQuery.trim());
+    } else {
+      params.delete("q");
+    }
+
+    const queryString = params.toString();
+    const nextUrl = `${window.location.pathname}${queryString ? `?${queryString}` : ""}`;
+    const currentUrl = `${window.location.pathname}${window.location.search}`;
+
+    if (nextUrl === currentUrl) {
+      return;
+    }
+
+    window.history[mode === "push" ? "pushState" : "replaceState"](window.history.state, "", nextUrl);
+  }
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      setCategory(params.get("category") || "全部");
+      setTag(params.get("tag") || "全部");
+      setQuery(params.get("q") || "");
+      queryEditingRef.current = false;
+      setVisible(pageSize);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+      if (queryHistoryTimerRef.current !== null) {
+        window.clearTimeout(queryHistoryTimerRef.current);
+      }
+    };
+  }, []);
 
   const normalizedQuery = query.trim();
   const hasQuery = normalizedQuery.length > 0;
@@ -97,11 +162,13 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
 
   function resetAndSetCategory(nextCategory: string) {
     setCategory(nextCategory);
+    writeUrl({ category: nextCategory }, "push");
     setVisible(pageSize);
   }
 
   function resetAndSetTag(nextTag: string) {
     setTag(nextTag);
+    writeUrl({ tag: nextTag }, "push");
     setVisible(pageSize);
   }
 
@@ -129,12 +196,22 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
             <button
               type="button"
               onClick={() => resetAndSetTag("全部")}
-              className="rounded-md border border-border bg-tag-bg px-2.5 py-1 text-xs font-medium text-tag-text transition hover:border-accent hover:text-accent"
+              aria-pressed={tag === "全部"}
+              className={
+                tag === "全部"
+                  ? "rounded-md border border-accent bg-accent px-2.5 py-1 text-xs font-medium text-white transition dark:text-bg"
+                  : "rounded-md border border-border bg-tag-bg px-2.5 py-1 text-xs font-medium text-tag-text transition hover:border-accent hover:text-accent"
+              }
             >
               全部
             </button>
             {visibleTags.map((item) => (
-              <button key={item.name} type="button" onClick={() => resetAndSetTag(item.name)}>
+              <button
+                key={item.name}
+                type="button"
+                onClick={() => resetAndSetTag(item.name)}
+                aria-pressed={tag === item.name}
+              >
                 <Tag className={tag === item.name ? "border-accent bg-accent text-white dark:text-bg" : ""} count={item.count}>
                   {item.name}
                 </Tag>
@@ -148,8 +225,20 @@ export function BlogExplorer({ posts, categories, tags, initialCategory = "全�
         <SearchBox
           value={query}
           onChange={(value) => {
+            if (!queryEditingRef.current) {
+              window.history.pushState(window.history.state, "", `${window.location.pathname}${window.location.search}`);
+              queryEditingRef.current = true;
+            }
             setQuery(value);
+            writeUrl({ query: value }, "replace");
             setVisible(pageSize);
+            if (queryHistoryTimerRef.current !== null) {
+              window.clearTimeout(queryHistoryTimerRef.current);
+            }
+            queryHistoryTimerRef.current = window.setTimeout(() => {
+              queryEditingRef.current = false;
+              queryHistoryTimerRef.current = null;
+            }, 700);
           }}
         />
         <div className="mt-4 text-sm text-muted">

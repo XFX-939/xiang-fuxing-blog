@@ -62,14 +62,14 @@ export function GlobalSearch({ className = "", placeholder = "搜索仿真、5G�
     <div className={`relative ${className}`}>
       <label className="relative block">
         <span className="sr-only">全站搜索</span>
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden="true" />
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => window.setTimeout(() => setFocused(false), 120)}
           placeholder={placeholder}
-          className="h-11 w-full rounded-md border border-border bg-surface-elevated pl-9 pr-9 text-sm text-primary outline-none transition placeholder:text-muted focus:border-accent focus:ring-4 focus:ring-accent-soft sm:h-10"
+          className="h-11 w-full rounded-md border border-border bg-surface-elevated pl-9 pr-11 text-sm text-primary outline-none transition placeholder:text-muted focus:border-accent focus:ring-4 focus:ring-accent-soft"
         />
         {query ? (
           <button
@@ -78,9 +78,9 @@ export function GlobalSearch({ className = "", placeholder = "搜索仿真、5G�
             title="清空搜索"
             onMouseDown={(event) => event.preventDefault()}
             onClick={() => setQuery("")}
-            className="absolute right-2 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-md text-muted transition hover:bg-accent-soft hover:text-primary"
+            className="absolute right-0 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-md text-muted transition hover:bg-accent-soft hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
           >
-            <X className="h-4 w-4" />
+            <X className="h-4 w-4" aria-hidden="true" />
           </button>
         ) : null}
       </label>
@@ -97,7 +97,7 @@ export function GlobalSearch({ className = "", placeholder = "搜索仿真、5G�
                     type="button"
                     onMouseDown={(event) => event.preventDefault()}
                     onClick={() => setQuery(term)}
-                    className="rounded-md border border-border bg-tag-bg px-2.5 py-1 text-xs font-medium text-tag-text transition hover:border-accent hover:text-accent"
+                    className="inline-flex min-h-11 items-center rounded-md border border-border bg-tag-bg px-3 py-2 text-xs font-medium text-tag-text transition hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
                   >
                     {term}
                   </button>
@@ -126,7 +126,7 @@ export function GlobalSearch({ className = "", placeholder = "搜索仿真、5G�
                         {post.description}
                       </p>
                     </div>
-                    <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted transition group-hover:text-accent" />
+                    <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted transition group-hover:text-accent" aria-hidden="true" />
                   </div>
                 </Link>
               ))}

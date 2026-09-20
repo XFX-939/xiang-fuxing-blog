@@ -103,3 +103,27 @@
     overflow-wrap: anywhere;
   }
 }
+
+@media (max-width: 1199px) and (max-height: 500px) and (orientation: landscape) {
+  [data-ui-version="classic"] > header > div:first-child > div,
+  .classic-site > header > div:first-child > div {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  [data-ui-version="classic"] > header > div:nth-child(2),
+  .classic-site > header > div:nth-child(2) {
+    height: 3.5rem;
+  }
+
+  [data-ui-version="classic"] > header > div:last-child,
+  .classic-site > header > div:last-child {
+    padding-bottom: 0.5rem;
+  }
+
+  [data-ui-version="classic"] .classic-mobile-nav-panel,
+  .classic-site .classic-mobile-nav-panel {
+    top: 8.25rem;
+    max-height: calc(100dvh - 9.25rem - env(safe-area-inset-bottom));
+  }
+}

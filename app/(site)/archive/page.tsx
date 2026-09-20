@@ -33,6 +33,7 @@ export default function ArchivePage() {
   return (
     <div className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-12">
       <SectionTitle
+        as="h1"
         eyebrow="Archive"
         title="写作轨迹"
         description="从年度总结、主题系列和时间线三个角度回看文章脉络，观察技术学习、管理复盘和个人成长的长期演进。"

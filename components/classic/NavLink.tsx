@@ -44,10 +44,10 @@ export function NavLink({ href, label, variant = "desktop", onClick }: NavLinkPr
       onClick={onClick}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "rounded-md text-sm font-medium leading-none transition",
+        "min-h-11 rounded-md text-sm font-medium leading-none transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
         variant === "desktop"
-          ? "whitespace-nowrap px-3 py-2 text-secondary hover:bg-accent-soft hover:text-primary"
-          : "block px-3 py-2 text-secondary hover:bg-accent-soft hover:text-accent",
+          ? "inline-flex items-center whitespace-nowrap px-3 py-2 text-secondary hover:bg-accent-soft hover:text-primary"
+          : "flex items-center px-3 py-2 text-secondary hover:bg-accent-soft hover:text-accent",
         active && "bg-accent-soft text-accent"
       )}
     >

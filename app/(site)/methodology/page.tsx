@@ -98,7 +98,7 @@ export default function MethodologyPage() {
                 <div className="flex items-start justify-between gap-4">
                   <span className="text-3xl font-semibold leading-none text-accent/30">0{index + 1}</span>
                   <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-accent-soft text-accent">
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
                 </div>
                 <h2 className="mt-5 text-lg font-semibold text-primary">{step.title}</h2>
@@ -126,7 +126,7 @@ export default function MethodologyPage() {
                 return (
                   <article key={item.title} className="rounded-md border border-border bg-surface-elevated p-5">
                     <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-surface text-accent shadow-sm ring-1 ring-border">
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-5 w-5" aria-hidden="true" />
                     </div>
                     <p className="text-sm font-medium text-muted">两个重要认知</p>
                     <h3 className="mt-1 text-xl font-semibold text-primary">{item.title}</h3>
@@ -232,7 +232,7 @@ function ApplicationCard({ id, icon: Icon, title, items }: { id: string; icon: L
   return (
     <section id={id} className="scroll-mt-36 rounded-[22px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
       <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-md bg-accent-soft text-accent">
-        <Icon className="h-5 w-5" />
+        <Icon className="h-5 w-5" aria-hidden="true" />
       </div>
       <h2 className="text-xl font-semibold text-primary">{title}</h2>
       <div className="mt-5 grid gap-3">
@@ -254,5 +254,5 @@ function ListTile({ children }: { children: ReactNode }) {
 }
 
 function CheckBullet({ className = "" }: { className?: string }) {
-  return <CheckCircle2 className={`h-4 w-4 shrink-0 text-accent ${className}`} />;
+  return <CheckCircle2 className={`h-4 w-4 shrink-0 text-accent ${className}`} aria-hidden="true" />;
 }

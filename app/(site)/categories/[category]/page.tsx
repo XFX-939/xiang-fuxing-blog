@@ -39,6 +39,7 @@ export default function CategoryDetailPage({ params }: CategoryPageProps) {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
       <SectionTitle
+        as="h1"
         eyebrow="Category"
         title={`分类：${category}`}
         description={`共 ${posts.length} 篇文章，默认按发布时间倒序排列。`}

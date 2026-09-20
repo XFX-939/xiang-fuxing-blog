@@ -50,7 +50,7 @@ export default function TopicPage({ params }: TopicPageProps) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
       <Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold text-secondary transition hover:text-accent">
-        <ArrowLeft className="h-4 w-4" />
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
         返回首页
       </Link>
 
@@ -59,7 +59,7 @@ export default function TopicPage({ params }: TopicPageProps) {
           <div className="absolute inset-0 bg-subtle-grid bg-[size:28px_28px] opacity-60 dark:bg-subtle-grid-dark" />
           <div className="relative max-w-3xl">
             <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-md border border-border bg-surface text-accent">
-              <Icon className="h-5 w-5" />
+              <Icon className="h-5 w-5" aria-hidden="true" />
             </div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Topic Hub</p>
             <h1 className="mt-3 text-3xl font-semibold tracking-normal text-primary sm:text-4xl">
@@ -103,7 +103,7 @@ export default function TopicPage({ params }: TopicPageProps) {
                   className="flex items-center justify-between rounded-md border border-border bg-surface-elevated px-3 py-2 text-sm font-medium text-secondary transition hover:border-accent hover:text-accent"
                 >
                   {item.title}
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               ))}
             </div>
@@ -115,7 +115,7 @@ export default function TopicPage({ params }: TopicPageProps) {
               className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
             >
               去博客页搜索该分类
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
         </aside>

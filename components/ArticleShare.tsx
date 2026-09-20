@@ -45,19 +45,24 @@ export function ArticleShare({ url, title, className }: ArticleShareProps) {
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleCopy}
-      aria-label={`复制文章链接：${title}`}
-      className={cn(
-        "inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm font-semibold text-secondary transition",
-        "hover:border-accent hover:text-accent focus:outline-none focus-visible:ring-4 focus-visible:ring-accent-soft",
-        copied && "border-accent bg-accent-soft text-accent",
-        className
-      )}
-    >
-      {copied ? <Check className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
-      <span>{copied ? "已复制" : "复制链接"}</span>
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={handleCopy}
+        aria-label={`复制文章链接：${title}`}
+        className={cn(
+          "inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm font-semibold text-secondary transition",
+          "hover:border-accent hover:text-accent focus:outline-none focus-visible:ring-4 focus-visible:ring-accent-soft",
+          copied && "border-accent bg-accent-soft text-accent",
+          className
+        )}
+      >
+        {copied ? <Check className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
+        <span>{copied ? "已复制" : "复制链接"}</span>
+      </button>
+      <span className="sr-only" role="status" aria-live="polite">
+        {copied ? "文章链接已复制" : ""}
+      </span>
+    </>
   );
 }

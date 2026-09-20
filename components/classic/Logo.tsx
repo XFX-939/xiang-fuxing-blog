@@ -26,7 +26,7 @@ export function Logo({
           markClassName
         )}
       >
-        <svg viewBox="0 0 36 36" role="img" className="h-full w-full" aria-label="向福星标识">
+        <svg viewBox="0 0 36 36" className="h-full w-full" aria-hidden="true" focusable="false">
           <defs>
             <linearGradient id={gradientId} x1="7" y1="6" x2="30" y2="31" gradientUnits="userSpaceOnUse">
               <stop stopColor="#fff7ad" />

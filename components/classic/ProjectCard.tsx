@@ -26,20 +26,22 @@ export function ProjectCard({ project }: ProjectCardProps) {
       <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted">
         {project.updatedAt ? (
           <span className="inline-flex items-center gap-1.5">
-            <CalendarDays className="h-3.5 w-3.5" />
+            <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
             更新于 {formatDate(project.updatedAt)}
           </span>
         ) : null}
         {typeof project.stars === "number" ? (
           <span className="inline-flex items-center gap-1.5">
-            <Star className="h-3.5 w-3.5" />
-            {project.stars}
+            <Star className="h-3.5 w-3.5" aria-hidden="true" />
+            <span aria-hidden="true">{project.stars}</span>
+            <span className="sr-only">{project.stars} 个 Star</span>
           </span>
         ) : null}
         {typeof project.forks === "number" ? (
           <span className="inline-flex items-center gap-1.5">
-            <GitFork className="h-3.5 w-3.5" />
-            {project.forks}
+            <GitFork className="h-3.5 w-3.5" aria-hidden="true" />
+            <span aria-hidden="true">{project.forks}</span>
+            <span className="sr-only">{project.forks} 个 Fork</span>
           </span>
         ) : null}
         {project.isFork ? <span className="text-accent">Fork</span> : null}
@@ -47,9 +49,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
       <p className="mt-4 line-clamp-3 text-[15px] leading-7 text-secondary sm:text-sm">{project.description}</p>
       <div className="mt-5 grid gap-3">
-        {project.outcomes.slice(0, 3).map((outcome) => (
+        {project.outcomes.slice(0, 2).map((outcome) => (
           <div key={outcome} className="flex gap-2 text-sm leading-6 text-secondary">
-            <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-accent" />
+            <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
             <span>{outcome}</span>
           </div>
         ))}
@@ -63,12 +65,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
           return isExternal ? (
             <a key={link.href} href={link.href} target="_blank" rel="noreferrer" className={className}>
               {link.label}
-              <ArrowUpRight className="h-3.5 w-3.5" />
+              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
             </a>
           ) : (
             <Link key={link.href} href={link.href} className={className}>
               {link.label}
-              <ArrowUpRight className="h-3.5 w-3.5" />
+              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Link>
           );
         })}

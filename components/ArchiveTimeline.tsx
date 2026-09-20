@@ -167,7 +167,7 @@ function groupPosts(posts: ArchivePostWithSeries[]): ArchiveYearGroupWithSeries[
 
 function filterButtonClass(active: boolean) {
   return cn(
-    "inline-flex min-h-10 shrink-0 items-center justify-center rounded-md border px-3 py-2 text-sm font-medium transition",
+    "inline-flex min-h-11 shrink-0 items-center justify-center rounded-md border px-3 py-2 text-sm font-medium transition",
     active
       ? "border-accent bg-accent-soft text-accent"
       : "border-border bg-surface-elevated text-secondary hover:border-accent hover:text-accent"
@@ -346,16 +346,22 @@ export function ArchiveTimeline({ yearGroups }: ArchiveTimelineProps) {
           <button
             type="button"
             onClick={resetFilters}
-            className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-md border border-border bg-surface-elevated px-3 py-2 text-sm font-medium text-secondary transition hover:border-accent hover:text-accent sm:w-auto"
+            className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-border bg-surface-elevated px-3 py-2 text-sm font-medium text-secondary transition hover:border-accent hover:text-accent sm:w-auto"
           >
             <RefreshCcw className="h-4 w-4" />
             重置筛选
           </button>
         </div>
 
-        <div className="mt-5 grid min-w-0 gap-5">
+        <details className="mt-4 group">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-md border border-border bg-surface-elevated px-3 py-2 text-sm font-semibold text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent">
+            <span>高级筛选</span>
+            <span className="text-xs font-normal text-muted group-open:hidden">展开</span>
+            <span className="hidden text-xs font-normal text-muted group-open:inline">收起</span>
+          </summary>
+          <div className="mt-5 grid min-w-0 gap-5">
           <FilterGroup label="年份">
-            <button type="button" onClick={() => setYear(ALL)} className={filterButtonClass(year === ALL)}>
+            <button type="button" aria-label="年份：全部" aria-pressed={year === ALL} onClick={() => setYear(ALL)} className={filterButtonClass(year === ALL)}>
               全部
             </button>
             {years.map((item) => (
@@ -366,7 +372,7 @@ export function ArchiveTimeline({ yearGroups }: ArchiveTimelineProps) {
           </FilterGroup>
 
           <FilterGroup label="分类">
-            <button type="button" onClick={() => setCategory(ALL)} className={filterButtonClass(category === ALL)}>
+            <button type="button" aria-label="分类：全部" aria-pressed={category === ALL} onClick={() => setCategory(ALL)} className={filterButtonClass(category === ALL)}>
               全部
             </button>
             {categories.map((item) => (
@@ -378,7 +384,7 @@ export function ArchiveTimeline({ yearGroups }: ArchiveTimelineProps) {
           </FilterGroup>
 
           <FilterGroup label="系列">
-            <button type="button" onClick={() => setSeries(ALL)} className={filterButtonClass(series === ALL)}>
+            <button type="button" aria-label="系列：全部" aria-pressed={series === ALL} onClick={() => setSeries(ALL)} className={filterButtonClass(series === ALL)}>
               全部
             </button>
             {seriesOptions.map((item) => (
@@ -418,7 +424,8 @@ export function ArchiveTimeline({ yearGroups }: ArchiveTimelineProps) {
               </span>
             </label>
           </div>
-        </div>
+          </div>
+        </details>
       </section>
 
       <section className="mt-6">
@@ -557,7 +564,7 @@ export function ArchiveTimeline({ yearGroups }: ArchiveTimelineProps) {
             <button
               type="button"
               onClick={resetFilters}
-              className="mt-5 inline-flex min-h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
+              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
             >
               重置筛选
             </button>

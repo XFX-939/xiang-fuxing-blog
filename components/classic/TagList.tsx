@@ -29,7 +29,7 @@ export function TagList({
           href={getHref?.(tag)}
           className={cn(
             "max-w-full",
-            compact && "px-2 py-0.5 text-[11px]"
+            compact && "px-2.5 py-1 text-xs"
           )}
         >
           {tag}
@@ -39,7 +39,7 @@ export function TagList({
         <span
           className={cn(
             "inline-flex items-center rounded-md border border-border bg-tag-bg px-2.5 py-1 text-xs font-medium text-muted",
-            compact && "px-2 py-0.5 text-[11px]"
+            compact && "px-2.5 py-1 text-xs"
           )}
         >
           +{hiddenCount}

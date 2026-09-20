@@ -1,5 +1,5 @@
 import { SectionTitle } from "@/components/classic/SectionTitle";
-import { Tag } from "@/components/classic/Tag";
+import { TagIndex } from "@/components/classic/TagIndex";
 import { getAllTags } from "@/lib/posts";
 import { createMetadata } from "@/lib/utils";
 
@@ -15,17 +15,12 @@ export default function TagsPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
       <SectionTitle
+        as="h1"
         eyebrow="Tags"
         title="标签索引"
         description="标签用于连接跨主题的文章线索，例如 AI RAN、数字孪生、系统仿真、技术管理。"
       />
-      <div className="flex flex-wrap gap-3 rounded-md border border-border bg-surface p-6">
-        {tags.map((tag) => (
-          <Tag key={tag.name} href={`/tags/${encodeURIComponent(tag.name)}`} count={tag.count}>
-            {tag.name}
-          </Tag>
-        ))}
-      </div>
+      <TagIndex tags={tags} />
     </div>
   );
 }

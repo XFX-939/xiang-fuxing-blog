@@ -7,7 +7,7 @@ import { absoluteUrl } from "@/lib/utils";
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = ["", "/about", "/blog", "/projects", "/collaboration", "/methodology", "/archive", "/categories", "/tags"].map((route) => ({
     url: absoluteUrl(route),
-    lastModified: new Date()
+    lastModified: undefined
   }));
 
   const postRoutes = getAllPosts().map((post) => ({
@@ -17,17 +17,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const tagRoutes = getAllTags().map((tag) => ({
     url: absoluteUrl(`/tags/${encodeURIComponent(tag.name)}`),
-    lastModified: new Date()
+    lastModified: undefined
   }));
 
   const categoryRoutes = getAllCategories().map((category) => ({
     url: absoluteUrl(`/categories/${encodeURIComponent(category.name)}`),
-    lastModified: new Date()
+    lastModified: undefined
   }));
 
   const topicRoutes = topicHubs.map((topic) => ({
     url: absoluteUrl(topic.href),
-    lastModified: new Date()
+    lastModified: undefined
   }));
 
   return [...staticRoutes, ...postRoutes, ...tagRoutes, ...categoryRoutes, ...topicRoutes].map((item) => ({

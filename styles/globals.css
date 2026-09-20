@@ -149,6 +149,28 @@ body::before {
   scroll-margin-top: 9rem;
 }
 
+.article-content :where(h2) {
+  position: relative;
+  margin-top: 3.25rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 0;
+  padding-top: 1.25rem;
+}
+
+.article-content :where(h2)::before {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 2.5rem;
+  height: 2px;
+  content: "";
+  background: var(--accent);
+}
+
+.article-content :where(h3) {
+  margin-top: 2.25rem;
+}
+
 .article-content :where(ul, ol) {
   padding-left: 1.4rem;
 }
@@ -291,6 +313,10 @@ body::before {
   width: 100%;
 }
 
+.article-table-wrap {
+  position: relative;
+}
+
 @media (max-width: 640px) {
   .article-content {
     font-size: 1rem;
@@ -316,6 +342,7 @@ body::before {
     font-size: 1.45rem;
     line-height: 1.45;
     scroll-margin-top: 12rem;
+    padding-top: 1rem;
   }
 
   .article-content :where(h3) {
@@ -338,6 +365,23 @@ body::before {
     padding: 1rem 0.85rem;
     font-size: 0.875rem;
     line-height: 1.85;
+  }
+
+  .article-content figure[data-rehype-pretty-code-figure]::after,
+  .article-table-wrap::after {
+    position: absolute;
+    top: 0.55rem;
+    left: 0.75rem;
+    z-index: 2;
+    pointer-events: none;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    padding: 0.2rem 0.45rem;
+    color: var(--text-muted);
+    content: "左右滑动查看";
+    font-size: 0.6875rem;
+    line-height: 1.2;
   }
 
   .article-content .katex-display {

@@ -25,7 +25,7 @@ export function ArticleCard({ post, compact = false }: ArticleCardProps) {
         <h3 className="min-w-0 text-lg font-semibold leading-7 text-primary transition group-hover:text-accent sm:leading-8">
           {post.title}
         </h3>
-        <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted transition group-hover:text-accent" />
+        <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted transition group-hover:text-accent" aria-hidden="true" />
       </Link>
       <p className="mt-3 line-clamp-2 text-[15px] leading-7 text-secondary sm:text-sm">
         {post.description}

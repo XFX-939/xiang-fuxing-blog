@@ -26,5 +26,9 @@ export function Tag({ children, href, count, className }: TagProps) {
     return content;
   }
 
-  return <Link href={href}>{content}</Link>;
+  return (
+    <Link href={href} className="inline-flex min-h-11 items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
+      {content}
+    </Link>
+  );
 }

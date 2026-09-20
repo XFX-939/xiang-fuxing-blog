@@ -96,6 +96,7 @@ export default function AboutPage() {
   return (
     <div className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-12">
       <SectionTitle
+        as="h1"
         eyebrow="About"
         title="关于我"
         description="技术深度、工程判断和组织协作，是我长期希望放在同一张工作地图里打磨的能力。"
@@ -174,7 +175,7 @@ export default function AboutPage() {
                 <div className="mt-4 grid gap-2">
                   {group.items.map((item) => (
                     <div key={item} className="flex items-start gap-2 text-sm leading-6 text-secondary">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
                       <span>{item}</span>
                     </div>
                   ))}
@@ -211,13 +212,13 @@ export default function AboutPage() {
         <section className="rounded-[18px] border border-border bg-surface p-5 sm:rounded-md sm:p-6">
           <h2 className="text-xl font-semibold text-primary">联系我</h2>
           <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <ContactLink href={`mailto:${siteConfig.email}`} icon={<Mail className="h-4 w-4" />} label="Email" value={siteConfig.email} />
-            <ContactLink href={siteConfig.github} icon={<Github className="h-4 w-4" />} label="GitHub" value={siteConfig.githubName} external />
-            <ContactLink href={siteConfig.zhihu} icon={<MessageCircle className="h-4 w-4" />} label="知乎" value={siteConfig.zhihuName} external />
-            <ContactLink href={siteConfig.xiaohongshu} icon={<NotebookText className="h-4 w-4" />} label="小红书" value={siteConfig.xiaohongshuName} external />
-            <ContactLink href={siteConfig.douyin} icon={<Video className="h-4 w-4" />} label="抖音" value={siteConfig.douyinName} external />
+            <ContactLink href={`mailto:${siteConfig.email}`} icon={<Mail className="h-4 w-4" aria-hidden="true" />} label="Email" value={siteConfig.email} />
+            <ContactLink href={siteConfig.github} icon={<Github className="h-4 w-4" aria-hidden="true" />} label="GitHub" value={siteConfig.githubName} external />
+            <ContactLink href={siteConfig.zhihu} icon={<MessageCircle className="h-4 w-4" aria-hidden="true" />} label="知乎" value={siteConfig.zhihuName} external />
+            <ContactLink href={siteConfig.xiaohongshu} icon={<NotebookText className="h-4 w-4" aria-hidden="true" />} label="小红书" value={siteConfig.xiaohongshuName} external />
+            <ContactLink href={siteConfig.douyin} icon={<Video className="h-4 w-4" aria-hidden="true" />} label="抖音" value={siteConfig.douyinName} external />
             <span className="contact-link">
-              <MessageCircle className="h-4 w-4 shrink-0" />
+              <MessageCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
               <span>
                 <span className="block">微信</span>
                 <span className="block text-xs text-muted">{siteConfig.wechat}</span>

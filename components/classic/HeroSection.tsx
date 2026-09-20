@@ -53,7 +53,7 @@ export function HeroSection() {
             <div className="mt-6 hidden gap-3 text-sm text-secondary md:grid md:grid-cols-3">
               {positionSignals.map((signal) => (
                 <div key={signal} className="flex items-start gap-2 rounded-md border border-border bg-surface p-3">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
                   <span className="leading-6">{signal}</span>
                 </div>
               ))}
@@ -91,7 +91,7 @@ function HeroReadingGuide() {
           >
             <div className="flex items-start justify-between gap-3">
               <h3 className="text-sm font-semibold leading-6 text-primary">{path.title}</h3>
-              <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-accent opacity-0 transition group-hover:opacity-100" />
+              <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-accent opacity-0 transition group-hover:opacity-100" aria-hidden="true" />
             </div>
             <p className="mt-2 line-clamp-2 text-xs leading-5 text-secondary">{path.description}</p>
           </Link>
@@ -129,7 +129,7 @@ function AuthorEntryCard() {
           className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-primary px-4 py-3 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
         >
           阅读文章
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
         <Link
           href="/projects"

@@ -12,6 +12,8 @@ export const metadata = createMetadata({
 type BlogPageProps = {
   searchParams?: {
     category?: string;
+    tag?: string;
+    q?: string;
   };
 };
 
@@ -20,15 +22,25 @@ export default function BlogPage({ searchParams }: BlogPageProps) {
   const categories = getAllCategories();
   const tags = getAllTags();
   const initialCategory = searchParams?.category ? decodeURIComponent(searchParams.category) : "全部";
+  const initialTag = searchParams?.tag ? decodeURIComponent(searchParams.tag) : "全部";
+  const initialQuery = searchParams?.q ?? "";
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-12">
       <SectionTitle
+        as="h1"
         eyebrow="Blog"
         title="文章体系"
         description="按分类、标签和关键词检索文章。搜索会覆盖标题、摘要、正文和标签，默认按发布时间倒序。"
       />
-      <BlogExplorer posts={posts} categories={categories} tags={tags} initialCategory={initialCategory} />
+      <BlogExplorer
+        posts={posts}
+        categories={categories}
+        tags={tags}
+        initialCategory={initialCategory}
+        initialTag={initialTag}
+        initialQuery={initialQuery}
+      />
     </div>
   );
 }

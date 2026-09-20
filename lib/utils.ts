@@ -66,6 +66,7 @@ export function createMetadata({
       siteName: siteConfig.siteName,
       locale: "zh_CN",
       type,
+      images: [absoluteUrl("/images/xiang-fuxing-profile.jpg")],
       publishedTime,
       authors: [siteConfig.author],
       tags
@@ -73,7 +74,8 @@ export function createMetadata({
     twitter: {
       card: "summary_large_image",
       title: pageTitle,
-      description: pageDescription
+      description: pageDescription,
+      images: [absoluteUrl("/images/xiang-fuxing-profile.jpg")]
     }
   };
 }

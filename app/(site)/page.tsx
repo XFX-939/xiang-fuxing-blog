@@ -21,6 +21,9 @@ const methodologyItems = [
 export default function HomePage() {
   const latestPosts = getLatestPosts(4);
   const featuredPosts = getFeaturedPosts(3);
+  const featuredProjects = projects
+    .filter((project) => !project.isFork && project.status !== "历史项目" && project.status !== "学习沉淀")
+    .slice(0, 6);
 
   return (
     <>
@@ -42,7 +45,7 @@ export default function HomePage() {
                 className="group rounded-[18px] border border-border bg-surface p-5 transition hover:border-accent hover:shadow-soft sm:rounded-md sm:p-6 dark:hover:shadow-soft-dark"
               >
                 <div className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-md bg-accent-soft text-accent">
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-5 w-5" aria-hidden="true" />
                 </div>
                 <h2 className="text-base font-semibold text-primary transition group-hover:text-accent">
                   {topic.title}
@@ -50,7 +53,7 @@ export default function HomePage() {
                 <p className="mt-3 line-clamp-2 text-sm leading-7 text-secondary md:line-clamp-none">{topic.description}</p>
                 <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent">
                   进入专题
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </div>
               </Link>
             );
@@ -66,7 +69,7 @@ export default function HomePage() {
           action={
             <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-primary">
               全部文章
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           }
         />
@@ -96,16 +99,16 @@ export default function HomePage() {
         <SectionTitle
           eyebrow="Projects"
           title="代表性项目"
-          description="项目不是为了展示名词，而是沉淀我在平台建设、模型可信、工具链效率和团队推动中的实际经验。"
+          description="先看六个正在形成的项目，再进入完整项目档案，了解平台建设、模型可信、工具链效率和团队推动中的实际经验。"
           action={
             <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-primary">
               查看项目页
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           }
         />
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-5">
-          {projects.map((project) => (
+          {featuredProjects.map((project) => (
             <ProjectCard key={project.name} project={project} />
           ))}
         </div>
@@ -120,7 +123,7 @@ export default function HomePage() {
                 合作与交流
               </h2>
               <p className="mt-4 max-w-3xl text-[15px] leading-7 text-secondary sm:text-sm">
-                如果你在做技术内容、工具产品、知识社群或个人品牌建设，欢迎围绕内容互推、项目共创、技术交流和资源连接做长期合作。
+                如果你正在做无线通信、系统仿真、AI 研发或技术管理实践，欢迎围绕公开技术问题、工程方法和经验复盘交流。
               </p>
             </div>
             <Link
@@ -128,7 +131,7 @@ export default function HomePage() {
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
             >
               查看合作方式
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
         </div>
@@ -147,13 +150,13 @@ export default function HomePage() {
               className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-bg transition hover:bg-accent hover:text-white"
             >
               查看方法论
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
           <div className="hidden gap-3 md:grid">
             {methodologyItems.map((item) => (
               <div key={item} className="flex gap-3 rounded-md border border-border bg-surface p-4">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
                 <p className="text-sm leading-7 text-secondary">{item}</p>
               </div>
             ))}
