@@ -1,0 +1,362 @@
+---
+title: "不用 OpenAI API Key：让 OpenClaw 接入 ChatGPT Pro 的 Codex 额度"
+description: "一次真实的 Ubuntu 部署记录：使用 OpenClaw 官方 Codex app-server、Codex CLI 的 ChatGPT OAuth 登录和失败关闭配置，让 Agent 优先消耗 ChatGPT Pro 内含的 Codex 额度。"
+date: "2026-08-09"
+category: "AI辅助研发"
+tags: ["OpenClaw", "Codex CLI", "ChatGPT Pro", "AI Agent", "OAuth", "自动化"]
+featured: false
+draft: false
+---
+
+这次改造的目标很具体：服务器上的 OpenClaw 不再依赖 `OPENAI_API_KEY` 调用 OpenAI Platform，而是优先使用 ChatGPT Pro 套餐内包含的 Codex 使用额度。
+
+最终落地的链路是：
+
+```text
+OpenClaw
+  → 官方 @openclaw/codex 插件
+  → Codex app-server
+  → Codex CLI 所在用户的 ChatGPT OAuth 登录
+  → ChatGPT Pro 的 Codex 额度
+```
+
+这里最容易误解的一点是：OpenClaw 并不是每轮对话都执行一次 `codex exec`。当前官方方案由 Codex app-server 承接 Agent 回合，Codex CLI 负责建立并维护 ChatGPT 登录状态。两者共享同一个 Codex 用户目录，但运行方式并不等同于套一层 Shell 脚本。
+
+## 为什么没有自己写 `codex exec` 适配层
+
+最初当然可以设想一条更直观的链路：
+
+```text
+OpenClaw → 自定义脚本 → codex exec --json → 解析 JSONL → 返回文本
+```
+
+它可以做出原型，却会把很多运行时责任转移到自定义脚本：
+
+1. 自己处理流式 JSONL、退出码、超时和重试。
+2. 自己维护 Codex 会话、续接与压缩状态。
+3. 自己防止 API Key 环境变量泄漏给子进程。
+4. 自己映射模型名、错误类型和用量元数据。
+5. 很难完整接入 OpenClaw 的工具桥接、审批和会话控制。
+
+更关键的是，当前 OpenClaw 已把旧的 `codex-cli/*` 模型引用视为迁移对象，新的推荐路径是 canonical `openai/*` 模型引用配合 Codex runtime。既然官方插件已经管理兼容的 app-server，就没有必要再维护一层脆弱的本地适配器。
+
+## 一、先审计真实运行环境
+
+这次服务器的实际状态如下：
+
+| 项目 | 检查结果 |
+| --- | --- |
+| 操作系统 | Ubuntu 24.04 |
+| OpenClaw | 2026.7.1，用户级隔离安装 |
+| 服务方式 | systemd user service |
+| Gateway | 仅监听 loopback |
+| Codex CLI | 官方 standalone 0.147.0 |
+| 初始 Codex 状态 | `Not logged in` |
+| 原模型配置 | 保留，未直接删除 |
+| OpenAI/Codex API Key 环境变量 | 未发现 |
+
+只读检查命令主要包括：
+
+```bash
+cat /etc/os-release
+
+openclaw --version
+openclaw config get agents.defaults.model
+openclaw models status --plain
+openclaw plugins list --json
+
+systemctl --user status openclaw-gateway.service --no-pager
+
+codex --version
+codex login status
+```
+
+这一阶段最重要的不是版本号，而是确认三个“归属”：
+
+1. OpenClaw 究竟由哪个 Unix 用户运行。
+2. Gateway 是系统服务还是用户服务。
+3. Codex 登录会写入哪个用户的 `$CODEX_HOME` 或 `~/.codex`。
+
+如果在 root 下完成 `codex login`，而 Gateway 由普通用户运行，凭据即使有效，OpenClaw 也看不到。
+
+## 二、修改前先做可恢复备份
+
+这次修改前备份了：
+
+- OpenClaw 主配置；
+- systemd user unit；
+- Codex 配置文件。
+
+备份目录设置为 `0700`，并保留原文件权限。下面是通用示意，实际执行时应使用 OpenClaw 服务用户：
+
+```bash
+BACKUP_DIR="$HOME/.deployment-backups/openclaw-codex-$(date +%Y%m%d-%H%M%S)"
+
+install -d -m 700 "$BACKUP_DIR"
+cp -a "$HOME/.openclaw/openclaw.json" "$BACKUP_DIR/"
+cp -a "$HOME/.config/systemd/user/openclaw-gateway.service" "$BACKUP_DIR/"
+
+if [ -f "$HOME/.codex/config.toml" ]; then
+  cp -a "$HOME/.codex/config.toml" "$BACKUP_DIR/"
+fi
+
+chmod -R go-rwx "$BACKUP_DIR"
+```
+
+备份不应提交到 Git，也不要把 `auth.json`、Token、设备码或浏览器 Cookie 放进技术记录。
+
+## 三、让正确的服务用户登录 ChatGPT
+
+服务器已经安装官方 Codex CLI，所以没有重复安装。若环境中没有，应先查看 [Codex CLI 官方安装说明](https://developers.openai.com/codex/cli/)，不要从不明脚本安装。
+
+无头 Ubuntu 服务器使用设备授权：
+
+```bash
+sudo -u openclaw -H /home/openclaw/.local/bin/codex login --device-auth
+```
+
+设备码必须由用户本人在浏览器中确认，不应写入自动化脚本，也不应通过读取 Cookie 绕过登录。
+
+完成后检查：
+
+```bash
+sudo -u openclaw -H /home/openclaw/.local/bin/codex login status
+```
+
+本次状态从：
+
+```text
+Not logged in
+```
+
+变为：
+
+```text
+Logged in using ChatGPT
+```
+
+这条状态很关键。它说明当前 Codex 使用的是 ChatGPT 登录，而不是 API Key 登录。
+
+## 四、安装官方 Codex 插件
+
+这次按 OpenClaw 版本线安装并锁定了官方插件：
+
+```bash
+openclaw plugins install @openclaw/codex@2026.7.1-1 --pin
+```
+
+随后检查：
+
+```bash
+openclaw config validate
+openclaw plugins list --enabled --json
+```
+
+插件版本应与 OpenClaw 当前发布线兼容。本文记录的是 2026 年 8 月的实际版本，未来实施时应重新查看 [OpenClaw Releases](https://github.com/openclaw/openclaw/releases) 和当前 CLI 帮助，而不是长期照抄版本号。
+
+## 五、用最小配置启用 Codex runtime
+
+配置只做四类变化：
+
+1. 在已有插件 allowlist 中追加 `codex`，不覆盖其他插件。
+2. 启用官方 `codex` 插件。
+3. 让 app-server 使用当前 Unix 用户的 Codex home。
+4. 将目标模型显式绑定到 `codex` runtime。
+
+脱敏后的核心配置如下：
+
+```json5
+{
+  plugins: {
+    entries: {
+      codex: {
+        enabled: true,
+        config: {
+          appServer: {
+            homeScope: "user",
+          },
+        },
+      },
+    },
+  },
+
+  agents: {
+    defaults: {
+      model: {
+        primary: "openai/gpt-5.6-sol",
+      },
+      models: {
+        "openai/gpt-5.6-sol": {
+          alias: "Codex Pro",
+          agentRuntime: {
+            id: "codex",
+          },
+        },
+      },
+    },
+  },
+}
+```
+
+如果配置存在 `plugins.allow`，还要在原数组末尾加入 `codex`。
+
+### 为什么使用 `homeScope: "user"`
+
+OpenClaw 默认可以给每个 Agent 使用隔离的 Codex home。本次目标是复用同一 Unix 用户通过 Codex CLI 建立的 ChatGPT 登录，因此显式选择用户级 Codex home。
+
+这意味着 app-server 会使用该用户的 `$CODEX_HOME`，未设置时则使用 `~/.codex`，其中包括认证、配置和原生线程状态。
+
+代价是 OpenClaw 和原生 Codex CLI 能看到同一组 Codex 状态。不要让两个独立进程同时写入同一个活跃线程；需要并行处理时，应新建或 fork 线程。
+
+如果只想使用订阅 OAuth、但不希望共享 CLI 状态，可以保留默认隔离方式，改用 OpenClaw 自己的官方登录流程：
+
+```bash
+openclaw models auth login --provider openai --device-code
+```
+
+### 为什么显式写 `agentRuntime.id: "codex"`
+
+当前 `openai/*` Agent 模型通常会自动选择 Codex runtime，但这里仍显式指定 `codex`，让配置具备 fail-closed 行为。
+
+如果插件没有加载、app-server 无法启动或版本不兼容，请求会明确失败，而不是静默落到另一个执行 runtime。需要注意，`provider: openai` 本身并不能证明使用了 ChatGPT OAuth，更不能单独证明没有走 API Key。
+
+## 六、验证配置并重启 Gateway
+
+先验证配置，再重启服务：
+
+```bash
+openclaw config validate
+openclaw models status --plain
+
+systemctl --user restart openclaw-gateway.service
+systemctl --user is-active openclaw-gateway.service
+```
+
+重启后还要确认 Gateway 继续只监听 loopback，没有因为接入 Codex 而扩大网络暴露范围。
+
+已有长期会话可能保留旧的模型状态，可以在聊天中发送 `/new` 或 `/reset`，让下一轮重新解析当前模型与 runtime。
+
+## 七、用一次真实 OpenClaw 回合验收
+
+测试提示词为：
+
+```text
+回复 OK，并告诉我你当前使用的模型
+```
+
+通过 Gateway 发起新会话：
+
+```bash
+openclaw agent \
+  --agent main \
+  --session-id codex-route-check \
+  --message "回复 OK，并告诉我你当前使用的模型" \
+  --thinking low \
+  --json
+```
+
+模型回复了 `OK`，并说明自己属于 GPT-5 系列。但模型自述并不是可靠的路由证据，真正重要的是 OpenClaw 返回的结构化元数据：
+
+```json
+{
+  "status": "ok",
+  "provider": "openai",
+  "model": "gpt-5.6-sol",
+  "agentHarnessId": "codex",
+  "fallbackUsed": false
+}
+```
+
+这些字段共同证明：请求成功完成，实际模型是 `gpt-5.6-sol`，执行 harness 确实是 Codex，而且没有触发 fallback。
+
+聊天中还可以使用：
+
+```text
+/status
+/codex status
+/codex models
+```
+
+其中 `/status` 应显示 `Runtime: OpenAI Codex`。
+
+## 八、如何证明没有使用 `OPENAI_API_KEY`
+
+“没有使用 API Key”不能只靠一条命令，需要建立证据链。
+
+第一，Codex 登录状态明确是 ChatGPT：
+
+```bash
+codex login status
+```
+
+第二，只检查 Gateway 进程里相关变量是否存在，不输出秘密值：
+
+```bash
+PID=$(systemctl --user show openclaw-gateway.service \
+  --property=MainPID --value)
+
+for key in OPENAI_API_KEY CODEX_API_KEY CODEX_ACCESS_TOKEN; do
+  if tr '\0' '\n' < "/proc/$PID/environ" | grep -q "^${key}="; then
+    echo "$key=present"
+  else
+    echo "$key=absent"
+  fi
+done
+```
+
+第三，配置中没有为 OpenAI 增加直连 API provider 或 API-Key auth profile。
+
+第四，真实回合同时满足：
+
+```text
+provider=openai
+agentHarnessId=codex
+fallbackUsed=false
+```
+
+本次环境中，Gateway 进程和持久环境均没有 `OPENAI_API_KEY`、`CODEX_API_KEY` 或 `CODEX_ACCESS_TOKEN`。这次也没有为了制造结果而删除旧 Key——它们原本就不存在。
+
+## 九、回滚方法
+
+回滚只需要恢复原 OpenClaw 配置并重启服务，不必删除整个 Codex 用户目录：
+
+```bash
+systemctl --user stop openclaw-gateway.service
+
+cp -a "$BACKUP_DIR/openclaw.json" \
+  "$HOME/.openclaw/openclaw.json"
+
+systemctl --user start openclaw-gateway.service
+
+openclaw config validate
+openclaw models status --plain
+```
+
+恢复后原有模型配置重新生效。官方 Codex 插件可以保留但不启用，这比立即删除更容易再次切换。
+
+恢复模型路由和清除 Codex 登录是两个独立动作。仅仅回滚 OpenClaw 不需要删除 `~/.codex`，更不要用删除整个目录代替正常退出，因为其中还可能包含配置和线程状态。
+
+## 十、这次实施最值得保留的经验
+
+第一，provider、runtime 和计费方式是三件不同的事。`provider: openai` 既可能使用 ChatGPT OAuth，也可能使用 API Key，必须结合认证状态、runtime 元数据和环境审计判断真实链路。
+
+第二，优先使用官方 app-server，而不是自行包装 `codex exec`。官方插件能提供线程、工具桥接、模型目录和明确的失败语义，自定义适配层很难低成本复制这些能力。
+
+第三，共享 Codex CLI 登录时，Unix 用户和 Codex home 必须一致。服务器上常见的问题不是模型配置，而是“登录在一个用户下，服务运行在另一个用户下”。
+
+第四，对关键 runtime 使用 fail-closed 配置。显式指定 `agentRuntime.id: "codex"`，可以避免插件异常时悄悄走到另一条路径。
+
+第五，模型自己说“我是 GPT-5”不构成证明。真正应该保存的是 `status`、`model`、`agentHarnessId` 和 `fallbackUsed` 等结构化证据。
+
+第六，备份和回滚应早于认证与配置修改。恢复旧模型不等于清除 Codex 登录，这两件事不应被合并成一个破坏性操作。
+
+## 官方资料
+
+- [OpenClaw：OpenAI provider](https://docs.openclaw.ai/providers/openai)
+- [OpenClaw：Codex harness](https://docs.openclaw.ai/plugins/codex-harness)
+- [OpenClaw：Agent runtimes](https://docs.openclaw.ai/concepts/agent-runtimes)
+- [OpenClaw：Models CLI](https://docs.openclaw.ai/cli/models)
+- [OpenClaw：Plugins CLI](https://docs.openclaw.ai/cli/plugins)
+- [OpenAI：Codex CLI](https://developers.openai.com/codex/cli/)
+- [OpenAI：Codex authentication](https://developers.openai.com/codex/auth/)
+- [OpenAI：Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540/)
