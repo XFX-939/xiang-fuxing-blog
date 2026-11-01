@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 import { ArchiveTimeline } from "@/components/ArchiveTimeline";
 import { SectionTitle } from "@/components/classic/SectionTitle";
 import { getArchiveGroups } from "@/lib/posts";

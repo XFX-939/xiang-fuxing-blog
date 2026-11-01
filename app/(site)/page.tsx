@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { ArticleCard } from "@/components/classic/ArticleCard";

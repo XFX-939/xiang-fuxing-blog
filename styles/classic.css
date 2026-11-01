@@ -59,6 +59,29 @@
   background: rgba(34, 211, 238, 0.24);
 }
 
+/* Runtime Markdown uses the same public and admin reading surface. */
+[data-ui-version="classic"] .markdown-body :where(h2, h3),
+[data-ui-version="classic"] .article-content :where(h2, h3) {
+  scroll-margin-top: 6rem;
+}
+
+[data-ui-version="classic"] .markdown-body :where(h2) {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+[data-ui-version="classic"] .markdown-body :where(table),
+[data-ui-version="classic"] .article-content > table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+[data-ui-version="classic"] .article-content :where(img) {
+  max-width: 100%;
+  height: auto;
+}
+
 [data-ui-version="classic"] .contact-link,
 .classic-site .contact-link {
   display: inline-flex;

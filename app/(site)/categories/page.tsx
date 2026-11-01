@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 import Link from "next/link";
 import { ArrowRight, FolderOpen } from "lucide-react";
 import { SectionTitle } from "@/components/classic/SectionTitle";

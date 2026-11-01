@@ -41,7 +41,7 @@ export function GET(request: Request) {
     },
     {
       headers: {
-        "Cache-Control": "public, max-age=60, stale-while-revalidate=300"
+        "Cache-Control": "no-store"
       }
     }
   );

@@ -8,6 +8,7 @@ import readingTime from "reading-time";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import { visit } from "unist-util-visit";
+import { getPublishedFiles, readPublishedArticle } from "@/lib/published-storage";
 
 const postsDirectory = path.join(process.cwd(), "content", "blog");
 
@@ -40,9 +41,14 @@ export type PostListItem = Omit<Post, "searchText">;
 export type PostWithContent = Post & {
   content: string;
   toc: TocItem[];
+  format: "mdx" | "markdown";
 };
 
-let postRecordsCache: PostWithContent[] | null = null;
+let postRecordsCache: { signature: string; records: PostWithContent[] } | null = null;
+
+export function invalidatePostCache() {
+  postRecordsCache = null;
+}
 
 function getMdxFiles() {
   if (!fs.existsSync(postsDirectory)) {
@@ -78,6 +84,7 @@ function fileToPost(file: string): PostWithContent {
   return {
     ...frontmatter,
     slug,
+    format: "mdx",
     content,
     toc: extractToc(content),
     readingTime: `${Math.max(1, Math.ceil(reading.minutes))} 分钟阅读`,
@@ -88,13 +95,41 @@ function fileToPost(file: string): PostWithContent {
 }
 
 function getPostRecords() {
-  if (!postRecordsCache) {
-    postRecordsCache = getMdxFiles()
-      .map(fileToPost)
-      .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)));
+  const legacyFiles = getMdxFiles();
+  const publishedFiles = getPublishedFiles();
+  const signature = [...legacyFiles.map((file) => path.join(postsDirectory, file)), ...publishedFiles]
+    .map((file) => {
+      const stat = fs.statSync(file);
+      return `${file}:${stat.ino}:${stat.mtimeMs}:${stat.ctimeMs}:${stat.size}`;
+    }).join("|");
+  if (!postRecordsCache || postRecordsCache.signature !== signature) {
+    const records = legacyFiles.map(fileToPost);
+    const reserved = new Set(records.map((post) => post.slug));
+    for (const file of publishedFiles) {
+      let article;
+      try { article = readPublishedArticle(file); }
+      catch {
+        console.error("已忽略一篇损坏的上传文章，请从备份恢复：", path.basename(file));
+        continue;
+      }
+      // The repository is authoritative if an external file is manually misnamed.
+      if (reserved.has(article.metadata.slug) || path.basename(file, ".md") !== article.metadata.slug) continue;
+      const { slug, ...frontmatter } = article.metadata;
+      const reading = readingTime(article.content, { wordsPerMinute: 300 });
+      records.push({
+        ...frontmatter, slug, draft: false, format: "markdown", content: article.content,
+        toc: [], readingTime: `${Math.max(1, Math.ceil(reading.minutes))} 分钟阅读`,
+        minutes: reading.minutes, searchText: extractPlainText(article.content), url: `/blog/${slug}`
+      });
+      reserved.add(slug);
+    }
+    postRecordsCache = {
+      signature,
+      records: records.sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)) || a.slug.localeCompare(b.slug))
+    };
   }
 
-  return postRecordsCache;
+  return postRecordsCache.records;
 }
 
 export function toPostListItem(post: Post): PostListItem {
@@ -105,7 +140,7 @@ export function toPostListItem(post: Post): PostListItem {
 export function getAllPosts(options: { includeDrafts?: boolean } = {}): Post[] {
   return getPostRecords()
     .filter((post) => options.includeDrafts || !post.draft)
-    .map(({ content: _content, toc: _toc, ...post }) => post);
+    .map(({ content: _content, toc: _toc, format: _format, ...post }) => post);
 }
 
 export function getAllPostListItems(options: { includeDrafts?: boolean } = {}): PostListItem[] {
@@ -113,7 +148,7 @@ export function getAllPostListItems(options: { includeDrafts?: boolean } = {}): 
 }
 
 export function getPostBySlug(slug: string): PostWithContent | null {
-  const decodedSlug = decodeURIComponent(slug);
+  const decodedSlug = decodeRouteValue(slug);
   const post = getPostRecords().find((item) => item.slug === decodedSlug);
 
   if (!post) {
@@ -160,12 +195,12 @@ export function getAllCategories() {
 }
 
 export function getPostsByTag(tag: string) {
-  const decodedTag = decodeURIComponent(tag);
+  const decodedTag = decodeRouteValue(tag);
   return getAllPosts().filter((post) => post.tags.includes(decodedTag));
 }
 
 export function getPostsByCategory(category: string) {
-  const decodedCategory = decodeURIComponent(category);
+  const decodedCategory = decodeRouteValue(category);
   return getAllPosts().filter((post) => post.category === decodedCategory);
 }
 
@@ -219,9 +254,9 @@ export function getRecommendedPosts(currentPost: Post, limit = 3) {
 }
 
 export function getArchiveGroups() {
-  const groups = new Map<string, Post[]>();
+  const groups = new Map<string, PostListItem[]>();
 
-  for (const post of getAllPosts()) {
+  for (const post of getAllPostListItems()) {
     const date = new Date(post.date);
     const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
     groups.set(key, [...(groups.get(key) ?? []), post]);
@@ -237,6 +272,17 @@ export function getArchiveGroups() {
       posts
     };
   });
+}
+
+function decodeRouteValue(value: string) {
+  // App Router already decodes params; only decode a legacy encoded caller value
+  // when that exact decoded label is actually present in the content index.
+  try {
+    if (getAllPosts().some((post) => post.slug === value || post.category === value || post.tags.includes(value))) return value;
+    const decoded = decodeURIComponent(value);
+    if (decoded !== value && getAllPosts().some((post) => post.slug === decoded || post.category === decoded || post.tags.includes(decoded))) return decoded;
+  } catch { /* A literal percent character is valid in categories and tags. */ }
+  return value;
 }
 
 export function extractToc(content: string): TocItem[] {

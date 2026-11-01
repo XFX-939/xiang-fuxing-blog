@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 import { SectionTitle } from "@/components/classic/SectionTitle";
 import { TagIndex } from "@/components/classic/TagIndex";
 import { getAllTags } from "@/lib/posts";

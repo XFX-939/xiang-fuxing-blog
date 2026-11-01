@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -12,6 +15,8 @@ type CategoryPageProps = {
   };
 };
 
+export const dynamicParams = true;
+
 export function generateStaticParams() {
   return getAllCategories().map((category) => ({
     category: category.name
@@ -19,7 +24,7 @@ export function generateStaticParams() {
 }
 
 export function generateMetadata({ params }: CategoryPageProps): Metadata {
-  const category = decodeURIComponent(params.category);
+  const category = params.category;
 
   return createMetadata({
     title: `分类：${category}`,
@@ -29,7 +34,7 @@ export function generateMetadata({ params }: CategoryPageProps): Metadata {
 }
 
 export default function CategoryDetailPage({ params }: CategoryPageProps) {
-  const category = decodeURIComponent(params.category);
+  const category = params.category;
   const posts = getPostsByCategory(category);
 
   if (posts.length === 0) {

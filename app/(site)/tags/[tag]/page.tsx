@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -12,6 +15,8 @@ type TagPageProps = {
   };
 };
 
+export const dynamicParams = true;
+
 export function generateStaticParams() {
   return getAllTags().map((tag) => ({
     tag: tag.name
@@ -19,7 +24,7 @@ export function generateStaticParams() {
 }
 
 export function generateMetadata({ params }: TagPageProps): Metadata {
-  const tag = decodeURIComponent(params.tag);
+  const tag = params.tag;
   return createMetadata({
     title: `标签：${tag}`,
     description: `浏览标签「${tag}」下的文章。`,
@@ -28,7 +33,7 @@ export function generateMetadata({ params }: TagPageProps): Metadata {
 }
 
 export default function TagDetailPage({ params }: TagPageProps) {
-  const tag = decodeURIComponent(params.tag);
+  const tag = params.tag;
   const posts = getPostsByTag(tag);
 
   if (posts.length === 0) {

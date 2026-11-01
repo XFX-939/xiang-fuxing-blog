@@ -114,3 +114,9 @@ public/              静态资源目录
 - `/categories/[category]` 分类文章列表
 - `/tags` 标签索引
 - `/tags/[tag]` 标签文章列表
+
+## 后台 Markdown 编辑与发布
+
+新版 `/admin` 登录后直接展示 Markdown 编辑器和文章信息，支持粘贴或编写正文、自动识别信息、安全预览和确认发布，无需先上传文件。桌面支持编辑与预览并排，提供基础语法工具栏和当前浏览器的草稿恢复；已有 UTF-8 `.md` 文件仍可辅助导入。新文章、分类和标签无需重新构建或重启即可访问；原有 MDX 与 URL 保持兼容。
+
+编辑器新版需要部署代码并重启后才会在线上生效；本地修改不代表网站已更新。首次启用需配置管理员哈希、会话密钥、访问源，以及独立于 release 的 `BLOG_CONTENT_DIR`。详见 [Markdown 发布与 Ubuntu 配置](docs/markdown-publishing.md)，本地环境变量参考 `.env.example`。

@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -21,6 +24,9 @@ import { TagList } from "@/components/classic/TagList";
 import { TOC } from "@/components/classic/TOC";
 import { getAdjacentPosts, getAllPosts, getPostBySlug, getRecommendedPosts } from "@/lib/posts";
 import { absoluteUrl, createMetadata, formatDate } from "@/lib/utils";
+import { renderMarkdown } from "@/lib/markdown";
+
+export const dynamicParams = true;
 
 type BlogDetailProps = {
   params: {
@@ -64,8 +70,10 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
   const { newer, older } = getAdjacentPosts(post.slug);
   const recommendedPosts = getRecommendedPosts(post, 3);
   const articleUrl = absoluteUrl(post.url);
-  const openingSections = post.toc.filter((item) => item.depth === 2).slice(0, 4);
-  const { content } = await compileMDX({
+  const markdown = post.format === "markdown" ? await renderMarkdown(post.content) : null;
+  const toc = markdown?.toc ?? post.toc;
+  const openingSections = toc.filter((item) => item.depth === 2).slice(0, 4);
+  const { content } = markdown ? { content: <div className="markdown-body" dangerouslySetInnerHTML={{ __html: markdown.html }} /> } : await compileMDX({
     source: post.content,
     components: mdxComponents,
     options: {
@@ -116,11 +124,11 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
             author: { "@type": "Person", name: "向福星" },
             mainEntityOfPage: articleUrl,
             image: absoluteUrl("/images/xiang-fuxing-profile.jpg")
-          })
+          }).replace(/</g, "\\u003c")
         }}
       />
       <ReadingProgressBar />
-      <MobileFloatingTOC items={post.toc} />
+      <MobileFloatingTOC items={toc} />
       <ArticleBackToTop />
       <div className="mx-auto max-w-6xl px-5 py-9 sm:px-6 sm:py-10">
         <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-secondary transition hover:text-accent">
@@ -210,7 +218,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
           </article>
 
           <aside className="hidden self-start lg:sticky lg:top-32 lg:block lg:max-h-[calc(100vh-9rem)] lg:overflow-y-auto">
-            <TOC items={post.toc} />
+            <TOC items={toc} />
           </aside>
         </div>
       </div>

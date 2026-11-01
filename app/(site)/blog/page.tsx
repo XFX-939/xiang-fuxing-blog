@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 import { BlogExplorer } from "@/components/classic/BlogExplorer";
 import { SectionTitle } from "@/components/classic/SectionTitle";
 import { getAllCategories, getAllPostListItems, getAllTags } from "@/lib/posts";
@@ -21,8 +24,8 @@ export default function BlogPage({ searchParams }: BlogPageProps) {
   const posts = getAllPostListItems();
   const categories = getAllCategories();
   const tags = getAllTags();
-  const initialCategory = searchParams?.category ? decodeURIComponent(searchParams.category) : "全部";
-  const initialTag = searchParams?.tag ? decodeURIComponent(searchParams.tag) : "全部";
+  const initialCategory = searchParams?.category || "全部";
+  const initialTag = searchParams?.tag || "全部";
   const initialQuery = searchParams?.q ?? "";
 
   return (
