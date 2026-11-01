@@ -166,6 +166,7 @@ async function verifyPublic(app, input) {
   const { metadata, marker } = input;
   const detail = await app.request(`/blog/${metadata.slug}`);
   status(detail, 200, "公开详情");
+  ensure((detail.body.match(/<h1[\s>]/g) ?? []).length === 1, "公开详情页重复显示了文章标题");
   ensure(detail.body.includes(marker), "详情缺少新文章正文");
   ensure(!detail.body.includes("<script data-publishing-probe>"), "文章正文中存在可执行脚本");
   ensure(!detail.body.includes("<script data-publishing-title>"), "文章标题突破 HTML 边界");
@@ -315,10 +316,11 @@ async function main() {
     ensure(plainArticle.content === content, "粘贴识别改写了原始正文");
     ensure(plainArticle.metadata.title === "导入文章" && plainArticle.metadata.description === marker, "粘贴未自动识别标题或摘要");
     ensure(plainArticle.metadata.category === "未分类" && plainArticle.metadata.featured === false, "粘贴缺省文章信息不正确");
-    ensure(/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(plainArticle.metadata.slug), "未提供文件名时没有生成有效文章地址");
+    ensure(plainArticle.metadata.slug === "dao-ru-wen-zhang", "粘贴中文标题没有生成拼音文章地址");
     ensure(plainArticle.warnings.some((warning) => warning.includes("missing-image")), "粘贴未提示相对图片");
     ensure(plainArticle.html.includes("<table>") && plainArticle.html.includes("katex") && plainArticle.html.includes("data-rehype-pretty-code"), "粘贴预览缺少表格、数学或代码高亮");
     ensure(plainArticle.toc.some((item) => item.text === "阅读结构"), "粘贴没有返回阅读目录");
+    ensure(plainArticle.anchors?.[0]?.line === 5 && plainArticle.html.includes(`id="${plainArticle.anchors[0].id}"`), "粘贴预览没有返回可对齐的标题位置");
     ensure(!plainArticle.html.includes("<script") && !/href=["']javascript:/i.test(plainArticle.html), "粘贴预览保留了危险 HTML 或 URL");
     ensure(plainCompose.headers["cache-control"]?.includes("no-store"), "粘贴响应允许缓存草稿");
 
