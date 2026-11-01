@@ -20,7 +20,7 @@ test("imports frontmatter without rewriting the Markdown body", () => {
   assert.deepEqual(imported.metadata, validMetadata);
 });
 
-test("derives missing metadata and a deterministic ASCII slug for Chinese filenames", () => {
+test("derives missing metadata and a pinyin slug from a Chinese title", () => {
   const source = "# 我的笔记\n\n摘要来自**第一段**，保留原意。\n\n## 章节\n内容。\n";
   const first = importMarkdown(source, "无线学习.md");
   const second = importMarkdown(source, "无线学习.md");
@@ -30,7 +30,7 @@ test("derives missing metadata and a deterministic ASCII slug for Chinese filena
   assert.equal(first.metadata.category, "未分类");
   assert.deepEqual(first.metadata.tags, []);
   assert.equal(first.metadata.featured, false);
-  assert.match(first.metadata.slug, /^article-[a-f0-9]{16}$/);
+  assert.equal(first.metadata.slug, "wo-de-bi-ji");
   assert.equal(first.metadata.slug, second.metadata.slug);
   const shanghai = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Shanghai", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
   assert.equal(first.metadata.date, shanghai);
@@ -40,6 +40,34 @@ test("uses an ASCII filename as title and slug when no H1 is present", () => {
   const imported = importMarkdown("一段正文。", "Hello World.MD");
   assert.equal(imported.metadata.title, "Hello World");
   assert.equal(imported.metadata.slug, "hello-world");
+});
+
+test("slugs prefer frontmatter, then a URL-shaped filename, then the title", () => {
+  assert.equal(importMarkdown("---\nslug: chosen-url\n---\n# 标题\n\n正文。", "soc-architecture-basics.md").metadata.slug, "chosen-url");
+  assert.equal(importMarkdown("# 系统仿真入门\n\n正文。", "soc-architecture-basics.md").metadata.slug, "soc-architecture-basics");
+  assert.equal(importMarkdown("# 系统仿真入门\n\n正文。", "仿真笔记.md").metadata.slug, "xi-tong-fang-zhen-ru-men");
+  assert.equal(importMarkdown("# 系统仿真入门\n\n正文。").metadata.slug, "xi-tong-fang-zhen-ru-men");
+});
+
+test("pasted prose without a title uses its first 30 characters, never a placeholder", () => {
+  const imported = importMarkdown("这是一段没有标题的正文，用来测试粘贴时如何自动生成文章标题和文章地址。\n\n第二段。");
+  assert.equal(imported.metadata.title, "这是一段没有标题的正文，用来测试粘贴时如何自动生成文章标题和");
+  assert.ok(imported.metadata.slug.startsWith("zhe-shi-yi-duan"), imported.metadata.slug);
+  assert.ok(imported.metadata.slug.length <= 60);
+  assert.equal(importMarkdown("正文。").metadata.slug, "zheng-wen");
+  assert.doesNotMatch(importMarkdown("正文。").metadata.slug, /pasted/);
+});
+
+test("an automatic URL follows the title typed in the editor and avoids taken names", () => {
+  const taken = new Set(["xin-biao-ti"]);
+  const imported = importMarkdown("# 原标题\n\n正文。", undefined, { slugTitle: "新标题", isSlugTaken: (slug) => taken.has(slug) });
+  assert.equal(imported.metadata.title, "原标题");
+  assert.equal(imported.metadata.slug, "xin-biao-ti-2");
+  assert.ok(imported.warnings[0].includes("「xin-biao-ti」") && imported.warnings[0].includes("「xin-biao-ti-2」"));
+  // Frontmatter is the author's explicit choice and is never renamed.
+  const explicit = importMarkdown("---\nslug: xin-biao-ti\n---\n正文。", undefined, { isSlugTaken: (slug) => taken.has(slug) });
+  assert.equal(explicit.metadata.slug, "xin-biao-ti");
+  assert.ok(!explicit.warnings.some((warning) => warning.includes("已被其他文章使用")));
 });
 
 test("imports valid dates preferentially and falls back to Shanghai today for invalid dates", () => {

@@ -1,6 +1,5 @@
 import "server-only";
 
-import { createHash } from "node:crypto";
 import { load, JSON_SCHEMA } from "js-yaml";
 import type { Element, Root } from "hast";
 import type { Root as MarkdownRoot } from "mdast";
@@ -16,10 +15,10 @@ import { toHtml } from "hast-util-to-html";
 import { visit } from "unist-util-visit";
 import type { TocItem } from "./posts";
 import type { ArticleMetadata, ImportedMarkdown } from "./publishing-types";
+import { automaticSlug, availableSlug, isUsableSlug, RESERVED_SLUGS, SLUG_PATTERN } from "./slug";
 
 const MAX_SOURCE_BYTES = 2 * 1024 * 1024;
 const METADATA_KEYS = new Set(["title", "description", "date", "category", "tags", "featured", "slug"]);
-const RESERVED_SLUGS = new Set(["constructor", "prototype", "__proto__"]);
 const FORBIDDEN_CONTROLS = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/;
 
 export class MarkdownValidationError extends Error {
@@ -81,7 +80,7 @@ export function validateArticleMetadata(input: unknown): ArticleMetadata {
   if (!isValidDate(date)) {
     throw new MarkdownValidationError("日期不存在，请填写真实的年月日。");
   }
-  if (typeof input.slug !== "string" || input.slug.length > 120 || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(input.slug) || RESERVED_SLUGS.has(input.slug)) {
+  if (typeof input.slug !== "string" || input.slug.length > 120 || !SLUG_PATTERN.test(input.slug) || RESERVED_SLUGS.has(input.slug)) {
     throw new MarkdownValidationError("短链只能使用小写英文字母、数字和单个连字符，最长 120 字符，且不能使用保留名称。");
   }
   if (!Array.isArray(input.tags) || input.tags.length > 20) {
@@ -112,13 +111,6 @@ function shanghaiDate() {
   }).formatToParts(new Date());
   const value = (type: string) => parts.find((part) => part.type === type)?.value;
   return `${value("year")}-${value("month")}-${value("day")}`;
-}
-
-function makeSlug(stem: string) {
-  const normalized = stem.normalize("NFKC").trim();
-  const ascii = normalized.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-  if (ascii && /^[\x00-\x7f]*$/.test(normalized) && ascii.length <= 120 && !RESERVED_SLUGS.has(ascii)) return ascii;
-  return `article-${createHash("sha256").update(normalized).digest("hex").slice(0, 16)}`;
 }
 
 function safeImageUrl(value: string) {
@@ -156,9 +148,22 @@ export function getMarkdownWarnings(content: string): string[] {
   return warnings;
 }
 
-export function importMarkdown(source: string, filename: string): ImportedMarkdown {
+export type ImportOptions = {
+  /** The title typed in the editor, which an automatic URL should follow. */
+  slugTitle?: string;
+  /** Reports URLs owned by another article, so automatic URLs avoid them. */
+  isSlugTaken?: (slug: string) => boolean;
+};
+
+function pastedTitle(tree: MarkdownRoot): string {
+  const paragraph = tree.children.find((node) => node.type === "paragraph" && nodeText(node).trim());
+  const text = (paragraph ? nodeText(paragraph) : nodeText(tree)).replace(/\s+/g, " ").trim();
+  return Array.from(text).slice(0, 30).join("").trim() || "未命名文章";
+}
+
+export function importMarkdown(source: string, filename?: string, options: ImportOptions = {}): ImportedMarkdown {
   assertSource(source);
-  if (typeof filename !== "string" || !/\.md$/i.test(filename) || /[\\/\u0000-\u001f\u007f]/.test(filename)) {
+  if (filename !== undefined && (typeof filename !== "string" || !/\.md$/i.test(filename) || /[\\/\u0000-\u001f\u007f]/.test(filename))) {
     throw new MarkdownValidationError("只接受 UTF-8 编码的 .md 文件，请勿上传 MDX 或其他文件。");
   }
   let content = source.startsWith("\uFEFF") ? source.slice(1) : source;
@@ -181,13 +186,26 @@ export function importMarkdown(source: string, filename: string): ImportedMarkdo
   }
   assertSource(content);
   const tree = parseMarkdown(content);
-  const stem = filename.slice(0, -3).trim();
+  // Pasted text has no file identity, so only a real upload name can name an article.
+  const stem = filename === undefined ? undefined : filename.slice(0, -3).trim();
   let heading = "";
   visit(tree, "heading", (node) => { if (!heading && node.depth === 1) heading = nodeText(node).trim(); });
   const paragraph = tree.children.find((node) => node.type === "paragraph" && nodeText(node).trim());
-  const title = validateText(Object.hasOwn(frontmatter, "title") ? frontmatter.title : heading || stem, "标题", 200);
+  const title = validateText(Object.hasOwn(frontmatter, "title") ? frontmatter.title : heading || (stem ?? pastedTitle(tree)), "标题", 200);
   const pick = (key: string, fallback: unknown) => Object.hasOwn(frontmatter, key) ? frontmatter[key] : fallback;
   const date = isValidDate(frontmatter.date) ? frontmatter.date : shanghaiDate();
+  let slug: unknown;
+  let renamedFrom = "";
+  if (Object.hasOwn(frontmatter, "slug")) {
+    slug = frontmatter.slug;
+  } else if (stem !== undefined && isUsableSlug(stem)) {
+    slug = stem;
+  } else {
+    const requested = typeof options.slugTitle === "string" ? Array.from(options.slugTitle.trim()).slice(0, 200).join("") : "";
+    const base = automaticSlug(requested || title);
+    slug = options.isSlugTaken ? availableSlug(base, options.isSlugTaken) : base;
+    if (slug !== base) renamedFrom = base;
+  }
   const metadata = validateArticleMetadata({
     title,
     description: pick("description", Array.from(paragraph ? nodeText(paragraph).replace(/\s+/g, " ").trim() : title).slice(0, 200).join("")),
@@ -195,11 +213,11 @@ export function importMarkdown(source: string, filename: string): ImportedMarkdo
     category: pick("category", "未分类"),
     tags: pick("tags", []),
     featured: pick("featured", false),
-    slug: pick("slug", makeSlug(stem))
+    slug
   });
   const warnings = getMarkdownWarnings(content);
   if (Object.hasOwn(frontmatter, "date") && !isValidDate(frontmatter.date)) warnings.unshift(`原文日期无效，已使用上海当天日期 ${date}；可在发布前修改。`);
-  if (!Object.hasOwn(frontmatter, "slug") && !/^[\x00-\x7f]*$/.test(stem)) warnings.unshift("已根据文件名生成稳定英文短链；可在发布前编辑短链。");
+  if (renamedFrom) warnings.unshift(`文章地址「${renamedFrom}」已被其他文章使用，已自动改为「${metadata.slug}」；如果是重复发布同一篇文章，请不要继续。`);
   if (frontmatter.draft === true) warnings.unshift("原文标记为草稿；确认发布后将公开展示，请核对发布意图。");
   const ignored = Object.keys(frontmatter).filter((key) => !METADATA_KEYS.has(key) && key !== "draft");
   if (ignored.length) warnings.push(`以下 frontmatter 字段不参与发布：${ignored.join("、")}。`);
