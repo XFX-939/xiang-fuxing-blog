@@ -57,7 +57,7 @@ node -e "process.stdout.write(require('node:crypto').randomBytes(32).toString('h
 BLOG_ADMIN_PASSWORD_HASH='scrypt\$盐\$派生值'
 ```
 
-systemd 的 `EnvironmentFile` 不做这种变量展开，应使用原始 `scrypt$盐$派生值`，无需反斜杠。两种配置方式不要混淆。`.env.example` 仅含占位符，不能直接用于生产。
+systemd 的 `EnvironmentFile` 不做这种变量展开，应使用原始 `scrypt$盐$派生值`，无需反斜杠。两种配置方式不要混淆，也不要同时使用：只要某个 `.env` 文件定义了同名变量，Next 就会对进程环境里的同名值做 `$` 展开，来自 systemd 的哈希也会被改坏、后台显示未配置。`.env.example` 仅含占位符，不能直接用于生产。
 
 ## Ubuntu 配置
 

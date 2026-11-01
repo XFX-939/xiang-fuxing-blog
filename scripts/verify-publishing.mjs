@@ -16,6 +16,7 @@ const scriptPath = fileURLToPath(import.meta.url);
 const projectRoot = path.resolve(path.dirname(scriptPath), "..");
 const origin = "http://127.0.0.1:31479";
 const worker = process.argv.includes("--restart-worker");
+const FIXTURE_ENV_KEYS = ["BLOG_ADMIN_PASSWORD_HASH", "BLOG_ADMIN_SESSION_SECRET", "BLOG_ADMIN_ORIGIN", "BLOG_CONTENT_DIR", "LIKES_STORE_PATH"];
 let stage = "初始化";
 
 function ensure(condition, message) {
@@ -44,9 +45,13 @@ function timeout(promise, milliseconds, label) {
 }
 
 async function startApp() {
+  // Next expands "$" in any variable that an .env file also defines, even when
+  // the value came from this process. Restore the fixture once .env files load.
+  const fixtureEnv = Object.fromEntries(FIXTURE_ENV_KEYS.map((key) => [key, process.env[key]]));
   const { default: next } = await import("next");
   const app = next({ dev: false, dir: projectRoot, hostname: "127.0.0.1", port: 31479, quiet: true });
   await timeout(app.prepare(), 30000, "生产 Next 初始化");
+  for (const [key, value] of Object.entries(fixtureEnv)) if (value !== undefined) process.env[key] = value;
   const handler = app.getRequestHandler();
 
   async function request(url, { method = "GET", headers = {}, body = null } = {}) {
