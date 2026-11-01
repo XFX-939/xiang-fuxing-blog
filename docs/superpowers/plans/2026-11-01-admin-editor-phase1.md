@@ -57,7 +57,7 @@ Run:
 ```bash
 node --input-type=module -e 'import { pinyin } from "pinyin-pro"; for (const text of ["为什么管理者要远离微管理","导入文章","系统仿真入门","从工具到流程","与","绿色","我的笔记","粘贴的无线笔记","新标题","正文","草稿标题","从无线通信研发到海外市场产品能力"]) console.log(text, pinyin(text, { toneType: "none", type: "array" }).join(" "));'
 ```
-Expected（逐行）：`wei shen me guan li zhe yao yuan li wei guan li`、`dao ru wen zhang`、`xi tong fang zhen ru men`、`cong gong ju dao liu cheng`、`yu`、`lü se`、`wo de bi ji`、`zhan tie de wu xian bi ji`、`xin biao ti`、`zheng wen`、`cao gao biao ti`、`cong wu xian tong xin yan fa dao hai wai shi chang chan pin neng li`。若某个多音字结果不同，以实际输出为准修改后续任务中的期望值。
+Expected（逐行）：`wei shen me guan li zhe yao yuan li wei guan li`、`dao ru wen zhang`、`xi tong fang zhen ru men`、`cong gong ju dao liu cheng`、`yu`、`lü se`、`wo de bi ji`、`nian tie de wu xian bi ji`（库对“粘贴”的多音字取 nian）、`xin biao ti`、`zheng wen`、`cao gao biao ti`、`cong wu xian tong xin yan fa dao hai wai shi chang chan pin neng li`。若某个多音字结果不同，以实际输出为准修改后续任务中的期望值。
 
 - [ ] **Step 4: 提交**
 
@@ -529,7 +529,7 @@ test("composed anchors count lines in the full pasted source", async () => {
 `tests/compose.test.ts` 第 73 行改为：
 
 ```ts
-  assert.equal(result.metadata.slug, "zhan-tie-de-wu-xian-bi-ji");
+  assert.equal(result.metadata.slug, "nian-tie-de-wu-xian-bi-ji");
   assert.deepEqual(result.anchors.map((anchor: { line: number }) => anchor.line), [5]);
 ```
 
