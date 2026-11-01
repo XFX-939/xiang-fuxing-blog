@@ -7,12 +7,16 @@ export const EDITOR_DRAFT_KEY = "xiang-fuxing-blog-markdown-draft-v1";
 export type EditorDraft = {
   version: 1;
   source: string;
+  /** The uploaded file's name; empty for pasted text. */
   filename: string;
   metadata: ArticleMetadata;
   editedFields: MetadataField[];
   requestId?: string;
   savedAt: number;
 };
+
+// Drafts saved before pasted text was composed without a filename stored this placeholder.
+const LEGACY_PASTED_FILENAME = /^pasted-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.md$/i;
 
 export function parseEditorTags(value: string) {
   return Array.from(new Set(value.split(/[,，]/).map((tag) => tag.trim()).filter(Boolean)));
@@ -29,12 +33,8 @@ export function emptyArticleMetadata(date: string): ArticleMetadata {
 }
 
 /** Only untouched fields follow the pasted Markdown; manual edits always win. */
-export function mergeComposedMetadata(current: ArticleMetadata, derived: ArticleMetadata, edited: ReadonlySet<MetadataField>, filename: string): ArticleMetadata {
-  const inferred = { ...derived };
-  if (inferred.title === filename.replace(/\.md$/i, "") && inferred.description !== inferred.title) {
-    inferred.title = Array.from(inferred.description).slice(0, 80).join("");
-  }
-  return Object.fromEntries(metadataFields.map((field) => [field, edited.has(field) ? current[field] : inferred[field]])) as ArticleMetadata;
+export function mergeComposedMetadata(current: ArticleMetadata, derived: ArticleMetadata, edited: ReadonlySet<MetadataField>): ArticleMetadata {
+  return Object.fromEntries(metadataFields.map((field) => [field, edited.has(field) ? current[field] : derived[field]])) as ArticleMetadata;
 }
 
 export function readEditorDraft(raw: string | null): EditorDraft | null {
@@ -43,7 +43,7 @@ export function readEditorDraft(raw: string | null): EditorDraft | null {
     const draft = JSON.parse(raw) as EditorDraft;
     if (draft?.version !== 1 || typeof draft.source !== "string" || !draft.source.trim() ||
       new TextEncoder().encode(draft.source).byteLength > 2 * 1024 * 1024 ||
-      typeof draft.filename !== "string" || !/\.md$/i.test(draft.filename) || /[\\/\u0000-\u001f]/.test(draft.filename) ||
+      typeof draft.filename !== "string" || (draft.filename !== "" && (!/\.md$/i.test(draft.filename) || /[\\/\u0000-\u001f]/.test(draft.filename))) ||
       !Number.isFinite(draft.savedAt) || !Array.isArray(draft.editedFields) ||
       !draft.editedFields.every((field) => metadataFields.includes(field))) return null;
     if (draft.requestId !== undefined && (typeof draft.requestId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(draft.requestId))) return null;
@@ -52,7 +52,7 @@ export function readEditorDraft(raw: string | null): EditorDraft | null {
       ![metadata.title, metadata.description, metadata.date, metadata.category, metadata.slug].every((value) => typeof value === "string") ||
       typeof metadata.featured !== "boolean" || !Array.isArray(metadata.tags) || metadata.tags.length > 20 ||
       !metadata.tags.every((tag) => typeof tag === "string" && tag.length <= 100)) return null;
-    return { ...draft, metadata: { ...metadata }, editedFields: [...draft.editedFields] };
+    return { ...draft, filename: LEGACY_PASTED_FILENAME.test(draft.filename) ? "" : draft.filename, metadata: { ...metadata }, editedFields: [...draft.editedFields] };
   } catch { return null; }
 }
 

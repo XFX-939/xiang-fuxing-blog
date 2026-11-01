@@ -171,7 +171,7 @@ export function AdminWorkspace({ categories, initialDate }: { categories: string
 
   const applyComposition = useCallback((data: ImportResponse, forRevision: number, forFilename: string) => {
     if (forRevision !== revisionRef.current) return null;
-    const next = mergeComposedMetadata(metadataRef.current, resumeMetadata.current ?? data.metadata, editedFields.current, forFilename);
+    const next = mergeComposedMetadata(metadataRef.current, resumeMetadata.current ?? data.metadata, editedFields.current);
     commitMetadata(next);
     if (!editedFields.current.has("tags")) setTagsInput(next.tags.join("，"));
     const value = { revision: forRevision, data };

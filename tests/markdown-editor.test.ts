@@ -11,7 +11,7 @@ test("new writing sessions start with editable blank metadata and a Shanghai dat
 test("a delayed composition never overwrites fields the author has manually edited", () => {
   const current = { ...emptyArticleMetadata("2026-11-01"), title: "我的标题", category: "技术管理", tags: ["自选标签"], slug: "my-custom-url" };
   const derived = { ...emptyArticleMetadata("2026-11-02"), title: "Markdown标题", description: "自动摘要", category: "系统仿真", tags: ["自动标签"], slug: "pasted-unique" };
-  const result = mergeComposedMetadata(current, derived, new Set(["title", "category", "tags", "slug"]), "pasted-unique.md");
+  const result = mergeComposedMetadata(current, derived, new Set(["title", "category", "tags", "slug"]));
   assert.equal(result.title, current.title);
   assert.equal(result.category, current.category);
   assert.deepEqual(result.tags, current.tags);
@@ -20,12 +20,20 @@ test("a delayed composition never overwrites fields the author has manually edit
   assert.equal(result.date, derived.date);
 });
 
-test("plain pasted prose gets a readable fallback title without changing its unique slug", () => {
-  const derived = { ...emptyArticleMetadata("2026-11-01"), title: "pasted-id", description: "这是没有一级标题的正文摘要。", slug: "pasted-id" };
-  const result = mergeComposedMetadata(emptyArticleMetadata("2026-11-01"), derived, new Set(), "pasted-id.md");
-  assert.equal(result.title, derived.description);
-  assert.equal(result.slug, "pasted-id");
-  assert.equal(mergeComposedMetadata({ ...derived, title: "手动标题" }, derived, new Set(["title"]), "pasted-id.md").title, "手动标题");
+test("untouched fields follow each composition while manual edits win", () => {
+  const derived = { ...emptyArticleMetadata("2026-11-01"), title: "首段前三十个字", description: "首段前三十个字。", slug: "shou-duan-qian-san-shi-ge-zi" };
+  assert.deepEqual(mergeComposedMetadata(emptyArticleMetadata("2026-11-01"), derived, new Set()), derived);
+  const edited = mergeComposedMetadata({ ...derived, title: "手动标题" }, { ...derived, slug: "shou-dong-biao-ti" }, new Set(["title"]));
+  assert.equal(edited.title, "手动标题");
+  assert.equal(edited.slug, "shou-dong-biao-ti");
+});
+
+test("pasted drafts have no filename, including drafts saved with the old placeholder", () => {
+  const base = { version: 1, source: "# 标题\n\n正文。", metadata: emptyArticleMetadata("2026-11-01"), editedFields: [], savedAt: Date.now() };
+  assert.equal(readEditorDraft(JSON.stringify({ ...base, filename: "" }))?.filename, "");
+  assert.equal(readEditorDraft(JSON.stringify({ ...base, filename: "pasted-0f8fad5b-d9cb-469f-a165-70867728950e.md" }))?.filename, "");
+  assert.equal(readEditorDraft(JSON.stringify({ ...base, filename: "无线学习.md" }))?.filename, "无线学习.md");
+  assert.equal(readEditorDraft(JSON.stringify({ ...base, filename: "../bad.md" })), null);
 });
 
 test("drafts preserve raw frontmatter, body, manual choices and a stable document identity", () => {
