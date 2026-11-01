@@ -4,15 +4,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { AlertCircle, Check, CheckCircle2, ExternalLink, Loader2, LogOut, Plus, RefreshCw, Send, Upload } from "lucide-react";
-import type { ArticleMetadata } from "@/lib/publishing-types";
+import type { ArticleMetadata, HeadingAnchor } from "@/lib/publishing-types";
 import { MarkdownEditor } from "@/components/admin/MarkdownEditor";
 import { EDITOR_DRAFT_KEY, emptyArticleMetadata, mergeComposedMetadata, parseEditorTags, readEditorDraft, shanghaiToday, type EditorDraft, type MetadataField } from "@/lib/markdown-editor";
+import { siteConfig } from "@/lib/site";
 
 type ImportResponse = {
   content: string;
   metadata: ArticleMetadata;
   warnings: string[];
   html: string;
+  anchors?: HeadingAnchor[];
 };
 
 type PublishResponse = {
@@ -23,6 +25,9 @@ type PublishResponse = {
 
 const inputClass = "mt-2 w-full min-w-0 rounded-md border border-border bg-bg px-3 py-2.5 text-base text-primary outline-none transition placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent-soft disabled:opacity-60 sm:text-sm";
 const secondaryButtonClass = "inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-secondary transition hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:cursor-not-allowed disabled:opacity-50";
+
+const NO_ANCHORS: HeadingAnchor[] = [];
+const siteHost = siteConfig.siteUrl.replace(/^https?:\/\//, "");
 
 async function readResponse<T>(response: Response): Promise<T> {
   const body = await response.json().catch(() => null);
@@ -138,8 +143,6 @@ export function AdminWorkspace({ categories, initialDate }: { categories: string
       setRestored(true);
       revisionRef.current += 1;
       setRevision(revisionRef.current);
-    } else {
-      setFilename(`pasted-${crypto.randomUUID()}.md`);
     }
     setReady(true);
   }, [commitMetadata]);
@@ -169,7 +172,7 @@ export function AdminWorkspace({ categories, initialDate }: { categories: string
     };
   }, [source, filename, metadata, ready, published]);
 
-  const applyComposition = useCallback((data: ImportResponse, forRevision: number, forFilename: string) => {
+  const applyComposition = useCallback((data: ImportResponse, forRevision: number) => {
     if (forRevision !== revisionRef.current) return null;
     const next = mergeComposedMetadata(metadataRef.current, resumeMetadata.current ?? data.metadata, editedFields.current);
     commitMetadata(next);
@@ -183,16 +186,18 @@ export function AdminWorkspace({ categories, initialDate }: { categories: string
   }, [commitMetadata]);
 
   const compose = useCallback(async (raw: string, forRevision: number, forFilename: string, controller: AbortController) => {
+    // A title typed by the author decides the automatic URL.
+    const title = editedFields.current.has("title") ? metadataRef.current.title.trim() : "";
     const result = await readResponse<ImportResponse>(await fetch("/api/admin/compose", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ source: raw, filename: forFilename }), signal: controller.signal
+      body: JSON.stringify({ source: raw, ...(forFilename ? { filename: forFilename } : {}), ...(title ? { title } : {}) }), signal: controller.signal
     }));
     if (controller.signal.aborted) return null;
-    return applyComposition(result, forRevision, forFilename);
+    return applyComposition(result, forRevision);
   }, [applyComposition]);
 
   useEffect(() => {
-    if (!ready || !filename || !source.trim() || published || previewRef.current?.revision === revision) return;
+    if (!ready || !source.trim() || published || previewRef.current?.revision === revision) return;
     const controller = new AbortController();
     previewController.current?.abort();
     previewController.current = controller;
@@ -230,10 +235,19 @@ export function AdminWorkspace({ categories, initialDate }: { categories: string
     if (!value.trim()) { previewRef.current = null; setPreview(null); }
   }
 
+  function requestComposition() {
+    revisionRef.current += 1;
+    setRevision(revisionRef.current);
+  }
+
   function updateMetadata<K extends MetadataField>(field: K, value: ArticleMetadata[K]) {
     editedFields.current.add(field);
+    // Clearing the URL hands it back to automatic generation.
+    if (field === "slug" && value === "") editedFields.current.delete("slug");
     commitMetadata({ ...metadataRef.current, [field]: value });
     markChanged();
+    // An automatic URL follows the title the author settles on.
+    if ((field === "title" || field === "slug") && !editedFields.current.has("slug") && source.trim()) requestComposition();
   }
 
   function newArticle() {
@@ -244,7 +258,7 @@ export function AdminWorkspace({ categories, initialDate }: { categories: string
     commitMetadata(emptyArticleMetadata(shanghaiToday()));
     setTagsInput("");
     setSource("");
-    setFilename(`pasted-${crypto.randomUUID()}.md`);
+    setFilename("");
     revisionRef.current += 1;
     setRevision(revisionRef.current);
     previewRef.current = null;
@@ -297,7 +311,7 @@ export function AdminWorkspace({ categories, initialDate }: { categories: string
       setRestored(false);
       setPreviewLoading(false);
       markChanged();
-      applyComposition(result, currentRevision, file.name);
+      applyComposition(result, currentRevision);
     } catch (cause) { setError(errorMessage(cause)); }
     finally { busyRef.current = false; setBusy(null); }
   }
@@ -375,7 +389,7 @@ export function AdminWorkspace({ categories, initialDate }: { categories: string
 
       <form onSubmit={publish}>
         <fieldset disabled={disabled} className="min-w-0 space-y-5">
-          <MarkdownEditor source={source} onChange={changeSource} html={preview?.data.html ?? ""} metadata={metadata} loading={previewLoading} current={previewCurrent} disabled={disabled} error={previewError} />
+          <MarkdownEditor source={source} onChange={changeSource} html={preview?.data.html ?? ""} anchors={preview?.data.anchors ?? NO_ANCHORS} metadata={metadata} loading={previewLoading} current={previewCurrent} disabled={disabled} error={previewError} />
           <div className="flex flex-wrap items-center justify-between gap-3 text-xs leading-6 text-muted">
             <span role="status">{draftStatus} · 草稿只保存在当前浏览器</span>
             <div className="flex flex-wrap items-center gap-2">
@@ -388,7 +402,7 @@ export function AdminWorkspace({ categories, initialDate }: { categories: string
             <div className="mb-5"><h3 className="font-semibold">文章信息</h3><p className="mt-1 text-xs leading-6 text-muted">从原文自动提取，也可以直接修改。手动修改的字段会保留。</p></div>
             <div className="grid gap-5 md:grid-cols-2">
               <label className="block text-sm font-medium">标题<input name="title" value={metadata.title} onChange={(event) => updateMetadata("title", event.target.value)} required maxLength={200} placeholder="从 Markdown 的一级标题自动提取" className={inputClass} /></label>
-              <label className="block text-sm font-medium">文章地址<input name="slug" value={metadata.slug} onChange={(event) => updateMetadata("slug", event.target.value)} required maxLength={120} pattern="[a-z0-9]+(-[a-z0-9]+)*" autoCapitalize="none" autoCorrect="off" spellCheck={false} placeholder="自动生成，可自定义" className={`${inputClass} font-mono`} /></label>
+              <label className="block text-sm font-medium">文章地址<input name="slug" value={metadata.slug} onChange={(event) => updateMetadata("slug", event.target.value)} required maxLength={120} pattern="[a-z0-9]+(-[a-z0-9]+)*" autoCapitalize="none" autoCorrect="off" spellCheck={false} placeholder="留空则根据标题自动生成" className={`${inputClass} font-mono`} /><span className="mt-1 block break-all text-xs font-normal text-muted">发布后地址：{siteHost}/blog/{metadata.slug || "…"}</span></label>
               <label className="block text-sm font-medium md:col-span-2">摘要<textarea name="description" value={metadata.description} onChange={(event) => updateMetadata("description", event.target.value)} required rows={3} maxLength={500} placeholder="从正文首段自动提取" className={`${inputClass} resize-y leading-7`} /></label>
               <label className="block text-sm font-medium">日期<input type="date" name="date" value={metadata.date} onChange={(event) => updateMetadata("date", event.target.value)} required className={inputClass} /></label>
               <label className="block text-sm font-medium">分类<input name="category" value={metadata.category} onChange={(event) => updateMetadata("category", event.target.value)} required maxLength={60} list="article-categories" className={inputClass} /><datalist id="article-categories">{Array.from(new Set(["未分类", ...categories])).map((category) => <option key={category} value={category} />)}</datalist></label>
