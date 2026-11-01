@@ -14,7 +14,7 @@ import rehypeSlug from "rehype-slug";
 import { toHtml } from "hast-util-to-html";
 import { visit } from "unist-util-visit";
 import type { TocItem } from "./posts";
-import type { ArticleMetadata, ImportedMarkdown } from "./publishing-types";
+import type { ArticleMetadata, HeadingAnchor, ImportedMarkdown } from "./publishing-types";
 import { automaticSlug, availableSlug, isUsableSlug, RESERVED_SLUGS, SLUG_PATTERN } from "./slug";
 
 const MAX_SOURCE_BYTES = 2 * 1024 * 1024;
@@ -224,6 +224,16 @@ export function importMarkdown(source: string, filename?: string, options: Impor
   return { content, metadata, warnings };
 }
 
+/** The article page already shows its title: drop a leading H1 and keep other headings below it. */
+function articleHeadings() {
+  return (tree: MarkdownRoot) => {
+    const first = tree.children.findIndex((node) => node.type !== "html" && node.type !== "definition");
+    const lead = tree.children[first];
+    if (lead?.type === "heading" && lead.depth === 1) tree.children.splice(first, 1);
+    visit(tree, "heading", (node) => { if (node.depth === 1) node.depth = 2; });
+  };
+}
+
 function safeUrls() {
   return (tree: Root) => {
     visit(tree, "element", (node: Element) => {
@@ -255,14 +265,16 @@ function safeUrls() {
   };
 }
 
-export async function renderMarkdown(content: string): Promise<{ html: string; toc: TocItem[] }> {
+export async function renderMarkdown(content: string): Promise<{ html: string; toc: TocItem[]; anchors: HeadingAnchor[] }> {
   assertSource(content);
   const toc: TocItem[] = [];
+  const anchors: HeadingAnchor[] = [];
   try {
     const processor = unified()
       .use(remarkParse)
       .use(remarkGfm)
       .use(remarkMath)
+      .use(articleHeadings)
       // No remark-mdx, evaluation, raw HTML expansion, or user-defined plugins.
       .use(remarkRehype, { allowDangerousHtml: false })
       .use(safeUrls)
@@ -280,13 +292,15 @@ export async function renderMarkdown(content: string): Promise<{ html: string; t
       .use(rehypeSlug, { prefix: "user-content-" })
       .use(() => (tree: Root) => {
         visit(tree, "element", (node: Element) => {
-          if ((node.tagName === "h2" || node.tagName === "h3") && typeof node.properties.id === "string") {
-            toc.push({ id: node.properties.id, text: nodeText(node), depth: Number(node.tagName.slice(1)) });
-          }
+          const depth = /^h([1-6])$/.exec(node.tagName)?.[1];
+          if (!depth || typeof node.properties.id !== "string") return;
+          if (depth === "2" || depth === "3") toc.push({ id: node.properties.id, text: nodeText(node), depth: Number(depth) });
+          // Generated headings, such as the footnote label, have no source line.
+          if (node.position) anchors.push({ id: node.properties.id, line: node.position.start.line });
         });
       });
     const tree = await processor.run(processor.parse(content));
-    return { html: toHtml(tree, { allowDangerousHtml: false }), toc };
+    return { html: toHtml(tree, { allowDangerousHtml: false }), toc, anchors };
   } catch (error) {
     if (error instanceof MarkdownValidationError) throw error;
     throw new MarkdownValidationError("Markdown 无法渲染，请检查公式或代码块语法后重试。");

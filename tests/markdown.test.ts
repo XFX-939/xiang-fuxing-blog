@@ -182,3 +182,16 @@ test("keeps GFM footnote links matched to their safe prefixed IDs", async () => 
   const links = [...html.matchAll(/href="#([^"]+)"/g)].map((match) => match[1]);
   for (const id of links) assert.ok(html.includes(`id="${id}"`), `missing anchor ${id}`);
 });
+
+test("a leading H1 is not rendered and later H1s become H2 headings", async () => {
+  const { html, toc } = await renderMarkdown("# 文章标题\n\n导语。\n\n# 第一部分\n\n## 小节\n");
+  assert.doesNotMatch(html, /<h1|文章标题/);
+  assert.match(html, /<h2[^>]*>第一部分<\/h2>/);
+  assert.deepEqual(toc.map((item) => [item.text, item.depth]), [["第一部分", 2], ["小节", 2]]);
+});
+
+test("anchors map each rendered heading to its source line", async () => {
+  const { html, anchors } = await renderMarkdown("# 标题\n\n导语。\n\n## 第一节\n\n```md\n# 代码里的井号\n```\n\n### 小节\n");
+  assert.deepEqual(anchors.map((anchor) => anchor.line), [5, 11]);
+  for (const anchor of anchors) assert.ok(html.includes(`id="${anchor.id}"`), anchor.id);
+});

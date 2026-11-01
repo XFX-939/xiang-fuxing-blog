@@ -13,3 +13,6 @@ export type ImportedMarkdown = {
   metadata: ArticleMetadata;
   warnings: string[];
 };
+
+/** A rendered heading and the 1-based source line it came from. */
+export type HeadingAnchor = { id: string; line: number };
