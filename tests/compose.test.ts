@@ -70,7 +70,8 @@ test("composes pasted JSON Markdown without a file and derives metadata", async 
   assert.equal(result.metadata.category, "未分类");
   assert.deepEqual(result.metadata.tags, []);
   assert.equal(result.metadata.featured, false);
-  assert.equal(result.metadata.slug, "pasted-article");
+  assert.equal(result.metadata.slug, "nian-tie-de-wu-xian-bi-ji");
+  assert.deepEqual(result.anchors.map((anchor: { line: number }) => anchor.line), [5]);
   const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Shanghai", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
   assert.equal(result.metadata.date, today);
   assert.match(result.html, /<strong>核心机制<\/strong>/);
@@ -154,4 +155,16 @@ test("enforces source and streamed JSON request limits without trusting content-
   assert.equal(declaredTooLarge.status, 413);
   const falseSmallLength = await compose(request({ source: "a".repeat(MAX_MARKDOWN_BYTES + 1) }, { headers: { "Content-Length": "1" } }));
   assert.equal(falseSmallLength.status, 413);
+});
+
+test("automatic URLs follow an edited title and skip URLs used by repository articles", async () => {
+  const response = await compose(request({ source: "# 草稿标题\n\n正文。", title: "Understanding System Simulation" }));
+  assert.equal(response.status, 200);
+  const result = await response.json();
+  assert.equal(result.metadata.title, "草稿标题");
+  assert.equal(result.metadata.slug, "understanding-system-simulation-2");
+  assert.ok(result.warnings.some((warning: string) => warning.includes("understanding-system-simulation-2")));
+  for (const title of [42, null, {}, "标".repeat(201)]) {
+    assert.equal((await compose(request({ source: "# 标题", title }))).status, 400);
+  }
 });

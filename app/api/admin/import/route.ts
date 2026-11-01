@@ -1,5 +1,5 @@
-import { importMarkdown, renderMarkdown } from "@/lib/markdown";
-import { PublishingError } from "@/lib/published-storage";
+import { composeMarkdown } from "@/lib/markdown";
+import { isSlugTaken, PublishingError } from "@/lib/published-storage";
 import { authorizePublishing, decodeUtf8, MAX_MARKDOWN_BYTES, publishingErrorResponse, publishingResponse, readLimitedBody } from "@/lib/publishing-http";
 
 export const runtime = "nodejs";
@@ -21,8 +21,6 @@ export async function POST(request: Request) {
     const file = files[0];
     if (!/\.md$/i.test(file.name)) throw new PublishingError("只支持 .md 文件，请先导出为 Markdown。", 415);
     if (file.size > MAX_MARKDOWN_BYTES) throw new PublishingError("文件超过 2 MiB 限制。", 413);
-    const imported = importMarkdown(decodeUtf8(new Uint8Array(await file.arrayBuffer())), file.name);
-    const rendered = await renderMarkdown(imported.content);
-    return publishingResponse({ ...imported, html: rendered.html, toc: rendered.toc });
+    return publishingResponse(await composeMarkdown(decodeUtf8(new Uint8Array(await file.arrayBuffer())), file.name, { isSlugTaken }));
   } catch (error) { return publishingErrorResponse(error); }
 }

@@ -81,6 +81,14 @@ export function getPublishedFiles(): string[] {
     .map((entry) => path.join(directory, entry.name)).sort();
 }
 
+/** True when a repository MDX file (including drafts) or a stored article owns this URL. */
+export function isSlugTaken(slug: string): boolean {
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return false;
+  if (fs.existsSync(path.join(process.cwd(), "content", "blog", `${slug}.mdx`))) return true;
+  const directory = getContentDirectory();
+  return directory !== null && fs.existsSync(path.join(directory, `${slug}.md`));
+}
+
 async function createImmutableFile(target: string, source: string): Promise<boolean> {
   const temporary = path.join(path.dirname(target), `.pending-${randomUUID()}`);
   try {

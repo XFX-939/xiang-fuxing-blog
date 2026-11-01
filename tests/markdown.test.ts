@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { importMarkdown, MarkdownValidationError, renderMarkdown, validateArticleMetadata } from "../lib/markdown";
+import { composeMarkdown, importMarkdown, MarkdownValidationError, renderMarkdown, validateArticleMetadata } from "../lib/markdown";
 
 const validMetadata = {
   title: "测试文章",
@@ -194,4 +194,10 @@ test("anchors map each rendered heading to its source line", async () => {
   const { html, anchors } = await renderMarkdown("# 标题\n\n导语。\n\n## 第一节\n\n```md\n# 代码里的井号\n```\n\n### 小节\n");
   assert.deepEqual(anchors.map((anchor) => anchor.line), [5, 11]);
   for (const anchor of anchors) assert.ok(html.includes(`id="${anchor.id}"`), anchor.id);
+});
+
+test("composed anchors count lines in the full pasted source", async () => {
+  const composed = await composeMarkdown("---\ntitle: 标题\n---\n# 标题\n\n## 第一节\n");
+  assert.deepEqual(composed.anchors.map((anchor) => anchor.line), [6]);
+  assert.ok(composed.html.includes(`id="${composed.anchors[0].id}"`));
 });

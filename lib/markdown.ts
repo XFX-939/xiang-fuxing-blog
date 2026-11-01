@@ -306,3 +306,14 @@ export async function renderMarkdown(content: string): Promise<{ html: string; t
     throw new MarkdownValidationError("Markdown 无法渲染，请检查公式或代码块语法后重试。");
   }
 }
+
+export type ComposedMarkdown = ImportedMarkdown & { html: string; toc: TocItem[]; anchors: HeadingAnchor[] };
+
+/** Parses pasted or uploaded source and renders its preview; anchor lines refer to the full source. */
+export async function composeMarkdown(source: string, filename?: string, options: ImportOptions = {}): Promise<ComposedMarkdown> {
+  const imported = importMarkdown(source, filename, options);
+  const rendered = await renderMarkdown(imported.content);
+  // The body is always a suffix of the source, after an optional BOM and frontmatter.
+  const lineOffset = source.slice(0, source.length - imported.content.length).split("\n").length - 1;
+  return { ...imported, ...rendered, anchors: rendered.anchors.map((anchor) => ({ ...anchor, line: anchor.line + lineOffset })) };
+}
