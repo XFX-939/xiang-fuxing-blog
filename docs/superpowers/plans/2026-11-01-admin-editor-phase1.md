@@ -765,7 +765,7 @@ test("both ends always align and positions are clamped", () => {
 });
 
 test("anchors that run backwards, repeat or fall outside the panes are ignored without throwing", () => {
-  const anchors = [{ from: 60, to: 100 }, { from: 40, to: 200 }, { from: 40, to: 210 }, { from: 90, to: 900 }, { from: Number.NaN, to: 5 }];
+  const anchors = [{ from: Number.NaN, to: 5 }, { from: 60, to: 100 }, { from: 40, to: 210 }, { from: 40, to: 200 }, { from: 90, to: 900 }];
   let previous = -1;
   for (let position = 0; position <= 100; position += 5) {
     const mapped = mapScrollPosition(position, anchors, 100, 300);
@@ -794,10 +794,13 @@ export type ScrollAnchor = { from: number; to: number };
 export function mapScrollPosition(position: number, anchors: readonly ScrollAnchor[], fromMax: number, toMax: number): number {
   if (!(fromMax > 0) || !(toMax > 0)) return 0;
   const points: ScrollAnchor[] = [{ from: 0, to: 0 }];
-  for (const anchor of [...anchors].sort((a, b) => a.from - b.from)) {
+  // Filter before sorting: comparisons with NaN would leave the order undefined.
+  const candidates = anchors.filter((anchor) => Number.isFinite(anchor.from) && Number.isFinite(anchor.to))
+    .sort((a, b) => a.from - b.from || a.to - b.to);
+  for (const anchor of candidates) {
     const last = points[points.length - 1];
     // Keep the mapping monotonic and inside both panes.
-    if (!Number.isFinite(anchor.from) || !Number.isFinite(anchor.to) || anchor.from <= last.from || anchor.to < last.to || anchor.from >= fromMax || anchor.to > toMax) continue;
+    if (anchor.from <= last.from || anchor.to < last.to || anchor.from >= fromMax || anchor.to > toMax) continue;
     points.push(anchor);
   }
   points.push({ from: fromMax, to: toMax });
